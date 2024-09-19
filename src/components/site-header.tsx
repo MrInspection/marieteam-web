@@ -1,8 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
+import {SignInButton} from "@/features/auth/signin-button";
+import UserMenu from "@/features/auth/user-menu";
+import {auth} from "@/auth/auth";
 
-export default function SiteHeader() {
+export default async function SiteHeader() {
+    const session = await auth()
+    const user = session?.user
     return (
         <>
             <header className="sticky top-0 z-50 w-full border-y bg-background/95
@@ -21,12 +26,13 @@ export default function SiteHeader() {
                         <p className="font-bold">MarieTeam</p>
                     </Link>
                     <div className="flex items-center gap-2">
-                        <Button variant={"ghost"} size={"default"}>Login</Button>
-                        <Button variant={"outline"}>
-                            Sign Up
-                        </Button>
+                        {user ? <UserMenu /> : <>
+                            <SignInButton />
+                            <Button variant={"outline"}>
+                                Sign Up
+                            </Button>
+                        </>}
                     </div>
-
                 </div>
             </header>
         </>
