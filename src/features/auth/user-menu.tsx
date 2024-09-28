@@ -36,21 +36,25 @@ export default async function UserMenu() {
         <DropdownMenuContent className="w-56">
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator/>
-          <DropdownMenuItem className={"flex items-center gap-2"}>
-            <Settings className={"size-4"}/>
-            Settings
-          </DropdownMenuItem>
-          <DropdownMenuItem className={"flex items-center gap-2"}>
-            <ShoppingCart className={"size-4"}/>
-            Orders
-          </DropdownMenuItem>
+          <Link href={"/settings"}>
+            <DropdownMenuItem className={"flex items-center gap-2"}>
+              <Settings className={"size-4"}/>
+              Settings
+            </DropdownMenuItem>
+          </Link>
+          <Link href={"/orders"}>
+            <DropdownMenuItem className={"flex items-center gap-2"}>
+              <ShoppingCart className={"size-4"}/>
+              Orders
+            </DropdownMenuItem>
+          </Link>
           <DropdownMenuItem className={"flex items-center gap-2"}>
             <Bug className={"size-4"}/>
             Get Help
           </DropdownMenuItem>
           {isAdmin && <>
             <DropdownMenuSeparator/>
-            <Link href={"/dashboard"}>
+            <Link href={"/admin"}>
               <DropdownMenuItem className={"flex items-center gap-2"}>
                 <UserCog className={"size-4"}/> Admin
               </DropdownMenuItem>

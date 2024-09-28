@@ -214,7 +214,6 @@ export default function BookATripPage() {
                         </section>
                     </div>
 
-
                 </div>
             </div>
         </>

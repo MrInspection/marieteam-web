@@ -2,14 +2,19 @@ import Image from "next/image";
 import {InstagramLogoIcon, LinkedInLogoIcon} from "@radix-ui/react-icons";
 import {BiLogoTiktok} from "react-icons/bi";
 import {BsTwitterX} from "react-icons/bs";
+import {ModeToggle} from "@/components/theme-toggle";
 
 export default function SiteFooter() {
   return (
       <div className={"border-t-2"}>
+
+          {/* TODO - Finish the UI Layot of the settings Page */}
+          {/* TODO - Implement backgend code logic for the settings page */}
+
           <footer className="container py-6 md:h-80 md:flex-row">
               <div className={"flex items-center gap-2"}>
                   <Image
-                      className="dark:invert size-10"
+                      className="size-10"
                       src="/branding/marieteam-logo.svg"
                       alt="Next.js logo"
                       width={180}
@@ -21,7 +26,7 @@ export default function SiteFooter() {
               <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quia.</p>
 
 
-              <div>
+              <div className={"hidden"}>
                   <h2 className={"font-medium"}>Legal</h2>
                   <div className={"text-muted-foreground"}>
                       <p className={""}>Privacy Policy</p>
@@ -37,6 +42,7 @@ export default function SiteFooter() {
                   <p className={"text-sm"}>© {new Date().getFullYear()} MarieTeam Corporation, all rights
                       reserved.</p>
                   <div className={"flex gap-5 items-center max-md:mt-5"}>
+                      <ModeToggle />
                       <BsTwitterX className={"size-4 hover:text-primary"}/>
                       <LinkedInLogoIcon className={"size-4 hover:text-primary"}/>
                       <BiLogoTiktok className={"size-4 hover:text-primary"} />

@@ -3,6 +3,9 @@ import "../styles/globals.css";
 import SiteHeader from "@/components/site-header";
 import SiteFooter from "@/components/site-footer";
 import { Inter } from "next/font/google";
+import React from "react";
+import { ThemeProvider } from "@/components/theme-provider";
+import {Toaster} from "@/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,9 +17,17 @@ export const metadata: Metadata = {
 export default function RootLayout({ children}: Readonly<{ children: React.ReactNode; }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={inter.className} suppressHydrationWarning={true}>
       <SiteHeader />
-        {children}
+      <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+      >
+          {children}
+          <Toaster richColors={true} />
+      </ThemeProvider>
       <SiteFooter />
       </body>
     </html>
