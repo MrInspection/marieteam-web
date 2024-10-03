@@ -211,9 +211,7 @@ enum PricingPeriod {
 
 // Enumération pour les types de places ou véhicules dans une traversée.
 enum SeatType {
-  PASSENGER_ADULT // Passager adulte
-  PASSENGER_JUNIOR // Passager junior
-  PASSENGER_CHILD // Passager enfant
+  PASSENGER
   VEHICLE_UNDER_2M // Véhicule < 2m
   VEHICLE_OVER_2M // Véhicule > 2m
 }

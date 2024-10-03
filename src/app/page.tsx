@@ -2,6 +2,7 @@ import {auth} from "@/auth/auth";
 import {prisma} from "@/lib/db";
 import {DatabaseZap} from "lucide-react";
 import {ModeToggle} from "@/components/theme-toggle";
+import Link from "next/link";
 
 export default async function Home() {
   const session = await auth();
@@ -49,6 +50,9 @@ export default async function Home() {
                   </div>
               </section>
 
+              <Link href={"/bookings"}>
+                  Bookings (temp)
+              </Link>
               <ModeToggle />
               {boat.map((boat, index) => (
                   <>

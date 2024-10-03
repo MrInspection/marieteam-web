@@ -22,7 +22,7 @@ export default async function SiteHeader() {
                             priority
                             draggable={false}
                         />
-                        <p className="font-bold">MarieTeam</p>
+                            <p className="font-bold">Spectron Labs</p>
                     </Link>
                     <div className="flex items-center gap-2">
                         {user ? <UserMenu /> : <>
