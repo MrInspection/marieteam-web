@@ -3,6 +3,7 @@ import Link from "next/link";
 import {SignInButton} from "@/features/auth/signin-button";
 import UserMenu from "@/features/auth/user-menu";
 import {auth} from "@/auth/auth";
+import {ModeToggle} from "@/components/theme-toggle";
 
 export default async function SiteHeader() {
     const session = await auth()
@@ -24,6 +25,7 @@ export default async function SiteHeader() {
                         />
                             <p className="font-bold">Spectron Labs</p>
                     </Link>
+                    <ModeToggle />
                     <div className="flex items-center gap-2">
                         {user ? <UserMenu /> : <>
                             <SignInButton />

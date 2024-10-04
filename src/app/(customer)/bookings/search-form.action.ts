@@ -1,6 +1,5 @@
 "use server"
 
-
 import { Sector } from "@prisma/client"
 import {prisma} from "@/lib/db";
 

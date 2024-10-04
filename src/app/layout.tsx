@@ -14,22 +14,22 @@ export const metadata: Metadata = {
   description: "Spectron Labs",
 };
 
-export default function RootLayout({ children}: Readonly<{ children: React.ReactNode; }>) {
-  return (
-    <html lang="en">
-      <body className={inter.className} suppressHydrationWarning={true}>
-      <SiteHeader />
-      <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-      >
-          {children}
-          <Toaster richColors={true} />
-      </ThemeProvider>
-      <SiteFooter />
-      </body>
-    </html>
-  );
+export default function RootLayout({children}: Readonly<{ children: React.ReactNode; }>) {
+    return (
+        <html lang="en">
+        <body className={inter.className} suppressHydrationWarning={true}>
+        <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+        >
+            <SiteHeader/>
+            {children}
+            <Toaster richColors={true}/>
+            <SiteFooter/>
+        </ThemeProvider>
+        </body>
+        </html>
+    );
 }

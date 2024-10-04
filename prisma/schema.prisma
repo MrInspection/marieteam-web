@@ -56,15 +56,15 @@ model Session {
   updatedAt DateTime @updatedAt
 }
 
-// Représente une commande passée par un utilisateur (réservation d'une ou plusieurs traversées).
+// Représente une commande passée par un utilisateur (booking confirmé).
 model Order {
-  id           String        @id @default(cuid())
-  createdAt    DateTime      @default(now())
-  userId       String
-  user         User          @relation(fields: [userId], references: [id])
-  reservations Reservation[]
-  totalAmount  Float
-  status       OrderStatus   @default(PENDING)
+  id             String          @id @default(cuid())
+  createdAt      DateTime        @default(now())
+  userId         String
+  user           User            @relation(fields: [userId], references: [id])
+  configurations Configuration[]
+  totalAmount    Float
+  status         OrderStatus     @default(PENDING)
 
   updatedAt DateTime @updatedAt
 }
@@ -76,29 +76,28 @@ enum OrderStatus {
   CANCELLED
 }
 
-// Représente une réservation globale pour une traversée spécifique.
-model Reservation {
-  id         String            @id @default(cuid())
-  orderId    String
-  order      Order             @relation(fields: [orderId], references: [id])
+// Représente une configuration temporaire avant confirmation (anciennement Reservation).
+model Configuration {
+  id         String              @id @default(cuid())
+  orderId    String?
+  order      Order?              @relation(fields: [orderId], references: [id])
   crossingId String
-  crossing   Crossing          @relation(fields: [crossingId], references: [id])
-  items      ReservationItem[]
+  crossing   Crossing            @relation(fields: [crossingId], references: [id])
+  items      ConfigurationItem[]
   totalPrice Float
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-// Captures les détails de chaque type de siège et la quantité réservée.
-model ReservationItem {
-  id            String      @id @default(cuid())
-  reservationId String
-  reservation   Reservation @relation(fields: [reservationId], references: [id])
-  seatType      SeatType
-  quantity      Int
-  unitPrice     Float
-  totalPrice    Float
+// Captures les détails de chaque type de siège et la quantité configurée (anciennement ReservationItem).
+model ConfigurationItem {
+  id              String        @id @default(cuid())
+  configurationId String
+  configuration   Configuration @relation(fields: [configurationId], references: [id])
+  seatType        SeatType
+  quantity        Int
+  totalPrice      Float
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -108,15 +107,15 @@ model ReservationItem {
 
 // Représente une traversée, incluant les informations de l'heure, du bateau, etc.
 model Crossing {
-  id            String        @id @default(cuid())
-  departureTime DateTime // Date et heure de départ de la traversée
-  boatId        String
-  boat          Boat          @relation(fields: [boatId], references: [id])
-  routeId       String
-  route         Route         @relation(fields: [routeId], references: [id])
-  reservations  Reservation[]
-  captainLogs   CaptainLog[]
-  seats         Seat[]
+  id             String          @id @default(cuid())
+  departureTime  DateTime // Date et heure de départ de la traversée
+  boatId         String
+  boat           Boat            @relation(fields: [boatId], references: [id])
+  routeId        String
+  route          Route           @relation(fields: [routeId], references: [id])
+  configurations Configuration[]
+  captainLogs    CaptainLog[]
+  seats          Seat[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -179,12 +178,12 @@ model Boat {
 
 // Représente les types de places disponibles dans une traversée donnée.
 model Seat {
-  id           String            @id @default(cuid())
-  type         SeatType
-  available    Int
-  crossingId   String
-  crossing     Crossing          @relation(fields: [crossingId], references: [id])
-  reservations ReservationItem[]
+  id             String              @id @default(cuid())
+  type           SeatType
+  available      Int
+  crossingId     String
+  crossing       Crossing            @relation(fields: [crossingId], references: [id])
+  configurations ConfigurationItem[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

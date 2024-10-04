@@ -2,7 +2,6 @@ import Image from "next/image";
 import {InstagramLogoIcon, LinkedInLogoIcon} from "@radix-ui/react-icons";
 import {BiLogoTiktok} from "react-icons/bi";
 import {BsTwitterX} from "react-icons/bs";
-import {ModeToggle} from "@/components/theme-toggle";
 
 export default function SiteFooter() {
   return (
@@ -36,13 +35,11 @@ export default function SiteFooter() {
                   </div>
               </div>
 
-
               <section
                   className={"border-t-2 py-4 mt-4 text-muted-foreground flex max-md:flex-col items-center justify-between md:px-2.5"}>
                   <p className={"text-sm"}>© {new Date().getFullYear()} MarieTeam Corporation, all rights
                       reserved.</p>
                   <div className={"flex gap-5 items-center max-md:mt-5"}>
-                      <ModeToggle />
                       <BsTwitterX className={"size-4 hover:text-primary"}/>
                       <LinkedInLogoIcon className={"size-4 hover:text-primary"}/>
                       <BiLogoTiktok className={"size-4 hover:text-primary"} />

@@ -103,7 +103,7 @@ export default function BookingPage() {
                                     </CardContent>
                                     {selectedCrossing && (
                                         <CardFooter className="border-t px-6 py-4">
-                                            <Button className="w-full">Buy your ticket</Button>
+                                            <Button className="w-full" >Buy your ticket</Button>
                                         </CardFooter>
                                     )}
                                 </Card>
