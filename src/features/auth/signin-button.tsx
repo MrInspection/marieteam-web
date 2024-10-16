@@ -19,7 +19,7 @@ export const SignInButton = () => {
 export const SignOutButton = () => {
     return (
         <>
-            <DropdownMenuItem className={"flex items-center gap-2 font-medium w-full"} onClick={() => signOut()}>
+            <DropdownMenuItem className={"flex items-center gap-2 font-medium w-full "} onClick={() => signOut()}>
                 <LogOut className={"size-4"} /> Logout
             </DropdownMenuItem>
         </>

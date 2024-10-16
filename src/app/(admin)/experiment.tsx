@@ -186,7 +186,7 @@ export default function Component() {
         setSearched(true)
     }
 
-    const TripDetails = ({ crossing }: { crossing: Crossing }) => (
+    const CrossingDetails = ({ crossing }: { crossing: Crossing }) => (
         <div className="space-y-4">
 
             <div className={"border-2 p-2 rounded-2xl"}>
@@ -470,7 +470,7 @@ export default function Component() {
                             </CardHeader>
                             <CardContent className={"border-t-2 py-6"}>
                                 {selectedCrossing ? (
-                                    <TripDetails crossing={selectedCrossing}/>
+                                    <CrossingDetails crossing={selectedCrossing}/>
                                 ) : (
                                     <div className="flex flex-col items-center justify-center h-64 text-center">
                                         <Info className="w-12 h-12 text-blue-500 mb-4" />
@@ -511,7 +511,7 @@ export default function Component() {
                                 </SheetDescription>
                             </SheetHeader>
                             <div className="mt-4">
-                                <TripDetails crossing={selectedCrossing} />
+                                <CrossingDetails crossing={selectedCrossing} />
                             </div>
                             <Button className="w-full mt-4">Reserve this trip</Button>
                         </SheetContent>

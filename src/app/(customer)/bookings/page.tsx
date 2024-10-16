@@ -19,15 +19,17 @@ import {
 import { SearchForm } from "./search-form"
 import { searchCrossings } from "./crossing.action"
 import { Crossing, CrossingSearch } from "./crossing.schema"
-import {TripList} from "@/app/(customer)/bookings/trip-list";
-import {TripDetails} from "@/app/(customer)/bookings/trip-details";
+import {CrossingList} from "@/app/(customer)/bookings/crossing-list";
+import {CrossingDetails} from "@/app/(customer)/bookings/crossing-details";
 import {toast} from "sonner";
 import {Badge} from "@/components/ui/badge";
+import { useRouter } from 'next/navigation'
 
 export default function BookingPage() {
     const [crossings, setCrossings] = useState<Crossing[] | null>(null)
     const [selectedCrossing, setSelectedCrossing] = useState<Crossing | null>(null)
     const [searched, setSearched] = useState(false)
+    const router = useRouter()
 
     const handleSearch = async (search: CrossingSearch) => {
         try {
@@ -50,7 +52,7 @@ export default function BookingPage() {
                     {!searched && (
                         <Card className={"rounded-2xl h-96 flex flex-col items-center justify-center border-dashed"}>
                             <CardContent className="p-6 flex flex-col items-center justify-center">
-                                <CalendarSearch className={"size-10 text-muted-foreground"}/>
+                                <CalendarSearch className={"size-10 text-blue-500"}/>
                                 <h1 className={"text-lg font-bold mt-4"}>MarieTeam Bookings</h1>
                                 <p className="text-center text-muted-foreground text-sm mt-1 max-w-lg text-balance leading-6">
                                     Select a geographical zone, a travel date, and a trip route, then click <span className={"border-2 rounded-xl px-2 py-0.5 font-medium bg-muted/40"}>Search Trips</span> to see available
@@ -75,7 +77,7 @@ export default function BookingPage() {
 
 
                                 <div>
-                                    <TripList
+                                    <CrossingList
                                         crossings={crossings}
                                         selectedCrossing={selectedCrossing}
                                         onSelectCrossing={setSelectedCrossing}
@@ -90,7 +92,7 @@ export default function BookingPage() {
                                 <Card className="rounded-2xl border-2 shadow-none">
                                     <CardContent className={"pt-6"}>
                                         {selectedCrossing ? (
-                                            <TripDetails crossing={selectedCrossing}/>
+                                            <CrossingDetails crossing={selectedCrossing}/>
                                         ) : (
                                             <div className="flex flex-col items-center justify-center h-96 text-center">
                                                 <EyeOff className="size-10 text-muted-foreground mb-4"/>
@@ -103,7 +105,7 @@ export default function BookingPage() {
                                     </CardContent>
                                     {selectedCrossing && (
                                         <CardFooter className="border-t px-6 py-4">
-                                            <Button className="w-full" >Buy your ticket</Button>
+                                            <Button className="w-full" onClick={() => router.push("/bookings/configure?trip=" + selectedCrossing.id)}>Buy your ticket</Button>
                                         </CardFooter>
                                     )}
                                 </Card>
@@ -137,9 +139,9 @@ export default function BookingPage() {
                                     </SheetDescription>
                                 </SheetHeader>
                                 <div className="mt-4">
-                                    <TripDetails crossing={selectedCrossing}/>
+                                    <CrossingDetails crossing={selectedCrossing}/>
                                 </div>
-                                <Button className="w-full mt-4">Buy your ticket</Button>
+                                <Button className="w-full mt-4" onClick={() => router.push("/bookings/configure?trip=" + selectedCrossing.id)}>Buy your ticket</Button>
                             </SheetContent>
                         </Sheet>
                     )}

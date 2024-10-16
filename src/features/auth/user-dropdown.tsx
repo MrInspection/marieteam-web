@@ -13,7 +13,7 @@ import { SignOutButton } from "@/features/auth/signin-button";
 import {prisma} from "@/lib/db";
 import Link from "next/link";
 
-export default async function UserMenu() {
+export default async function UserDropdown() {
   const session = await auth();
   const user = session?.user;
 

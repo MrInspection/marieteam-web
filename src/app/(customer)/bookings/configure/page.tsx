@@ -21,7 +21,7 @@ const ConfigurePage = async ({searchParams}: ConfigurePageProps) => {
         include: {
             boat: true,
             route: true,
-            seats: true,
+            seatAvailability: true,
             captainLogs: {
                 orderBy: {
                     createdAt: 'desc'

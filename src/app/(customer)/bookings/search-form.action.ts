@@ -1,6 +1,6 @@
 "use server"
 
-import { Sector } from "@prisma/client"
+import {Sector} from "@prisma/client"
 import {prisma} from "@/lib/db";
 
 export async function getZones(): Promise<Sector[]> {
@@ -18,16 +18,18 @@ export async function getZones(): Promise<Sector[]> {
     }
 }
 
-export async function getRoutes() {
+export async function getRoutes(sector: Sector) {
     try {
-        const routes = await prisma.route.findMany({
+        return await prisma.route.findMany({
+            where: {
+                sector: sector
+            },
             select: {
                 id: true,
-                departure: true,
-                arrival: true
+                departurePort: true,
+                arrivalPort: true
             }
         })
-        return routes
     } catch (error) {
         console.error("Error fetching routes:", error)
         throw new Error("Failed to fetch routes")
