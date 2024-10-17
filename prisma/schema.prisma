@@ -7,24 +7,21 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// Représente un utilisateur du système (client, capitaine, ou gestionnaire).
 model User {
-  id            String    @id @default(cuid())
+  id            String        @id @default(cuid())
   name          String?
-  email         String    @unique
+  email         String        @unique
   emailVerified DateTime?
   image         String?
-  role          Role      @default(USER)
+  role          Role          @default(USER)
   accounts      Account[]
   sessions      Session[]
-  orders        Order[]
+  reservations  Reservation[]
 
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
-  CaptainLog CaptainLog[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-// Auth.js - Authentication System (DO NOT EDIT MODEL BELOW)
 model Account {
   userId            String
   type              String
@@ -46,7 +43,6 @@ model Account {
   @@id([provider, providerAccountId])
 }
 
-// Auth.js - Authentication System (DO NOT EDIT MODEL BELOW)
 model Session {
   sessionToken String   @unique
   userId       String
@@ -57,162 +53,136 @@ model Session {
   updatedAt DateTime @updatedAt
 }
 
-// Représente une commande passée par un utilisateur (booking confirmé).
-model Order {
-  id           String        @id @default(cuid())
-  createdAt    DateTime      @default(now())
-  userId       String
-  user         User          @relation(fields: [userId], references: [id])
-  reservations Reservation[] // Relation mise à jour
-  totalAmount  Float
-  status       OrderStatus   @default(PENDING)
+model Reservation {
+  id          String            @id @default(cuid())
+  createdAt   DateTime          @default(now())
+  userId      String
+  user        User              @relation(fields: [userId], references: [id])
+  totalAmount Float
+  status      ReservationStatus @default(PENDING)
+  seats       Seat[]
 
   updatedAt DateTime @updatedAt
 }
 
-// Enumération pour le statut de la commande.
-enum OrderStatus {
+enum ReservationStatus {
   PENDING
   PAID
 }
 
-// Représente une réservation temporaire avant confirmation.
-model Reservation {
-  id         String             @id @default(cuid()) // Anciennement "Configuration"
-  orderId    String?
-  order      Order?             @relation(fields: [orderId], references: [id])
-  crossingId String
-  crossing   Crossing           @relation(fields: [crossingId], references: [id])
-  seats      SeatAvailability[] // Liste des sièges réservés par catégorie pour cette traversée
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-// Gère la disponibilité et les réservations des sièges pour une traversée.
-model SeatAvailability {
+model Seat {
   id            String       @id @default(cuid())
   crossingId    String
   crossing      Crossing     @relation(fields: [crossingId], references: [id])
-  seatType      SeatType // Catégorie de siège (PASSENGER, VEHICLE_UNDER_2M, etc.)
-  bookedSeats   Int          @default(0) // Nombre de sièges réservés
-  reservationId String? // Référence à une réservation si applicable
+  seatTypeId    String
+  seatType      SeatType     @relation(fields: [seatTypeId], references: [id])
+  bookedSeats   Int          @default(0)
+  reservationId String?
   reservation   Reservation? @relation(fields: [reservationId], references: [id])
-  quantity      Int // Nombre de sièges réservés pour une réservation
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([crossingId, seatType]) // Unicité par traversée et type de siège
+  @@unique([crossingId, seatTypeId])
 }
 
-// Représente une traversée, incluant les informations de l'heure, du bateau, etc.
 model Crossing {
-  id            String   @id @default(cuid())
-  departureTime DateTime // Date et heure de départ de la traversée
-  boatId        String
-  boat          Boat     @relation(fields: [boatId], references: [id])
-  routeId       String
-  route         Route    @relation(fields: [routeId], references: [id])
+  id               String       @id @default(cuid())
+  departureTime    DateTime
+  boatId           String
+  boat             Boat         @relation(fields: [boatId], references: [id])
+  routeId          String
+  route            Route        @relation(fields: [routeId], references: [id])
+  seatAvailability Seat[]
+  captainLogs      CaptainLog[]
 
-  totalPassengerSeats Int // Nombre total de sièges passagers
-  totalVehicleUnder2M Int // Nombre total de places pour véhicules < 2m
-  totalVehicleOver2M  Int // Nombre total de places pour véhicules > 2m
-
-  seatAvailability SeatAvailability[] // Gestion des sièges disponibles pour la traversée
-  pricing          Pricing[] // Tarification liée à cette traversée
-  captainLogs      CaptainLog[] // Journaux des capitaines associés à cette traversée
-
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  Reservation Reservation[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-// Journal créé par les capitaines pendant une traversée.
 model CaptainLog {
   id           String       @id @default(cuid())
   crossingId   String
   crossing     Crossing     @relation(fields: [crossingId], references: [id])
-  captainId    String
-  captain      User         @relation(fields: [captainId], references: [id]) // Lien avec l'utilisateur capitaine
   seaCondition SeaCondition
-  delayMinutes Int? // Retard en minutes
-  delayReason  String? // Raison du retard (facultatif)
+  delayMinutes Int?
+  delayReason  String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-// Représente une route ou une liaison entre deux ports.
-model Route {
-  id            String     @id @default(cuid())
-  distance      Float // Distance en milles marins
-  departurePort String // Port de départ
-  arrivalPort   String // Port d'arrivée
-  sector        Sector // Secteur géographique (ex: Belle-Île-en-Mer)
-  crossings     Crossing[] // Traversées sur cette route
+model SeatType {
+  id             String       @id @default(cuid())
+  name           String
+  seatCategoryId String
+  seatCategory   SeatCategory @relation(fields: [seatCategoryId], references: [id])
+  seats          Seat[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Pricing   Pricing[]
+}
+
+model SeatCategory {
+  id        String     @id @default(cuid())
+  name      String
+  seatTypes SeatType[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-// Modèle pour gérer les tarifs des traversées.
 model Pricing {
-  id         String        @id @default(cuid())
-  crossingId String
-  crossing   Crossing      @relation(fields: [crossingId], references: [id])
-  seatType   SeatType // Le type de siège (PASSENGER, VEHICLE_UNDER_2M, etc.)
-  seatGroup  SeatGroup // Catégorie de passager ou véhicule (ex: A1_ADULT, B1_VEHICLE_UNDER_4M)
-  period     PricingPeriod // Période tarifaire (Basse saison, Moyenne saison, Haute saison)
-  amount     Float // Montant pour cette combinaison de traversée, type de siège, et période
+  id      String        @id @default(cuid())
+  routeId String
+  route   Route         @relation(fields: [routeId], references: [id])
+  typeId  String
+  type    SeatType      @relation(fields: [typeId], references: [id])
+  period  PricingPeriod
+  amount  Float
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-// Enumération pour les périodes tarifaires.
+model Route {
+  id               String           @id @default(cuid())
+  distance         Float
+  departurePort    String
+  arrivalPort      String
+  geographicalZone GeographicalZone
+  crossings        Crossing[]
+  pricing          Pricing[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Boat {
+  id                String     @id @default(cuid())
+  name              String
+  length            Float
+  width             Float
+  speed             Float
+  imageUrl          String?
+  equipment         String[]
+  maxPassengerSeats Int
+  maxVehicleUnder2M Int
+  maxVehicleOver2M  Int
+  crossings         Crossing[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 enum PricingPeriod {
   LOW_SEASON
   MID_SEASON
   HIGH_SEASON
 }
 
-// Représente un bateau utilisé pour une traversée.
-model Boat {
-  id        String     @id @default(cuid())
-  name      String
-  length    Float
-  width     Float
-  speed     Float
-  imageUrl  String? // URL de l'image du bateau
-  equipment String[] // Liste des équipements sous forme de chaînes (ex: ["Pont Promenade", "Accès Handicapé"])
-  crossings Crossing[] // Traversées associées à ce bateau
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-// Enumération pour les types de sièges ou véhicules dans une traversée.
-enum SeatType {
-  PASSENGER
-  VEHICLE_UNDER_2M // Véhicule < 2m
-  VEHICLE_OVER_2M // Véhicule > 2m
-}
-
-// Enumération pour les groupes de passagers et véhicules dans une traversée.
-enum SeatGroup {
-  ADULT // Passager - Adulte
-  JUNIOR // Passager - Junior (8 à 18 ans)
-  CHILD // Passager - Enfant (0 à 7 ans)
-  VEHICLE_UNDER_4M // Véhicule < 2m et < 4m de longueur
-  VEHICLE_UNDER_5M // Véhicule < 2m et < 5m de longueur
-  VAN // Véhicule > 2m (Fourgon)
-  CAMPING_CAR // Camping Car
-  TRUCK // Camion
-}
-
-// Enumération pour capturer les secteurs géographiques.
-enum Sector {
+enum GeographicalZone {
   AIX
   BATZ
   BELLE_ILE_EN_MER
@@ -225,17 +195,15 @@ enum Sector {
   YEU
 }
 
-// Enumération des rôles des utilisateurs dans le système.
-enum Role {
-  USER
-  CAPTAIN
-  ADMIN
-}
-
-// Enumération pour capturer l'état de la mer pendant une traversée.
 enum SeaCondition {
   CALM
   SLIGHTLY_ROUGH
   ROUGH
   VERY_ROUGH
+}
+
+enum Role {
+  USER
+  CAPTAIN
+  ADMIN
 }
