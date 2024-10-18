@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {CalendarIcon, MapPin, TriangleAlert} from "lucide-react";
+import { CalendarIcon, MapPin, TriangleAlert } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -18,8 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { CrossingSearch } from "./crossing.schema";
-import { getRoutes } from "./search-form.action";
+import { CrossingSearch } from "../crossing.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -31,7 +30,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Sector } from "@prisma/client";
+import { GeographicalZone } from "@prisma/client";
+import {getRoutes} from "@/app/(customer)/bookings/crossing.action";
 
 type Route = {
   id: string;
@@ -44,7 +44,7 @@ type SearchFormProps = {
 };
 
 const formSchema = z.object({
-  zone: z.nativeEnum(Sector, {
+  zone: z.nativeEnum(GeographicalZone, {
     message: "Please select a geographical zone",
   }),
   date: z.date({
@@ -58,6 +58,7 @@ const formSchema = z.object({
 export function SearchForm({ onSubmit }: SearchFormProps) {
   const [routes, setRoutes] = useState<Route[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [zones] = useState<GeographicalZone[]>(Object.values(GeographicalZone)); // Use enum values directly
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -118,7 +119,7 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {Object.values(Sector).map((z) => (
+                    {zones.map((z) => (
                       <SelectItem key={z} value={z}>
                         <div className="flex items-center">
                           <MapPin className="w-4 h-4 mr-2" />
@@ -176,33 +177,33 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Trip Route</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    value={field.value}
-                    disabled={!selectedZone}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a route" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {routes.length > 0 ? (
-                        routes.map((r) => (
-                          <SelectItem key={r.id} value={r.id}>
-                            {r.departurePort} - {r.arrivalPort}
-                          </SelectItem>
-                        ))
-                      ) : (
-                        <SelectItem value="no-routes" disabled>
-                          <div className={"flex items-center"}>
-                            <TriangleAlert className={"size-4 mr-2 text-red-500"} />
-                            <p>No routes found</p>
-                          </div>
+                <Select
+                  onValueChange={field.onChange}
+                  value={field.value}
+                  disabled={!selectedZone}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a route" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {routes.length > 0 ? (
+                      routes.map((r) => (
+                        <SelectItem key={r.id} value={r.id}>
+                          {r.departurePort} - {r.arrivalPort}
                         </SelectItem>
-                      )}
-                    </SelectContent>
-                  </Select>
+                      ))
+                    ) : (
+                      <SelectItem value="no-routes" disabled>
+                        <div className="flex items-center">
+                          <TriangleAlert className="size-4 mr-2 text-red-500"/>
+                          <p>No routes found</p>
+                        </div>
+                      </SelectItem>
+                    )}
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}

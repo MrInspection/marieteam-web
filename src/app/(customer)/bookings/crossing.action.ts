@@ -1,8 +1,26 @@
 "use server";
 
-import { CrossingSearch, CrossingSchema } from "./crossing.schema";
-import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/db";
+import { revalidatePath } from "next/cache";
+import { CrossingSchema, CrossingSearch } from "./crossing.schema";
+import {GeographicalZone} from "@prisma/client";
+
+export async function getRoutes(zone: GeographicalZone) {
+  try {
+    return await prisma.route.findMany({
+      where: {
+        geographicalZone: zone,
+      },
+      select: {
+        id: true,
+        departurePort: true,
+        arrivalPort: true,
+      },
+    });
+  } catch (error) {
+    throw new Error("Failed to fetch routes");
+  }
+}
 
 export async function searchCrossings(search: CrossingSearch) {
   try {
@@ -12,7 +30,7 @@ export async function searchCrossings(search: CrossingSearch) {
       where: {
         route: {
           id: routeId,
-          sector: zone,
+          geographicalZone: zone,
         },
         departureTime: {
           gte: new Date(date.setHours(0, 0, 0, 0)),
@@ -20,10 +38,25 @@ export async function searchCrossings(search: CrossingSearch) {
         },
       },
       include: {
-        boat: true,
+        boat: {
+          include: {
+            categoryCapacities: {
+              include: {
+                seatCategory: true,
+              },
+            },
+          },
+        },
         route: true,
-        seatAvailability: true,
-        pricing: true,
+        seatAvailability: {
+          include: {
+            seatType: {
+              include: {
+                seatCategory: true,
+              },
+            },
+          },
+        },
         captainLogs: {
           orderBy: {
             createdAt: "desc",
@@ -44,28 +77,31 @@ export async function searchCrossings(search: CrossingSearch) {
         speed: crossing.boat.speed,
         imageUrl: crossing.boat.imageUrl,
         equipment: crossing.boat.equipment,
+        categoryCapacities: crossing.boat.categoryCapacities.map((capacity) => ({
+          seatCategory: capacity.seatCategory.name,
+          maxCapacity: capacity.maxCapacity,
+        })),
       },
       route: {
         id: crossing.route.id,
         distance: crossing.route.distance,
         departurePort: crossing.route.departurePort,
         arrivalPort: crossing.route.arrivalPort,
-        sector: crossing.route.sector,
+        geographicalZone: crossing.route.geographicalZone,
       },
-      totalPassengerSeats: crossing.totalPassengerSeats,
-      totalVehicleUnder2M: crossing.totalVehicleUnder2M,
-      totalVehicleOver2M: crossing.totalVehicleOver2M,
-      seatAvailability: crossing.seatAvailability.map((seat) => ({
-        seatType: seat.seatType,
-        bookedSeats: seat.bookedSeats,
-        quantity: seat.quantity,
-      })),
-      pricing: crossing.pricing.map((price) => ({
-        seatType: price.seatType,
-        seatGroup: price.seatGroup,
-        period: price.period,
-        amount: price.amount,
-      })),
+      seatAvailability: crossing.seatAvailability.map((seat) => {
+        const capacity = crossing.boat.categoryCapacities.find(
+            (capacity) => capacity.seatCategory.name === seat.seatType.seatCategory.name
+        )?.maxCapacity;
+
+        return {
+          seatType: seat.seatType.name,
+          seatCategory: seat.seatType.seatCategory.name,
+          bookedSeats: seat.bookedSeats,
+          quantity: seat.bookedSeats,
+          capacityMax: capacity ?? 0,
+        };
+      }),
       captainLogs: crossing.captainLogs.map((log) => ({
         seaCondition: log.seaCondition,
         delayMinutes: log.delayMinutes,
@@ -74,7 +110,7 @@ export async function searchCrossings(search: CrossingSearch) {
     }));
 
     const validatedCrossings = formattedCrossings.map((crossing) =>
-      CrossingSchema.parse(crossing)
+        CrossingSchema.parse(crossing)
     );
 
     revalidatePath("/");
@@ -84,5 +120,4 @@ export async function searchCrossings(search: CrossingSearch) {
     throw new Error("Failed to search crossings");
   }
 }
-
 
