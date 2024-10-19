@@ -142,13 +142,10 @@ export function CrossingCard({
                   {crossing.route.departurePort}
                 </div>
               </div>
-              <div className="flex flex-col items-center flex-grow px-4">
-                <div className="w-full h-0.5 bg-muted-foreground/60 relative">
-                  <ArrowRight className="absolute top-1/2 -right-1 transform -translate-y-1/2 text-muted-foreground/60" />
-                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-background p-1.5 rounded-full max-md:hidden">
-                    <Anchor className="size-8 text-muted-foreground" />
-                  </div>
-                </div>
+              <div className="flex-grow mx-4 flex items-center">
+                <div className="h-px bg-foreground flex-grow"/>
+                <Anchor className="size-8 mx-2"/>
+                <div className="h-px bg-foreground flex-grow"/>
               </div>
               <div className="text-center">
                 <div className="text-xs text-muted-foreground">Arrival</div>

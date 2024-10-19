@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { CalendarSearch, CalendarX2, EyeOff } from "lucide-react";
+import {CalendarSearch, CalendarX2, ChevronLeft, ChevronRight, EyeOff} from "lucide-react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -113,6 +113,7 @@ export default function BookingPage() {
                         }
                       >
                         Buy your ticket
+                        <ChevronRight className={"size-4 ml-2"}/>
                       </Button>
                     </CardFooter>
                   )}
@@ -159,6 +160,7 @@ export default function BookingPage() {
                   }
                 >
                   Buy your ticket
+                  <ChevronRight className={"size-4 ml-2"}/>
                 </Button>
               </SheetContent>
             </Sheet>

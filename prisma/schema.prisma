@@ -18,8 +18,8 @@ model User {
   sessions      Session[]
   reservations  Reservation[]
 
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Account {
@@ -49,20 +49,20 @@ model Session {
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Reservation {
-  id           String            @id @default(cuid())
-  createdAt    DateTime          @default(now())
-  userId       String
-  user         User              @relation(fields: [userId], references: [id])
-  totalAmount  Float
-  status       ReservationStatus @default(PENDING)
-  seats        Seat[]
+  id          String            @id @default(cuid())
+  createdAt   DateTime          @default(now())
+  userId      String
+  user        User              @relation(fields: [userId], references: [id])
+  totalAmount Float
+  status      ReservationStatus @default(PENDING)
+  seats       Seat[]
 
-  updatedAt    DateTime @updatedAt
+  updatedAt DateTime @updatedAt
 }
 
 enum ReservationStatus {
@@ -80,8 +80,8 @@ model Seat {
   reservationId String?
   reservation   Reservation? @relation(fields: [reservationId], references: [id])
 
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([crossingId, seatTypeId])
 }
@@ -96,8 +96,8 @@ model Crossing {
   seatAvailability Seat[]
   captainLogs      CaptainLog[]
 
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model CaptainLog {
@@ -108,43 +108,44 @@ model CaptainLog {
   delayMinutes Int?
   delayReason  String?
 
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model SeatType {
   id             String       @id @default(cuid())
   name           String
+  description    String?
   seatCategoryId String
   seatCategory   SeatCategory @relation(fields: [seatCategoryId], references: [id])
   seats          Seat[]
 
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
-  Pricing        Pricing[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Pricing   Pricing[]
 }
 
 model SeatCategory {
-  id               String                @id @default(cuid())
-  name             String
-  seatTypes        SeatType[]
+  id                 String                 @id @default(cuid())
+  name               String
+  seatTypes          SeatType[]
   categoryCapacities BoatCategoryCapacity[] // Relation avec les capacités sur les bateaux
 
-  createdAt        DateTime               @default(now())
-  updatedAt        DateTime               @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model BoatCategoryCapacity {
-  id               String        @id @default(cuid())
-  boatId           String
-  categoryId       String
-  maxCapacity      Int
+  id          String @id @default(cuid())
+  boatId      String
+  categoryId  String
+  maxCapacity Int
 
-  boat             Boat          @relation(fields: [boatId], references: [id], onDelete: Cascade)
-  seatCategory     SeatCategory  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  boat         Boat         @relation(fields: [boatId], references: [id], onDelete: Cascade)
+  seatCategory SeatCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([boatId, categoryId]) // Un bateau ne peut avoir qu'une capacité par catégorie
 }
@@ -158,8 +159,8 @@ model Pricing {
   period  PricingPeriod
   amount  Float
 
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Route {
@@ -176,14 +177,14 @@ model Route {
 }
 
 model Boat {
-  id                String              @id @default(cuid())
-  name              String
-  length            Float
-  width             Float
-  speed             Float
-  imageUrl          String?
-  equipment         String[]
-  crossings         Crossing[]
+  id                 String                 @id @default(cuid())
+  name               String
+  length             Float
+  width              Float
+  speed              Float
+  imageUrl           String?
+  equipment          String[]
+  crossings          Crossing[]
   categoryCapacities BoatCategoryCapacity[] // Relation vers les capacités par catégorie
 
   createdAt DateTime @default(now())

@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import {addMinutes, format} from "date-fns";
 import {
   Anchor,
   Car,
@@ -8,7 +8,6 @@ import {
   Waves,
 } from "lucide-react";
 import { Crossing } from "@/app/(customer)/bookings/crossing.schema";
-import { SeaCondition } from "@prisma/client";
 import {
   Accordion,
   AccordionContent,
@@ -16,50 +15,19 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
+import {getSeaConditionInfo} from "@/app/(customer)/bookings/_components/utils";
+import Image from "next/image";
 
 interface TripDetailsProps {
   crossing: Crossing;
 }
 
 export function CrossingDetails({ crossing }: TripDetailsProps) {
-  const getSeaConditionInfo = (condition: SeaCondition) => {
-    switch (condition) {
-      case "CALM":
-        return {
-          color: "text-emerald-500",
-          bgColor: "bg-green-100",
-          label: "Calm",
-        };
-      case "SLIGHTLY_ROUGH":
-        return {
-          color: "text-yellow-500",
-          bgColor: "bg-yellow-100",
-          label: "Slightly Rough",
-        };
-      case "ROUGH":
-        return {
-          color: "text-orange-500",
-          bgColor: "bg-orange-100",
-          label: "Rough",
-        };
-      case "VERY_ROUGH":
-        return {
-          color: "text-purple-700",
-          bgColor: "bg-purple-100",
-          label: "Very Rough",
-        };
-      default:
-        return {
-          color: "text-gray-500",
-          bgColor: "bg-gray-100",
-          label: "Unknown",
-        };
-    }
-  };
 
   const captainLog = crossing.captainLogs?.[0];
   const delayMinutes = captainLog?.delayMinutes || 0;
   const seaCondition = captainLog?.seaCondition || "CALM";
+  const adjustedDepartureTime = addMinutes(crossing.departureTime, delayMinutes);
 
   // Récupérer les capacités maximales pour les différentes catégories de sièges
   const getCapacityForCategory = (categoryName: string) => {
@@ -71,10 +39,13 @@ export function CrossingDetails({ crossing }: TripDetailsProps) {
 
   return (
       <div className="space-y-4">
-        <img
-            src={crossing.boat.imageUrl || "/placeholder.svg"}
+        <Image
+            width={400}
+            height={400}
+            src={`${crossing.boat.imageUrl}`}
             alt={crossing.boat.name}
-            className="rounded-xl w-full aspect-video border-2 grayscale"
+            className="rounded-xl w-full aspect-video border-2"
+            draggable={false}
         />
         <Accordion type="single" collapsible className={"mt-4"}>
           <AccordionItem
@@ -156,12 +127,7 @@ export function CrossingDetails({ crossing }: TripDetailsProps) {
                 </p>
                 {delayMinutes > 0 && (
                     <p className="font-bold text-orange-500">
-                      {format(
-                          new Date(
-                              crossing.departureTime.getTime() + delayMinutes * 60000
-                          ),
-                          "HH:mm"
-                      )}
+                      {format(adjustedDepartureTime, "HH:mm")}
                     </p>
                 )}
               </section>
