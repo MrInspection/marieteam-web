@@ -16,8 +16,8 @@ export default async function SiteHeader() {
         <div className="container flex h-16 max-w-screen-2xl items-center justify-between max-md:px-6">
           <Link href={"/"} className={"flex items-center gap-2"}>
             <Image
-              className="size-10"
-              src="/branding/marieteam-logo.svg"
+              className="size-10 dark:invert select-none"
+              src="/branding/marieteam-black.svg"
               alt="Next.js logo"
               width={180}
               height={38}
@@ -26,8 +26,8 @@ export default async function SiteHeader() {
             />
             <p className="font-bold inline-flex items-center gap-2">
               MarieTeam{" "}
-              <span className="px-2 py-0.5 bg-blue-700/15 text-blue-500 font-medium text-sm rounded-xl">
-                Experimental
+              <span className="px-2 py-0.5 bg-orange-700/15 text-orange-500 font-medium text-sm rounded-xl">
+                Alpha
               </span>
             </p>
           </Link>

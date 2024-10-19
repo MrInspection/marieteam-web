@@ -1,17 +1,11 @@
-"use client";
+
 
 import { Button } from "@/components/ui/button";
 import { ChevronRight, Minus, Plus } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-type SeatType = {
-  id: string;
-  name: string;
-  price: number;
-  description?: string;
-};
+export async function ConfigureSeats({crossingId} : {crossingId: string}) {
 
-export function ConfigureSeats() {
   return (
     <>
       <div>

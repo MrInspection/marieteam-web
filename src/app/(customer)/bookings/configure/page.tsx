@@ -93,7 +93,7 @@ const ConfigurePage = async ({ searchParams }: ConfigurePageProps) => {
               <h1 className={"font-bold text-2xl"}>
                 Information about your trip
               </h1>
-              <p className={"text-muted-foreground text-sm"}>
+              <p className={"text-muted-foreground text-sm mt-0.5"}>
                 Check the details of your trip and book your seats.
               </p>
               <div className={"space-y-4 mt-8"}>
@@ -246,7 +246,7 @@ const ConfigurePage = async ({ searchParams }: ConfigurePageProps) => {
                     </Accordion>
                   )}
 
-                  <div className="border-2 rounded-xl px-4 py-3 col-span-2">
+                  <div className="border-2 rounded-xl px-4 py-3 lg:col-span-2">
                     <p className="font-bold text-foreground mb-2">Equipments</p>
                     {configureTrip.boat.equipment.map((equipment, index) => (
                       <div
@@ -268,7 +268,7 @@ const ConfigurePage = async ({ searchParams }: ConfigurePageProps) => {
                 </section>
               </div>
             </div>
-            <ConfigureSeats/>
+            <ConfigureSeats crossingId={configureTrip.id}/>
           </div>
         </div>
       </div>

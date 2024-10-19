@@ -43,7 +43,7 @@ export default function BookingPage() {
       <section className="container max-w-7xl py-8">
         <SearchForm onSubmit={handleSearch} />
       </section>
-      <div className="border-t-2 bg-muted/40 min-h-[31rem]">
+      <div className="border-t-2 bg-muted/40 min-h-[36rem]">
         <div className="container max-w-7xl py-14">
           {!searched && (
             <Card className="rounded-2xl h-96 flex flex-col items-center justify-center border-dashed">
