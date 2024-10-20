@@ -9,9 +9,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {Bug, Settings, ShoppingCart, UserCog} from "lucide-react";
-import { SignOutButton } from "@/features/auth/signin-button";
 import {prisma} from "@/lib/db";
 import Link from "next/link";
+import {SignInButton, SignOutButton} from "@/features/auth/signin-button";
+import {ModeToggle} from "@/components/theme-toggle";
 
 export default async function UserDropdown() {
   const session = await auth();
@@ -37,33 +38,47 @@ export default async function UserDropdown() {
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator/>
           <Link href={"/settings"}>
-            <DropdownMenuItem className={"flex items-center gap-2"}>
-              <Settings className={"size-4"}/>
+            <DropdownMenuItem>
+              <Settings className={"size-4 mr-2"}/>
               Settings
             </DropdownMenuItem>
           </Link>
+          <ModeToggle />
           <Link href={"/orders"}>
-            <DropdownMenuItem className={"flex items-center gap-2"}>
-              <ShoppingCart className={"size-4"}/>
+            <DropdownMenuItem>
+              <ShoppingCart className={"size-4 mr-2"}/>
               Orders
             </DropdownMenuItem>
           </Link>
-          <DropdownMenuItem className={"flex items-center gap-2"}>
-            <Bug className={"size-4"}/>
+          <DropdownMenuItem>
+            <Bug className={"size-4 mr-2"}/>
             Get Help
           </DropdownMenuItem>
           {isAdmin && <>
             <DropdownMenuSeparator/>
             <Link href={"/admin"}>
-              <DropdownMenuItem className={"flex items-center gap-2"}>
-                <UserCog className={"size-4"}/> Admin
+              <DropdownMenuItem >
+                <UserCog className={"size-4 mr-2"}/> Admin
               </DropdownMenuItem>
             </Link>
           </>}
           <DropdownMenuSeparator/>
-          <SignOutButton/>
+          <SignOutButton />
         </DropdownMenuContent>
       </DropdownMenu>
     </>
   );
+}
+
+export async function UserMenu() {
+  const session = await auth();
+  const user = session?.user;
+
+  return (
+      <>
+        <div className="flex items-center gap-2">
+          {user ? <UserDropdown/> : <SignInButton/> }
+        </div>
+      </>
+  )
 }

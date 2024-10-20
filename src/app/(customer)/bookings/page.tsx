@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {CalendarSearch, CalendarX2, ChevronLeft, ChevronRight, EyeOff} from "lucide-react";
+import {CalendarSearch, CalendarX2, ChevronRight, EyeOff} from "lucide-react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,6 +19,7 @@ import { CrossingDetails } from "@/app/(customer)/bookings/_components/crossing-
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { useRouter } from "next/navigation";
+import BroadcastBanner from "@/components/broadcast-banner";
 
 export default function BookingPage() {
   const [crossings, setCrossings] = useState<Crossing[] | null>(null);
@@ -40,6 +41,7 @@ export default function BookingPage() {
 
   return (
     <>
+      <BroadcastBanner message={"The booking system is currently using mock data from Oct. 18th to load information from the database. Make sure to select that date for testing"} />
       <section className="container max-w-7xl py-8">
         <SearchForm onSubmit={handleSearch} />
       </section>

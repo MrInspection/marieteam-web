@@ -1,6 +1,4 @@
-import {SeaCondition} from "@prisma/client";
-
-export const getSeaConditionInfo = (condition: SeaCondition) => {
+export const getSeaConditionInfo = (condition: string) => {
     switch (condition) {
         case "CALM":
             return {
@@ -34,3 +32,10 @@ export const getSeaConditionInfo = (condition: SeaCondition) => {
             };
     }
 };
+
+export const formatName = (name: string) => {
+    return name
+        .toLowerCase()
+        .replace(/_/g, ' ')
+        .replace(/\b\w/g, char => char.toUpperCase())
+}
