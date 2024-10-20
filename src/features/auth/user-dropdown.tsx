@@ -50,10 +50,12 @@ export default async function UserDropdown() {
               Orders
             </DropdownMenuItem>
           </Link>
-          <DropdownMenuItem>
-            <Bug className={"size-4 mr-2"}/>
-            Get Help
-          </DropdownMenuItem>
+          <Link href={"/contact"}>
+            <DropdownMenuItem>
+              <Bug className={"size-4 mr-2"}/>
+              Get Help
+            </DropdownMenuItem>
+          </Link>
           {isAdmin && <>
             <DropdownMenuSeparator/>
             <Link href={"/admin"}>

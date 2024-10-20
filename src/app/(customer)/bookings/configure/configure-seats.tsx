@@ -14,14 +14,13 @@ type SeatType = {
   price: number
   seatCategoryId: string
   availableSeats: number
-  maxCapacity: number // Ajout de maxCapacity pour chaque type de siège
 }
 
 type SeatCategory = {
   id: string
   name: string
   seatTypes: SeatType[]
-  availableSeats: number
+  maxCapacity: number // Capacité maximale ajustée restante pour la catégorie
 }
 
 type ConfigureSeatsProps = {
@@ -32,30 +31,37 @@ type ConfigureSeatsProps = {
 export function ConfigureSeats({ crossingId, seatCategories }: ConfigureSeatsProps) {
   const [selectedSeats, setSelectedSeats] = useState<Record<string, number>>({})
   const [totalAmount, setTotalAmount] = useState(0)
-  const [totalSeats, setTotalSeats] = useState(0)
+  const [totalSeatsByCategory, setTotalSeatsByCategory] = useState<Record<string, number>>({})
 
   useEffect(() => {
     let amount = 0
-    let seats = 0
+    const categoryTotals: Record<string, number> = {}
+
     Object.entries(selectedSeats).forEach(([seatTypeId, quantity]) => {
       const seatType = seatCategories.flatMap(cat => cat.seatTypes).find(st => st.id === seatTypeId)
       if (seatType) {
         amount += seatType.price * quantity
-        seats += quantity
+        categoryTotals[seatType.seatCategoryId] = (categoryTotals[seatType.seatCategoryId] || 0) + quantity
       }
     })
+
     setTotalAmount(amount)
-    setTotalSeats(seats)
+    setTotalSeatsByCategory(categoryTotals)
   }, [selectedSeats, seatCategories])
 
-  const handleQuantityChange = (seatTypeId: string, change: number) => {
+  const handleQuantityChange = (seatTypeId: string, seatCategoryId: string, change: number) => {
     setSelectedSeats(prev => {
       const currentQuantity = prev[seatTypeId] || 0
       const newQuantity = Math.max(0, currentQuantity + change)
-      const seatType = seatCategories.flatMap(cat => cat.seatTypes).find(st => st.id === seatTypeId)
 
-      // On vérifie que la nouvelle quantité ne dépasse pas la capacité disponible
-      if (seatType && newQuantity <= seatType.availableSeats) {
+      const seatType = seatCategories.flatMap(cat => cat.seatTypes).find(st => st.id === seatTypeId)
+      const totalSeatsForCategory = totalSeatsByCategory[seatCategoryId] || 0
+
+      if (
+          seatType &&
+          newQuantity <= seatType.availableSeats &&
+          totalSeatsForCategory + change <= seatCategories.find(cat => cat.id === seatCategoryId)?.maxCapacity!
+      ) {
         return { ...prev, [seatTypeId]: newQuantity }
       }
       return prev
@@ -74,18 +80,12 @@ export function ConfigureSeats({ crossingId, seatCategories }: ConfigureSeatsPro
   return (
       <div>
         <h1 className="font-bold text-2xl">Book your seats</h1>
-        <p className="text-muted-foreground text-sm">
-          Select the seats you want to book for your trip.
-        </p>
+        <p className="text-muted-foreground text-sm">Select the seats you want to book for your trip.</p>
         <ScrollArea className="h-[26rem] mt-8 pr-6">
           <section className="space-y-6">
             {seatCategories.map((category) => (
                 <div key={category.id} className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <h2 className="font-bold text-lg">{formatName(category.name)}</h2>
-                    <div className={"border-2 rounded-xl px-2 py-0.5 w-fit text-sm font-medium"}>0 seats</div>
-                  </div>
-
+                  <h2 className="font-bold text-lg">{formatName(category.name)}</h2>
                   <div className="grid gap-4">
                     {category.seatTypes.map((seatType) => (
                         <section
@@ -96,32 +96,28 @@ export function ConfigureSeats({ crossingId, seatCategories }: ConfigureSeatsPro
                             <h3 className="font-medium">
                               {formatName(seatType.name)}{" "}
                               <span className="text-sm bg-blue-700/10 text-blue-500 px-1.5 py-0.5 rounded-lg font-bold ml-1">
-                                {seatType.price.toFixed(2)}€
+                                {seatType.price.toFixed(2)} €
                               </span>
                             </h3>
-                            <p className="text-muted-foreground text-sm">
-                              {seatType.description}
-                            </p>
+                            <p className="text-sm text-muted-foreground">{seatType.description}</p>
                           </div>
-                          <div className="flex items-center">
+                          <div className="flex items-center space-x-2">
                             <Button
+                                onClick={() => handleQuantityChange(seatType.id, category.id, -1)}
+                                disabled={selectedSeats[seatType.id] === 0}
                                 size="icon"
                                 variant="outline"
-                                onClick={() => handleQuantityChange(seatType.id, -1)}
-                                disabled={selectedSeats[seatType.id] === undefined || selectedSeats[seatType.id] <= 0}
                             >
-                              <Minus className="size-4" />
+                              <Minus className="w-4 h-4" />
                             </Button>
-                            <span className="mx-2 w-6 text-center font-medium">
-                        {selectedSeats[seatType.id] || 0}
-                      </span>
+                            <span>{selectedSeats[seatType.id] || 0}</span>
                             <Button
+                                onClick={() => handleQuantityChange(seatType.id, category.id, 1)}
+                                disabled={selectedSeats[seatType.id] >= seatType.availableSeats}
                                 size="icon"
                                 variant="outline"
-                                onClick={() => handleQuantityChange(seatType.id, 1)}
-                                disabled={selectedSeats[seatType.id] >= seatType.availableSeats}
                             >
-                              <Plus className="size-4" />
+                              <Plus className="w-4 h-4" />
                             </Button>
                           </div>
                         </section>
@@ -131,25 +127,13 @@ export function ConfigureSeats({ crossingId, seatCategories }: ConfigureSeatsPro
             ))}
           </section>
         </ScrollArea>
-        <div className="mt-8 border-t-2 pt-6">
-          <div className="flex items-center justify-between mb-6">
-            <div className="space-y-1">
-              <p className="text-sm text-muted-foreground">Selected Amount</p>
-              <p className="font-medium text-xl">{totalSeats} Seats</p>
-            </div>
-            <div className="space-y-1">
-              <p className="text-sm text-muted-foreground text-right">Total Amount</p>
-              <p className="font-medium text-xl text-right">{totalAmount.toFixed(2)} €</p>
-            </div>
+        <div className="mt-8">
+          <div className="flex justify-between font-medium text-lg">
+            <span>Total</span>
+            <span>{totalAmount.toFixed(2)} €</span>
           </div>
-          <Button
-              className="w-full"
-              size="lg"
-              onClick={handleContinue}
-              disabled={totalSeats === 0}
-          >
-            Continue
-            <ChevronRight className="ml-2 size-4" />
+          <Button onClick={handleContinue} className="mt-4 w-full">
+            Continue <ChevronRight className="ml-2 w-4 h-4" />
           </Button>
         </div>
       </div>
