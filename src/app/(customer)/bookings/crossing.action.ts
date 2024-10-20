@@ -120,4 +120,3 @@ export async function searchCrossings(search: CrossingSearch) {
     throw new Error("Failed to search crossings");
   }
 }
-

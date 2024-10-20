@@ -6,6 +6,9 @@ import { ChevronRight, Minus, Plus } from "lucide-react"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { configureSeatAction } from './configure.action'
 import { formatName } from "@/app/(customer)/bookings/_components/utils"
+import {toast} from "sonner";
+import {useRouter} from "next/navigation";
+
 
 type SeatType = {
   id: string
@@ -20,7 +23,7 @@ type SeatCategory = {
   id: string
   name: string
   seatTypes: SeatType[]
-  maxCapacity: number // Capacité maximale ajustée restante pour la catégorie
+  maxCapacity: number
 }
 
 type ConfigureSeatsProps = {
@@ -51,31 +54,42 @@ export function ConfigureSeats({ crossingId, seatCategories }: ConfigureSeatsPro
 
   const handleQuantityChange = (seatTypeId: string, seatCategoryId: string, change: number) => {
     setSelectedSeats(prev => {
-      const currentQuantity = prev[seatTypeId] || 0
-      const newQuantity = Math.max(0, currentQuantity + change)
+      const currentQuantity = prev[seatTypeId] || 0;
+      const newQuantity = Math.max(0, currentQuantity + change);
 
-      const seatType = seatCategories.flatMap(cat => cat.seatTypes).find(st => st.id === seatTypeId)
-      const totalSeatsForCategory = totalSeatsByCategory[seatCategoryId] || 0
+      const seatType = seatCategories.flatMap(cat => cat.seatTypes).find(st => st.id === seatTypeId);
+      const totalSeatsForCategory = totalSeatsByCategory[seatCategoryId] || 0;
+
+      const category = seatCategories.find(cat => cat.id === seatCategoryId);
+      const maxCapacity = category ? category.maxCapacity : 0;
 
       if (
           seatType &&
           newQuantity <= seatType.availableSeats &&
-          totalSeatsForCategory + change <= seatCategories.find(cat => cat.id === seatCategoryId)?.maxCapacity!
+          totalSeatsForCategory + change <= maxCapacity
       ) {
-        return { ...prev, [seatTypeId]: newQuantity }
+        return { ...prev, [seatTypeId]: newQuantity };
       }
-      return prev
-    })
-  }
+      return prev;
+    });
+  };
 
   const handleContinue = async () => {
+    const seatsToReserve = Object.entries(selectedSeats).map(([seatTypeId, bookedSeats]) => ({
+      seatTypeId,
+      bookedSeats,
+    }));
+
+    const userId = 'cm2f20c4k0000fcghnmf5sbok';
+
     try {
-      await configureSeatAction(crossingId, selectedSeats)
-      console.log("Reservation successful")
+      await configureSeatAction(crossingId, seatsToReserve, totalAmount, userId);
+      toast.success("Reservation successful");
     } catch (error) {
-      console.error('Failed to create reservation:', error)
+      toast(`${error}`);
+      console.error('Failed to create reservation:', error);
     }
-  }
+  };
 
   return (
       <div>
@@ -132,7 +146,7 @@ export function ConfigureSeats({ crossingId, seatCategories }: ConfigureSeatsPro
             <span>Total</span>
             <span>{totalAmount.toFixed(2)} €</span>
           </div>
-          <Button onClick={handleContinue} className="mt-4 w-full">
+          <Button onClick={handleContinue} className="mt-4 w-full" disabled={totalAmount === 0}>
             Continue <ChevronRight className="ml-2 w-4 h-4" />
           </Button>
         </div>

@@ -1,73 +1,72 @@
 "use server"
 
 import { prisma } from "@/lib/db";
-import { reservationSchema, userIdSchema } from "./configure.schema";
-import { getSession } from "next-auth/react"; // Pour gérer l'authentification
+import { configureSeatSchema } from "@/app/(customer)/bookings/configure/configure.schema";
 
-export async function configureSeatAction(crossingId: string, selectedSeats: Record<string, number>, totalAmount: number) {
-    // Valider les données avec Zod
-    const validation = reservationSchema.safeParse({ crossingId, seats: Object.entries(selectedSeats).map(([seatTypeId, quantity]) => ({ seatTypeId, quantity })), totalAmount });
+export async function configureSeatAction(
+    crossingId: string,
+    selectedSeats: Array<{ seatTypeId: string; bookedSeats: number }>,
+    totalAmount: number,
+    userId: string
+) {
 
-    if (!validation.success) {
-        throw new Error("Invalid reservation data");
-    }
+  // Validation des données
+  const validData = configureSeatSchema.safeParse({
+    crossingId,
+    selectedSeats,
+  });
 
-    const session = await getSession();
+  if (!validData.success) {
+    throw new Error("Les données de sélection des sièges sont invalides");
+  }
 
-    if (!session?.user) {
-        throw new Error("User is not authenticated. Please log in.");
-    }
+  // Traiter les réservations
+  await prisma.$transaction(async (tx) => {
+    // Créez la réservation d'abord
+    const reservation = await tx.reservation.create({
+      data: {
+        userId,
+        totalAmount,
+        status: "PENDING",
+      },
+    });
 
-    // Valider l'ID utilisateur
-    const userIdValidation = userIdSchema.safeParse(session.user.id);
-    if (!userIdValidation.success) {
-        throw new Error("Invalid user ID");
-    }
+    // Insérez ou mettez à jour les sièges réservés
+    for (const seat of selectedSeats) {
+      const { seatTypeId, bookedSeats } = seat;
 
-    const userId = session.user.id;
+      // Vérifiez si le siège est déjà réservé pour ce crossingId
+      const existingSeat = await tx.seat.findUnique({
+        where: {
+          crossingId_seatTypeId: {
+            crossingId,
+            seatTypeId,
+          },
+        },
+      });
 
-    // Vérifier la disponibilité des sièges et sauvegarder la réservation
-    try {
-        await prisma.$transaction(async (tx) => {
-            // Créer la réservation
-            const reservation = await tx.reservation.create({
-                data: {
-                    userId,
-                    totalAmount,
-                    status: "PENDING",
-                },
-            });
-
-            // Créer chaque siège réservé
-            for (const [seatTypeId, quantity] of Object.entries(selectedSeats)) {
-                const seatType = await tx.seatType.findUnique({
-                    where: { id: seatTypeId },
-                    include: { seats: true },
-                });
-
-                if (!seatType) {
-                    throw new Error("Seat type not found");
-                }
-
-                // Vérifier la disponibilité des sièges
-                const availableSeats = seatType.seats.reduce((acc, seat) => acc + seat.bookedSeats, 0);
-                if (availableSeats < quantity) {
-                    throw new Error(`Not enough seats available for ${seatType.name}`);
-                }
-
-                // Créer les entrées de sièges réservés
-                await tx.seat.create({
-                    data: {
-                        crossingId,
-                        seatTypeId,
-                        bookedSeats: quantity,
-                        reservationId: reservation.id,
-                    },
-                });
-            }
+      if (existingSeat) {
+        // Si le siège existe déjà, mettez à jour le bookedSeats
+        await tx.seat.update({
+          where: {
+            id: existingSeat.id,
+          },
+          data: {
+            bookedSeats: existingSeat.bookedSeats + bookedSeats,
+            reservationId: reservation.id, // Assurez-vous que cela est mis à jour
+          },
         });
-    } catch (error) {
-        console.error("Reservation failed:", error);
-        throw new Error("Reservation failed");
+      } else {
+        // Sinon, créez une nouvelle réservation de siège
+        await tx.seat.create({
+          data: {
+            seatTypeId,
+            crossingId,
+            bookedSeats,
+            reservationId: reservation.id,
+          },
+        });
+      }
     }
+  });
 }

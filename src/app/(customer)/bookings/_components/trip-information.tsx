@@ -59,6 +59,7 @@ export default function TripInformation({
                             alt="boat"
                             className="max-lg:h-auto h-72 w-full rounded-xl"
                             draggable={false}
+                            priority={true}
                         />
                     </div>
                     <div className="grid gap-3 max-lg:grid-cols-2 w-full max-md:col-span-2">

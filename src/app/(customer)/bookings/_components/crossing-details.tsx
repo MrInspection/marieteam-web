@@ -77,7 +77,7 @@ export function CrossingDetails({ crossing }: TripDetailsProps) {
                         (total, capacity) => total + capacity.maxCapacity,
                         0
                     )} passengers
-                   </p>
+                  </p>
                 </section>
               </div>
               <div className="border-2 rounded-lg p-3 mt-3">

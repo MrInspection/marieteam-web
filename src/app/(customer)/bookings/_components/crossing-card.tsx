@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { ArrowRight, Anchor, Clock, Waves } from "lucide-react";
+import { Anchor, Clock, Waves } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 import {
@@ -9,7 +9,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Crossing } from "@/app/(customer)/bookings/crossing.schema";
-import { SeaCondition } from "@prisma/client";
+import {getSeaConditionInfo} from "@/app/(customer)/bookings/_components/utils";
 
 interface TripCardProps {
   crossing: Crossing;
@@ -17,51 +17,12 @@ interface TripCardProps {
   onSelect: (id: string) => void;
 }
 
-export function CrossingCard({
-                               crossing,
-                               isSelected,
-                               onSelect,
-                             }: TripCardProps) {
-  const getSeaConditionInfo = (condition: SeaCondition) => {
-    switch (condition) {
-      case "CALM":
-        return {
-          color: "text-green-500",
-          bgColor: "bg-green-100",
-          label: "Calm",
-        };
-      case "SLIGHTLY_ROUGH":
-        return {
-          color: "text-yellow-500",
-          bgColor: "bg-yellow-100",
-          label: "Slightly Rough",
-        };
-      case "ROUGH":
-        return {
-          color: "text-orange-500",
-          bgColor: "bg-orange-100",
-          label: "Rough",
-        };
-      case "VERY_ROUGH":
-        return {
-          color: "text-purple-700",
-          bgColor: "bg-purple-100",
-          label: "Very Rough",
-        };
-      default:
-        return {
-          color: "text-gray-500",
-          bgColor: "bg-gray-100",
-          label: "Unknown",
-        };
-    }
-  };
+export function CrossingCard({crossing, isSelected, onSelect,}: TripCardProps) {
 
   const captainLog = crossing.captainLogs?.[0];
   const delayMinutes = captainLog?.delayMinutes;
   const seaCondition = captainLog?.seaCondition || "CALM";
 
-  // Récupérer les capacités maximales pour les différentes catégories de sièges
   const getCapacityForCategory = (categoryName: string) => {
     const capacity = crossing.boat.categoryCapacities.find(
         (capacity) => capacity.seatCategory === categoryName
@@ -172,11 +133,7 @@ export function CrossingCard({
                   </div>
                   {delayMinutes && delayMinutes > 0 && (
                       <p className="text-sm font-bold text-orange-500">
-                        {format(
-                            new Date(
-                                crossing.departureTime.getTime() + delayMinutes * 60000
-                            ),
-                            "HH:mm"
+                        {format(new Date(crossing.departureTime.getTime() + delayMinutes * 60000), "HH:mm"
                         )}
                       </p>
                   )}

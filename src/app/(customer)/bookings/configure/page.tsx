@@ -6,7 +6,8 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { ShareTripButton } from "@/app/(customer)/bookings/_components/share-crossing";
-import TripInformation from "@/app/(customer)/bookings/configure/trip-information";
+import TripInformation from "@/app/(customer)/bookings/_components/trip-information";
+import {auth} from "@/auth/auth";
 
 type ConfigurePageProps = {
     searchParams: {
