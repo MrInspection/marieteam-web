@@ -1,12 +1,12 @@
 import BroadcastBanner from "@/components/broadcast-banner";
 
-export default function TransportationPolicyPage() {
+export default function TransportPolicyPage() {
     return (
         <>
             <BroadcastBanner
                 message={"The content on this page is for demonstration purposes only and should not be considered an official document from MarieTeam."} variant={"error"} />
             <article className="container max-w-3xl py-14">
-                <h1 className="text-4xl lg:text-5xl font-bold text-center mt-6">Transportation Policy</h1>
+                <h1 className="text-4xl lg:text-5xl font-bold text-center mt-6">Transport Policy</h1>
                 <section className="mt-10 mb-20">
                     <p>The following General Terms and Conditions of Transport govern the rights and obligations of
                         Passengers and the company MarieTeam for journeys made on board our ships. In accordance with

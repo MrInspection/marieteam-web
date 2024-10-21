@@ -26,7 +26,7 @@ export default function SiteFooter() {
           </div>
           <div className={"flex flex-wrap justify-center items-center gap-6"}>
             <Link
-              href={"/privacy"}
+              href={"/privacy-policy"}
               className={
                 "text-muted-foreground hover:underline hover:underline-offset-4"
               }
@@ -42,12 +42,12 @@ export default function SiteFooter() {
               Sales Policy
             </Link>
             <Link
-              href={"/transportation-policy"}
+              href={"/transport-policy"}
               className={
                 "text-muted-foreground hover:underline hover:underline-offset-4"
               }
             >
-              Transportation Policy
+              Transport Policy
             </Link>
           </div>
           <div className={"flex gap-5 items-center"}>
