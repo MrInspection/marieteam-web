@@ -9,7 +9,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Crossing } from "@/app/(customer)/bookings/crossing.schema";
-import {getSeaConditionInfo} from "@/app/(customer)/bookings/_components/utils";
+import { getSeaConditionInfo } from "@/app/(customer)/bookings/_components/utils";
 
 interface TripCardProps {
   crossing: Crossing;
@@ -17,61 +17,21 @@ interface TripCardProps {
   onSelect: (id: string) => void;
 }
 
-export function CrossingCard({crossing, isSelected, onSelect,}: TripCardProps) {
-
+export function CrossingCard({ crossing, isSelected, onSelect }: TripCardProps) {
   const captainLog = crossing.captainLogs?.[0];
   const delayMinutes = captainLog?.delayMinutes;
   const seaCondition = captainLog?.seaCondition || "CALM";
 
-  const getCapacityForCategory = (categoryName: string) => {
-    const capacity = crossing.boat.categoryCapacities.find(
-        (capacity) => capacity.seatCategory === categoryName
-    );
-    return capacity ? capacity.maxCapacity : 0;
-  };
-
-  // Check available seats
-  const passengerSeat = crossing.seatAvailability.find(
-      (seat) => seat.seatCategory === "PASSENGER"
-  );
-  const vehicleUnder2mSeat = crossing.seatAvailability.find(
-      (seat) => seat.seatCategory === "VEHICLE_UNDER_2M"
-  );
-  const vehicleOver2mSeat = crossing.seatAvailability.find(
-      (seat) => seat.seatCategory === "VEHICLE_OVER_2M"
+  // Check if all seat categories are fully booked
+  const isFullyBooked = crossing.boat.categoryCapacities.every(
+      (category) => category.availableSeats <= 0
   );
 
-  const isPassengerFull = passengerSeat
-      ? passengerSeat.bookedSeats >= getCapacityForCategory("PASSENGER")
-      : getCapacityForCategory("PASSENGER") <= 0;
-
-  const isVehicleUnder2mFull = vehicleUnder2mSeat
-      ? vehicleUnder2mSeat.bookedSeats >= getCapacityForCategory("VEHICLE_UNDER_2M")
-      : getCapacityForCategory("VEHICLE_UNDER_2M") <= 0;
-
-  const isVehicleOver2mFull = vehicleOver2mSeat
-      ? vehicleOver2mSeat.bookedSeats >= getCapacityForCategory("VEHICLE_OVER_2M")
-      : getCapacityForCategory("VEHICLE_OVER_2M") <= 0;
-
-  const isFullyBooked =
-      isPassengerFull && isVehicleUnder2mFull && isVehicleOver2mFull;
-
-  // Calculate available seats
-  const totalAvailableSeats = (() => {
-    const availablePassengers = passengerSeat
-        ? getCapacityForCategory("PASSENGER") - passengerSeat.bookedSeats
-        : getCapacityForCategory("PASSENGER");
-
-    const availableUnder2m = vehicleUnder2mSeat
-        ? getCapacityForCategory("VEHICLE_UNDER_2M") - vehicleUnder2mSeat.bookedSeats
-        : getCapacityForCategory("VEHICLE_UNDER_2M");
-
-    const availableOver2m = vehicleOver2mSeat
-        ? getCapacityForCategory("VEHICLE_OVER_2M") - vehicleOver2mSeat.bookedSeats
-        : getCapacityForCategory("VEHICLE_OVER_2M");
-
-    return availablePassengers + availableUnder2m + availableOver2m;
-  })();
+  // Calculate total available seats
+  const totalAvailableSeats = crossing.boat.categoryCapacities.reduce(
+      (total, category) => total + category.availableSeats,
+      0
+  );
 
   return (
       <div>
@@ -104,9 +64,9 @@ export function CrossingCard({crossing, isSelected, onSelect,}: TripCardProps) {
                 </div>
               </div>
               <div className="flex-grow mx-4 flex items-center">
-                <div className="h-px bg-foreground flex-grow"/>
-                <Anchor className="size-8 mx-2"/>
-                <div className="h-px bg-foreground flex-grow"/>
+                <div className="h-px bg-foreground flex-grow" />
+                <Anchor className="size-8 mx-2" />
+                <div className="h-px bg-foreground flex-grow" />
               </div>
               <div className="text-center">
                 <div className="text-xs text-muted-foreground">Arrival</div>
@@ -133,7 +93,11 @@ export function CrossingCard({crossing, isSelected, onSelect,}: TripCardProps) {
                   </div>
                   {delayMinutes && delayMinutes > 0 && (
                       <p className="text-sm font-bold text-orange-500">
-                        {format(new Date(crossing.departureTime.getTime() + delayMinutes * 60000), "HH:mm"
+                        {format(
+                            new Date(
+                                crossing.departureTime.getTime() + delayMinutes * 60000
+                            ),
+                            "HH:mm"
                         )}
                       </p>
                   )}

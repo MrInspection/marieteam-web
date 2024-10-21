@@ -9,7 +9,7 @@ import {Anchor} from "lucide-react";
 export default function InvalidConfiguration() {
     return (
         <>
-            <main className="flex-grow flex items-center justify-center mx-auto my-60">
+            <main className="flex-grow flex items-center justify-center mx-auto my-72">
                 <div className="container mx-auto px-4">
                     <div className="max-w-md mx-auto text-center">
                         <Badge variant="outline" className="text-sm mb-4">400</Badge>
@@ -28,7 +28,6 @@ export default function InvalidConfiguration() {
                                 Book a trip
                             </Link>
                         </div>
-
                     </div>
                 </div>
             </main>

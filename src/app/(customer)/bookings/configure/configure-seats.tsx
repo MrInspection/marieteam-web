@@ -2,13 +2,11 @@
 
 import React, { useState, useEffect } from 'react'
 import { Button } from "@/components/ui/button"
-import { ChevronRight, Minus, Plus } from "lucide-react"
+import {ChevronRight, Loader2, Minus, Plus} from "lucide-react"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { configureSeatAction } from './configure.action'
 import { formatName } from "@/app/(customer)/bookings/_components/utils"
 import {toast} from "sonner";
-import {useRouter} from "next/navigation";
-
 
 type SeatType = {
   id: string
@@ -29,12 +27,15 @@ type SeatCategory = {
 type ConfigureSeatsProps = {
   crossingId: string
   seatCategories: SeatCategory[]
+  userId: string | undefined
 }
 
-export function ConfigureSeats({ crossingId, seatCategories }: ConfigureSeatsProps) {
+export function ConfigureSeats({ crossingId, seatCategories, userId }: ConfigureSeatsProps) {
+
   const [selectedSeats, setSelectedSeats] = useState<Record<string, number>>({})
   const [totalAmount, setTotalAmount] = useState(0)
   const [totalSeatsByCategory, setTotalSeatsByCategory] = useState<Record<string, number>>({})
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     let amount = 0
@@ -75,19 +76,23 @@ export function ConfigureSeats({ crossingId, seatCategories }: ConfigureSeatsPro
   };
 
   const handleContinue = async () => {
+    if(!userId) {
+      toast.error("You must be connected in order to create a reservation");
+      return;
+    }
+
+    setIsLoading(true);
     const seatsToReserve = Object.entries(selectedSeats).map(([seatTypeId, bookedSeats]) => ({
       seatTypeId,
       bookedSeats,
     }));
 
-    const userId = 'cm2f20c4k0000fcghnmf5sbok';
-
     try {
       await configureSeatAction(crossingId, seatsToReserve, totalAmount, userId);
-      toast.success("Reservation successful");
+      toast.success("Your reservation has been registered.");
     } catch (error) {
-      toast(`${error}`);
-      console.error('Failed to create reservation:', error);
+      setIsLoading(false)
+      toast.error(`${error}`);
     }
   };
 
@@ -109,7 +114,7 @@ export function ConfigureSeats({ crossingId, seatCategories }: ConfigureSeatsPro
                           <div>
                             <h3 className="font-medium">
                               {formatName(seatType.name)}{" "}
-                              <span className="text-sm bg-blue-700/10 text-blue-500 px-1.5 py-0.5 rounded-lg font-bold ml-1">
+                              <span className="text-sm bg-pink-700/10 dark:bg-pink-700/15 text-pink-500 px-1.5 py-0.5 rounded-lg font-bold ml-1">
                                 {seatType.price.toFixed(2)} €
                               </span>
                             </h3>
@@ -146,7 +151,10 @@ export function ConfigureSeats({ crossingId, seatCategories }: ConfigureSeatsPro
             <span>Total</span>
             <span>{totalAmount.toFixed(2)} €</span>
           </div>
-          <Button onClick={handleContinue} className="mt-4 w-full" disabled={totalAmount === 0}>
+          <Button onClick={handleContinue} className="mt-4 w-full" disabled={totalAmount === 0 || isLoading}>
+            {isLoading && (
+                <Loader2 className={"mr-2 size-4 animate-spin"} />
+            )}
             Continue <ChevronRight className="ml-2 w-4 h-4" />
           </Button>
         </div>

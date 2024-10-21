@@ -1,10 +1,7 @@
-import {addMinutes, format} from "date-fns";
+import { addMinutes, format } from "date-fns";
 import {
   Anchor,
-  Car,
-  Clock,
-  Truck,
-  Users,
+  Clock, Tag,
   Waves,
 } from "lucide-react";
 import { Crossing } from "@/app/(customer)/bookings/crossing.schema";
@@ -15,7 +12,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
-import {getSeaConditionInfo} from "@/app/(customer)/bookings/_components/utils";
+import {formatName, getSeaConditionInfo} from "@/app/(customer)/bookings/_components/utils";
 import Image from "next/image";
 
 interface TripDetailsProps {
@@ -23,19 +20,10 @@ interface TripDetailsProps {
 }
 
 export function CrossingDetails({ crossing }: TripDetailsProps) {
-
   const captainLog = crossing.captainLogs?.[0];
   const delayMinutes = captainLog?.delayMinutes || 0;
   const seaCondition = captainLog?.seaCondition || "CALM";
   const adjustedDepartureTime = addMinutes(crossing.departureTime, delayMinutes);
-
-  // Récupérer les capacités maximales pour les différentes catégories de sièges
-  const getCapacityForCategory = (categoryName: string) => {
-    const capacity = crossing.boat.categoryCapacities.find(
-        (capacity) => capacity.seatCategory === categoryName
-    );
-    return capacity ? capacity.maxCapacity : 0;
-  };
 
   return (
       <div className="space-y-4">
@@ -57,18 +45,23 @@ export function CrossingDetails({ crossing }: TripDetailsProps) {
             </AccordionTrigger>
             <AccordionContent className="text-sm pb-2 text-muted-foreground">
               <div className={"grid grid-cols-2 gap-2 mt-2"}>
-
                 <section className={"border-2 rounded-lg p-3"}>
                   <h4 className={"text-xs text-muted-foreground"}>Length</h4>
-                  <p className={"text-sm font-medium text-foreground"}>{crossing.boat.length} meters</p>
+                  <p className={"text-sm font-medium text-foreground"}>
+                    {crossing.boat.length} meters
+                  </p>
                 </section>
                 <section className={"border-2 rounded-lg p-3"}>
                   <h4 className={"text-xs text-muted-foreground"}>Width</h4>
-                  <p className={"text-sm font-medium text-foreground"}>{crossing.boat.width} meters</p>
+                  <p className={"text-sm font-medium text-foreground"}>
+                    {crossing.boat.width} meters
+                  </p>
                 </section>
                 <section className={"border-2 rounded-lg p-3"}>
                   <h4 className={"text-xs text-muted-foreground"}>Speed</h4>
-                  <p className={"text-sm font-medium text-foreground"}>{crossing.boat.speed} knots</p>
+                  <p className={"text-sm font-medium text-foreground"}>
+                    {crossing.boat.speed} knots
+                  </p>
                 </section>
                 <section className={"border-2 rounded-lg p-3"}>
                   <h4 className={"text-xs text-muted-foreground"}>Capacity</h4>
@@ -76,7 +69,8 @@ export function CrossingDetails({ crossing }: TripDetailsProps) {
                     {crossing.boat.categoryCapacities.reduce(
                         (total, capacity) => total + capacity.maxCapacity,
                         0
-                    )} passengers
+                    )}{" "}
+                    passengers
                   </p>
                 </section>
               </div>
@@ -96,9 +90,7 @@ export function CrossingDetails({ crossing }: TripDetailsProps) {
             <div className="flex items-center justify-between mt-1">
               <section>
                 <h4 className={"text-xs text-muted-foreground"}>Departure</h4>
-                <p className={"text-sm font-medium"}>
-                  {crossing.route.departurePort}
-                </p>
+                <p className={"text-sm font-medium"}>{crossing.route.departurePort}</p>
               </section>
               <div className="flex-grow mx-4 flex items-center">
                 <div className="h-px bg-foreground flex-grow" />
@@ -107,9 +99,7 @@ export function CrossingDetails({ crossing }: TripDetailsProps) {
               </div>
               <section>
                 <h4 className={"text-xs text-muted-foreground"}>Arrival</h4>
-                <p className={"text-sm font-medium"}>
-                  {crossing.route.arrivalPort}
-                </p>
+                <p className={"text-sm font-medium"}>{crossing.route.arrivalPort}</p>
               </section>
             </div>
           </div>
@@ -166,88 +156,30 @@ export function CrossingDetails({ crossing }: TripDetailsProps) {
           )}
         </section>
         <div className="bg-muted/80 dark:bg-muted/50 p-3 rounded-lg">
-          <p className="font-semibold text-sm text-muted-foreground">
-            Available Seats
-          </p>
+          <p className="font-semibold text-sm text-muted-foreground">Available Seats</p>
           <p className={"text-xs text-muted-foreground"}>
             The amount of seats available for booking
           </p>
           <div className={"grid space-y-0.5 mt-3"}>
-            <div className={"flex items-center"}>
-              <Users className={"size-4 mr-2"} />
-              <p className="text-sm">
-                Passenger:{" "}
-                <span className="font-bold">
-                {(() => {
-                  const passengerSeat = crossing.seatAvailability.find(
-                      (seat) => seat.seatCategory === "PASSENGER"
-                  );
-                  const availableSeats = passengerSeat
-                      ? getCapacityForCategory("PASSENGER") -
-                      (passengerSeat.bookedSeats || 0)
-                      : getCapacityForCategory("PASSENGER");
+            {crossing.boat.categoryCapacities.map((category) => {
+              const availableSeats = category.maxCapacity - category.bookedSeats;
 
-                  return availableSeats > 0 ? (
-                      availableSeats + " available"
-                  ) : (
-                      <span className={"text-red-500 font-bold"}>
-                      FULL CAPACITY
-                    </span>
-                  );
-                })()}
-              </span>
-              </p>
-            </div>
-            <div className={"flex items-center"}>
-              <Car className={"size-4 mr-2"} />
-              <p className="text-sm">
-                Vehicle Under 2m:{" "}
-                <span className={"font-bold"}>
-                {(() => {
-                  const vehicleUnder2mSeat = crossing.seatAvailability.find(
-                      (seat) => seat.seatCategory === "VEHICLE_UNDER_2M"
-                  );
-                  const availableSeats = vehicleUnder2mSeat
-                      ? getCapacityForCategory("VEHICLE_UNDER_2M") -
-                      (vehicleUnder2mSeat.bookedSeats || 0)
-                      : getCapacityForCategory("VEHICLE_UNDER_2M");
-
-                  return availableSeats > 0 ? (
-                      availableSeats + " available"
-                  ) : (
-                      <span className={"text-red-500 font-bold"}>
-                      FULL CAPACITY
-                    </span>
-                  );
-                })()}
-              </span>
-              </p>
-            </div>
-            <div className={"flex items-center"}>
-              <Truck className={"size-4 mr-2"} />
-              <p className="text-sm">
-                Vehicle Over 2m:{" "}
-                <span className={"font-bold"}>
-                {(() => {
-                  const vehicleOver2mSeat = crossing.seatAvailability.find(
-                      (seat) => seat.seatCategory === "VEHICLE_OVER_2M"
-                  );
-                  const availableSeats = vehicleOver2mSeat
-                      ? getCapacityForCategory("VEHICLE_OVER_2M") -
-                      (vehicleOver2mSeat.bookedSeats || 0)
-                      : getCapacityForCategory("VEHICLE_OVER_2M");
-
-                  return availableSeats > 0 ? (
-                      availableSeats + " available"
-                  ) : (
-                      <span className={"text-red-500 font-bold"}>
-                      FULL CAPACITY
-                    </span>
-                  );
-                })()}
-              </span>
-              </p>
-            </div>
+              return (
+                  <div className={"flex items-center"} key={category.seatCategory}>
+                    <Tag className={"size-4 mr-2"} />
+                    <p className="text-sm">
+                      {formatName(category.seatCategory)}:{" "}
+                      <span className="font-bold">
+                    {availableSeats > 0 ? (
+                        `${availableSeats} available`
+                    ) : (
+                        <span className="text-red-500 font-bold">FULL CAPACITY</span>
+                    )}
+                  </span>
+                    </p>
+                  </div>
+              );
+            })}
           </div>
         </div>
       </div>

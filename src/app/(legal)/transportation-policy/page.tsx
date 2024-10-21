@@ -4,7 +4,7 @@ export default function TransportationPolicyPage() {
     return (
         <>
             <BroadcastBanner
-                message={"The content of this page is only for demonstration purposes and shall not be granted as a legal document from MarieTeam."} />
+                message={"The content on this page is for demonstration purposes only and should not be considered an official document from MarieTeam."} variant={"error"} />
             <article className="container max-w-3xl py-14">
                 <h1 className="text-4xl lg:text-5xl font-bold text-center mt-6">Transportation Policy</h1>
                 <section className="mt-10 mb-20">

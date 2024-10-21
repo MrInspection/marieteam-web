@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/db";
 import { configureSeatSchema } from "@/app/(customer)/bookings/configure/configure.schema";
+import { redirect } from "next/navigation";
 
 export async function configureSeatAction(
     crossingId: string,
@@ -21,9 +22,9 @@ export async function configureSeatAction(
   }
 
   // Traiter les réservations
-  await prisma.$transaction(async (tx) => {
+  const reservation = await prisma.$transaction(async (tx) => {
     // Créez la réservation d'abord
-    const reservation = await tx.reservation.create({
+    const newReservation = await tx.reservation.create({
       data: {
         userId,
         totalAmount,
@@ -35,25 +36,24 @@ export async function configureSeatAction(
     for (const seat of selectedSeats) {
       const { seatTypeId, bookedSeats } = seat;
 
-      // Vérifiez si le siège est déjà réservé pour ce crossingId
-      const existingSeat = await tx.seat.findUnique({
+      // Vérifiez si le siège est déjà réservé pour ce crossingId et si la réservation est active
+      const existingSeat = await tx.seat.findFirst({
         where: {
-          crossingId_seatTypeId: {
-            crossingId,
-            seatTypeId,
-          },
+          crossingId,
+          seatTypeId,
+          reservationId: null, // Vérifie si le siège n'est pas encore réservé
         },
       });
 
       if (existingSeat) {
-        // Si le siège existe déjà, mettez à jour le bookedSeats
+        // Si le siège existe déjà et n'est pas réservé, mettez à jour le bookedSeats
         await tx.seat.update({
           where: {
             id: existingSeat.id,
           },
           data: {
             bookedSeats: existingSeat.bookedSeats + bookedSeats,
-            reservationId: reservation.id, // Assurez-vous que cela est mis à jour
+            reservationId: newReservation.id, // Assurez-vous que cela est mis à jour
           },
         });
       } else {
@@ -63,10 +63,15 @@ export async function configureSeatAction(
             seatTypeId,
             crossingId,
             bookedSeats,
-            reservationId: reservation.id,
+            reservationId: newReservation.id,
           },
         });
       }
     }
+
+    return newReservation; // Retourner la nouvelle réservation
   });
+
+  // Rediriger vers la page de confirmation avec l'ID de la réservation
+  redirect(`/bookings/summary?id=${reservation.id}`);
 }

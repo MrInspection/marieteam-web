@@ -22,6 +22,8 @@ export const CrossingSchema = z.object({
             z.object({
                 seatCategory: z.string(),
                 maxCapacity: z.number(),
+                bookedSeats: z.number(),
+                availableSeats: z.number(), // Adding available seats
             })
         ),
     }),

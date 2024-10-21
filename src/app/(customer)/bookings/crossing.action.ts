@@ -3,7 +3,7 @@
 import { prisma } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { CrossingSchema, CrossingSearch } from "./crossing.schema";
-import {GeographicalZone} from "@prisma/client";
+import { GeographicalZone } from "@prisma/client";
 
 export async function getRoutes(zone: GeographicalZone) {
   try {
@@ -66,48 +66,65 @@ export async function searchCrossings(search: CrossingSearch) {
       },
     });
 
-    const formattedCrossings = crossings.map((crossing) => ({
-      id: crossing.id,
-      departureTime: crossing.departureTime,
-      boat: {
-        id: crossing.boat.id,
-        name: crossing.boat.name,
-        length: crossing.boat.length,
-        width: crossing.boat.width,
-        speed: crossing.boat.speed,
-        imageUrl: crossing.boat.imageUrl,
-        equipment: crossing.boat.equipment,
-        categoryCapacities: crossing.boat.categoryCapacities.map((capacity) => ({
-          seatCategory: capacity.seatCategory.name,
-          maxCapacity: capacity.maxCapacity,
-        })),
-      },
-      route: {
-        id: crossing.route.id,
-        distance: crossing.route.distance,
-        departurePort: crossing.route.departurePort,
-        arrivalPort: crossing.route.arrivalPort,
-        geographicalZone: crossing.route.geographicalZone,
-      },
-      seatAvailability: crossing.seatAvailability.map((seat) => {
-        const capacity = crossing.boat.categoryCapacities.find(
-            (capacity) => capacity.seatCategory.name === seat.seatType.seatCategory.name
-        )?.maxCapacity;
+    const formattedCrossings = crossings.map((crossing) => {
+      const seatCategories = crossing.boat.categoryCapacities.map((capacity) => {
+        const category = capacity.seatCategory.name;
+        const maxCapacity = capacity.maxCapacity;
+
+        const bookedSeatsForCategory = crossing.seatAvailability
+            .filter((seat) => seat.seatType.seatCategory.name === category)
+            .reduce((total, seat) => total + seat.bookedSeats, 0);
+
+        const availableSeats = maxCapacity - bookedSeatsForCategory;
 
         return {
-          seatType: seat.seatType.name,
-          seatCategory: seat.seatType.seatCategory.name,
-          bookedSeats: seat.bookedSeats,
-          quantity: seat.bookedSeats,
-          capacityMax: capacity ?? 0,
+          seatCategory: category,
+          maxCapacity,
+          bookedSeats: bookedSeatsForCategory,
+          availableSeats: Math.max(availableSeats, 0), // Ensure no negative values
         };
-      }),
-      captainLogs: crossing.captainLogs.map((log) => ({
-        seaCondition: log.seaCondition,
-        delayMinutes: log.delayMinutes,
-        delayReason: log.delayReason,
-      })),
-    }));
+      });
+
+      return {
+        id: crossing.id,
+        departureTime: crossing.departureTime,
+        boat: {
+          id: crossing.boat.id,
+          name: crossing.boat.name,
+          length: crossing.boat.length,
+          width: crossing.boat.width,
+          speed: crossing.boat.speed,
+          imageUrl: crossing.boat.imageUrl,
+          equipment: crossing.boat.equipment,
+          categoryCapacities: seatCategories,
+        },
+        route: {
+          id: crossing.route.id,
+          distance: crossing.route.distance,
+          departurePort: crossing.route.departurePort,
+          arrivalPort: crossing.route.arrivalPort,
+          geographicalZone: crossing.route.geographicalZone,
+        },
+        seatAvailability: crossing.seatAvailability.map((seat) => {
+          const capacity = seatCategories.find(
+              (category) => category.seatCategory === seat.seatType.seatCategory.name
+          )?.maxCapacity;
+
+          return {
+            seatType: seat.seatType.name,
+            seatCategory: seat.seatType.seatCategory.name,
+            bookedSeats: seat.bookedSeats,
+            quantity: seat.bookedSeats,
+            capacityMax: capacity ?? 0,
+          };
+        }),
+        captainLogs: crossing.captainLogs.map((log) => ({
+          seaCondition: log.seaCondition,
+          delayMinutes: log.delayMinutes,
+          delayReason: log.delayReason,
+        })),
+      };
+    });
 
     const validatedCrossings = formattedCrossings.map((crossing) =>
         CrossingSchema.parse(crossing)

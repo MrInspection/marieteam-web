@@ -41,7 +41,7 @@ export default function BookingPage() {
 
   return (
     <>
-      <BroadcastBanner message={"The booking system is currently using mock data from Oct. 18th to load information from the database. Make sure to select that date for testing"} />
+      <BroadcastBanner variant={"info"} message={"The booking system is currently using mock data. Please select October 18th for the date to view the bookings."} />
       <section className="container max-w-7xl py-8">
         <SearchForm onSubmit={handleSearch} />
       </section>

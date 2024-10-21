@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   description: "Spectron Labs",
 };
 
-export default function RootLayout({children}: Readonly<{ children: React.ReactNode; }>) {
+export default  function RootLayout({children}: Readonly<{ children: React.ReactNode; }>) {
     return (
         <html lang="en">
         <body className={inter.className} suppressHydrationWarning={true}>
@@ -26,7 +26,7 @@ export default function RootLayout({children}: Readonly<{ children: React.ReactN
         >
             <SiteHeader/>
             {children}
-            <Toaster richColors={true}/>
+            <Toaster />
             <SiteFooter/>
         </ThemeProvider>
         </body>

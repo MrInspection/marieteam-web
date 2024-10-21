@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/db";
-import InvalidConfiguration from "@/app/(customer)/bookings/configure/not-found";
+import InvalidConfiguration from "@/app/(customer)/bookings/configure/error";
 import { ConfigureSeats } from "@/app/(customer)/bookings/configure/configure-seats";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
@@ -7,7 +7,10 @@ import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { ShareTripButton } from "@/app/(customer)/bookings/_components/share-crossing";
 import TripInformation from "@/app/(customer)/bookings/_components/trip-information";
+import {SessionProvider} from "next-auth/react";
 import {auth} from "@/auth/auth";
+import BroadcastBanner from "@/components/broadcast-banner";
+import React from "react";
 
 type ConfigurePageProps = {
     searchParams: {
@@ -40,6 +43,9 @@ const ConfigurePage = async ({ searchParams }: ConfigurePageProps) => {
     if (!configureTrip) {
         return InvalidConfiguration();
     }
+
+    const session = await auth()
+    const userId = session?.user?.id
 
     const seatCategories = await prisma.seatCategory.findMany({
         include: {
@@ -125,17 +131,23 @@ const ConfigurePage = async ({ searchParams }: ConfigurePageProps) => {
 
     return (
         <>
-            <div className={"bg-muted/40"}>
+            {!userId &&
+                <BroadcastBanner
+                    variant={"warning"}
+                    message={"Please create an account or log in to continue with your reservation and complete the checkout process."}
+                />
+            }
+            <div className={"bg-muted/40 dark:bg-black"}>
                 <div className={"container max-lg:py-14 py-20"}>
                     <div className={"flex items-center gap-2 mb-6"}>
                         <Link
                             href={"/bookings"}
-                            className={cn(buttonVariants({ variant: "outline" }))}
+                            className={cn(buttonVariants({variant: "outline"}))}
                         >
-                            <ChevronLeft className={"size-4 mr-2"} />
+                            <ChevronLeft className={"size-4 mr-2"}/>
                             Back
                         </Link>
-                        <ShareTripButton id={configureTrip.id} />
+                        <ShareTripButton id={configureTrip.id}/>
                     </div>
                     <div className={"grid lg:grid-cols-3 gap-10"}>
                         <TripInformation
@@ -146,7 +158,10 @@ const ConfigurePage = async ({ searchParams }: ConfigurePageProps) => {
                             delayMinutes={delayMinutes}
                             delayReason={configureTrip.captainLogs[0]?.delayReason}
                         />
-                        <ConfigureSeats crossingId={configureTrip.id} seatCategories={formattedSeatCategories} />
+                        <SessionProvider session={session}>
+                            <ConfigureSeats crossingId={configureTrip.id} seatCategories={formattedSeatCategories}
+                                            userId={userId}/>
+                        </SessionProvider>
                     </div>
                 </div>
             </div>

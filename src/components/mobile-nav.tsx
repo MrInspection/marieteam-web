@@ -7,7 +7,7 @@ import {cn} from "@/lib/utils";
 import {Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet";
 import {Button} from "@/components/ui/button";
 import {Separator} from "@/components/ui/separator";
-import {Anchor, Home} from "lucide-react";
+import {Anchor, Book, Bug, Globe, Home} from "lucide-react";
 
 export function MobileNav() {
     const [open, setOpen] = React.useState(false);
@@ -67,18 +67,21 @@ export function MobileNav() {
                             <span className="">Home</span>
                         </MobileLink>
                         <MobileLink href={"/bookings"} className="flex items-center text-muted-foreground" onOpenChange={setOpen}>
-                            <Home className="mr-2 size-5"/>
+                            <Anchor className="mr-2 size-5"/>
                             <span className="">Bookings</span>
                         </MobileLink>
-                        <MobileLink href={"/"} className="flex items-center text-muted-foreground" onOpenChange={setOpen}>
-                            <Home className="mr-2 size-5"/>
-                            <span className="">Home</span>
+                        <MobileLink href={"/#destinations"} className="flex items-center text-muted-foreground" onOpenChange={setOpen}>
+                            <Globe className="mr-2 size-5"/>
+                            <span className="">Destinations</span>
                         </MobileLink>
-
-
-
-
-
+                        <MobileLink href={"https://marieteam-docs.vercel.app"} className="flex items-center text-muted-foreground" onOpenChange={setOpen}>
+                            <Book className="mr-2 size-5"/>
+                            <span className="">Documentation</span>
+                        </MobileLink>
+                        <MobileLink href={"/"} className="flex items-center text-muted-foreground" onOpenChange={setOpen}>
+                            <Bug className="mr-2 size-5"/>
+                            <span className="">Contact</span>
+                        </MobileLink>
                     </div>
                 </div>
             </SheetContent>

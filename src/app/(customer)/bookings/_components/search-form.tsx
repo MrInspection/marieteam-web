@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { CalendarIcon, MapPin, TriangleAlert } from "lucide-react";
+import {CalendarIcon, Loader2, MapPin, TriangleAlert} from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -32,6 +32,7 @@ import {
 } from "@/components/ui/form";
 import { GeographicalZone } from "@prisma/client";
 import {getRoutes} from "@/app/(customer)/bookings/crossing.action";
+import {formatName} from "@/app/(customer)/bookings/_components/utils";
 
 type Route = {
   id: string;
@@ -56,6 +57,7 @@ const formSchema = z.object({
 });
 
 export function SearchForm({ onSubmit }: SearchFormProps) {
+
   const [routes, setRoutes] = useState<Route[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [zones] = useState<GeographicalZone[]>(Object.values(GeographicalZone)); // Use enum values directly
@@ -123,7 +125,7 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
                       <SelectItem key={z} value={z}>
                         <div className="flex items-center">
                           <MapPin className="w-4 h-4 mr-2" />
-                          {z.replace(/_/g, " ")}
+                          {formatName(z)}
                         </div>
                       </SelectItem>
                     ))}
@@ -214,6 +216,9 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
           className="self-end mt-1 w-full"
           disabled={isSubmitDisabled}
         >
+          {isLoading && (
+              <Loader2 className={"mr-2 size-4 animate-spin"} />
+          )}
           Search Trips
         </Button>
       </form>
