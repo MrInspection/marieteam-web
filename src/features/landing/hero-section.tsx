@@ -1,9 +1,9 @@
-"use client"
-import React from 'react'
-import Slider from "react-slick"
-import { motion } from 'framer-motion'
-import { Button } from "@/components/ui/button"
-import { ChevronRight } from "lucide-react"
+"use client";
+import React from 'react';
+import Slider from "react-slick";
+import { motion } from 'framer-motion';
+import { Button } from "@/components/ui/button";
+import { ChevronRight } from "lucide-react";
 
 export function HeroSection() {
     const settings = {
@@ -14,7 +14,7 @@ export function HeroSection() {
         slidesToScroll: 1,
         autoplay: true,
         autoplaySpeed: 5000
-    }
+    };
 
     const slides = [
         {
@@ -32,7 +32,7 @@ export function HeroSection() {
             title: "Luxury at Sea",
             subtitle: "Experience the finest services while enjoying the serenity of the ocean."
         }
-    ]
+    ];
 
     return (
         <section className="container mb-10">
@@ -77,5 +77,5 @@ export function HeroSection() {
                 ))}
             </Slider>
         </section>
-    )
+    );
 }

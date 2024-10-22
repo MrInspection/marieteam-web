@@ -1,14 +1,13 @@
-"use client"
-import React from 'react'
-import { motion } from 'framer-motion'
-import { Globe, Anchor, Palmtree } from "lucide-react"
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Globe, Anchor, Palmtree } from "lucide-react";
 
 export function JourneySteps() {
     const steps = [
         { icon: Globe, title: "Choose Your Destination", description: "Select from our curated collection of coastal paradises." },
         { icon: Anchor, title: "Select Your Cruise", description: "Find the perfect voyage for your dream vacation." },
         { icon: Palmtree, title: "Enjoy Your Journey", description: "Relax and create lifelong memories at sea." }
-    ]
+    ];
 
     return (
         <section className="py-20 bg-white">
@@ -32,5 +31,5 @@ export function JourneySteps() {
                 </div>
             </div>
         </section>
-    )
+    );
 }

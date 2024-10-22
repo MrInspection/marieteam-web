@@ -1,20 +1,20 @@
-import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function FeatureSection() {
     const features = [
         {
             title: "Various Destinations",
-            description: "Travelling is A Wonderful Way To Explore New Places, Learn About Different Cultures And Gain Unique Experiences."
+            description: "Travelling is a wonderful way to explore new places, learn about different cultures and gain unique experiences."
         },
         {
             title: "Everything Is Included",
-            description: "Travelling is A Wonderful Way To Explore New Places, Learn About Different Cultures And Gain Unique Experiences."
+            description: "Travelling is a wonderful way to explore new places, learn about different cultures and gain unique experiences."
         },
         {
             title: "Affordable Price",
-            description: "Travelling is A Wonderful Way To Explore New Places, Learn About Different Cultures And Gain Unique Experiences."
+            description: "Travelling is a wonderful way to explore new places, learn about different cultures and gain unique experiences."
         }
-    ]
+    ];
 
     return (
         <section className="w-full py-12 md:py-24 lg:py-32">
@@ -34,5 +34,5 @@ export function FeatureSection() {
                 </div>
             </div>
         </section>
-    )
+    );
 }

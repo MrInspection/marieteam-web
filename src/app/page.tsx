@@ -1,3 +1,4 @@
+"use client"
 import { HeroSection } from "@/features/landing/hero-section"
 import { PopularDestinations } from "@/features/landing/popular-destinations"
 import { JourneySteps } from "@/features/landing/journey-steps"

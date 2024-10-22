@@ -1,8 +1,7 @@
-"use client"
-import React from 'react'
-import { motion } from 'framer-motion'
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 
 export function PopularDestinations() {
     const destinations = [
@@ -21,7 +20,7 @@ export function PopularDestinations() {
             image: "/placeholder.svg",
             description: "Explore the unique charm of this tiny Breton island."
         }
-    ]
+    ];
 
     return (
         <section className="py-20">
@@ -40,7 +39,7 @@ export function PopularDestinations() {
                                 <CardContent className="p-6">
                                     <h3 className="text-xl font-semibold mb-2">{dest.name}</h3>
                                     <p className="text-gray-600 mb-4">{dest.description}</p>
-                                    <Button variant="outline" className="w-full">Discover</Button>
+                                    <Button className="bg-blue-600 hover:bg-blue-700 text-white">Explore More</Button>
                                 </CardContent>
                             </Card>
                         </motion.div>
@@ -48,5 +47,5 @@ export function PopularDestinations() {
                 </div>
             </div>
         </section>
-    )
+    );
 }
