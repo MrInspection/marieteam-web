@@ -19,7 +19,6 @@ import { CrossingDetails } from "@/app/(customer)/bookings/_components/crossing-
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { useRouter } from "next/navigation";
-import BroadcastBanner from "@/components/broadcast-banner";
 
 export default function BookingPage() {
   const [crossings, setCrossings] = useState<Crossing[] | null>(null);
@@ -41,16 +40,15 @@ export default function BookingPage() {
 
   return (
     <>
-      <BroadcastBanner variant={"info"} message={"The booking system is currently using mock data. Please select October 18th for the date to view the bookings."} />
       <section className="container max-w-7xl py-8">
         <SearchForm onSubmit={handleSearch} />
       </section>
-      <div className="border-t-2 bg-muted/40 min-h-[36rem]">
+      <div className="border-t-2 dark:bg-black bg-muted/40 min-h-[36rem]">
         <div className="container max-w-7xl py-14">
           {!searched && (
             <Card className="rounded-2xl h-96 flex flex-col items-center justify-center border-dashed">
               <CardContent className="p-6 flex flex-col items-center justify-center">
-                <CalendarSearch className="size-10 text-blue-500" />
+                <CalendarSearch className="size-10 text-muted-foreground" />
                 <h1 className="text-lg font-bold mt-4">MarieTeam Bookings</h1>
                 <p className="text-center text-muted-foreground text-sm mt-1 max-w-lg text-balance leading-6">
                   Select a geographical zone, a travel date, and a trip route,

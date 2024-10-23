@@ -9,6 +9,7 @@ import { format } from "date-fns";
 import { createCheckoutSession } from "@/app/(customer)/bookings/summary/summary.action";
 import {toast} from "sonner";
 import {useRouter} from "next/navigation";
+import {ScrollArea, ScrollBar} from "@/components/ui/scroll-area";
 
 type Seat = {
     id: string;
@@ -73,14 +74,14 @@ function OrderSummary({ reservation }: SummaryProps) {
 
     return (
         <>
-            <section className={"container py-9"}>
-                <h1 className={"text-3xl font-bold"}>Order Summary</h1>
-                <p className={"text-sm text-muted-foreground"}>Reservation ID: {reservation.id}</p>
+            <section className="container py-9">
+                <h1 className="text-3xl font-bold">Order Summary</h1>
+                <p className="text-sm text-muted-foreground">Reservation ID: {reservation.id}</p>
             </section>
-            <div className={"bg-muted/50 dark:bg-black border-t-2"}>
+            <div className="bg-muted/50 dark:bg-black border-t-2">
                 <div className="container py-16">
-                    <div className={"grid lg:grid-cols-3 max-lg:gap-6 gap-10"}>
-                        <div className={"lg:col-span-2"}>
+                    <div className="grid lg:grid-cols-3 max-lg:gap-6 gap-10">
+                        <div className="lg:col-span-2">
                             <div className="border-2 rounded-2xl col-span-2 p-2">
                                 <Image
                                     width={500}
@@ -130,38 +131,43 @@ function OrderSummary({ reservation }: SummaryProps) {
                             </section>
                             <section>
                                 <h2 className="text-lg font-semibold mt-6 mb-4">Seats Reserved</h2>
-                                <div className={"grid gap-4"}>
-                                    {reservation.seats.map((seat) => {
-                                        const pricing = seat.seatType.Pricing.find((p) => p.routeId === route.id);
-                                        const individualPrice = pricing ? pricing.amount : 0;
+                                <ScrollArea className="h-52 mt-8">
+                                    <div className={"grid gap-4"}>
+                                        {reservation.seats.map((seat) => {
+                                            const pricing = seat.seatType.Pricing.find((p) => p.routeId === route.id);
+                                            const individualPrice = pricing ? pricing.amount : 0;
 
-                                        return (
-                                            <div
-                                                className={
-                                                    "border-2 rounded-2xl px-4 py-3 flex items-center justify-between"
-                                                }
-                                                key={seat.id}
-                                            >
-                                                <div>
-                                                    <h3 className="font-medium">{formatName(seat.seatType.name)}</h3>
-                                                    <p className="text-sm text-muted-foreground">
-                                                        {seat.seatType.description}
-                                                    </p>
+                                            return (
+                                                <div
+                                                    className={
+                                                        "border-2 rounded-2xl px-4 py-3 flex items-center justify-between"
+                                                    }
+                                                    key={seat.id}
+                                                >
+                                                    <div>
+                                                        <h3 className="font-medium">{formatName(seat.seatType.name)}</h3>
+                                                        <p className="text-sm text-muted-foreground">
+                                                            {seat.seatType.description}
+                                                        </p>
+                                                    </div>
+                                                    <div>
+                                                        <span
+                                                            className={"text-muted-foreground"}>{seat.bookedSeats}x </span>
+                                                        <span
+                                                            className={"font-medium"}>{individualPrice.toFixed(2)}€</span>
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <span className={"text-muted-foreground"}>{seat.bookedSeats}x </span>
-                                                    <span className={"font-medium"}>{individualPrice.toFixed(2)}€</span>
-                                                </div>
-                                            </div>
-                                        );
-                                    })}
-                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                    <ScrollBar className={"-pr-6"} />
+                                </ScrollArea>
                                 <div className={"border-t-2 pt-4 flex items-center justify-between mt-8"}>
                                     <p className={"text-muted-foreground text-lg"}>Total Amount</p>
                                     <p className={"font-bold text-lg"}>{reservation.totalAmount.toFixed(2)}€</p>
                                 </div>
                                 <Button className="mt-4 w-full" size="lg" onClick={handleCheckout}>
-                                    Proceed to checkout <ChevronRight className="ml-2 w-4 h-4" />
+                                    Proceed to checkout <ChevronRight className="ml-2 w-4 h-4"/>
                                 </Button>
                             </section>
                         </div>

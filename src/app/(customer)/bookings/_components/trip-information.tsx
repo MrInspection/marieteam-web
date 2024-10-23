@@ -171,7 +171,7 @@ export default function TripInformation({
                         </Accordion>
                     )}
 
-                    <div className="border-2 rounded-xl px-4 py-3 lg:col-span-2">
+                    <div className="border-2 rounded-xl px-4 py-3 max-md:col-span-2 lg:col-span-2">
                         <p className="font-bold text-foreground mb-2">Equipment</p>
                         {boat.equipment.map((equipment, index) => (
                             <div
@@ -182,7 +182,7 @@ export default function TripInformation({
                             </div>
                         ))}
                     </div>
-                    <div className="border-2 rounded-2xl px-4 py-3 flex items-center justify-center max-h-40">
+                    <div className="border-2 rounded-2xl px-4 py-3 flex items-center justify-center max-h-40 max-md:col-span-2">
                         <div className="space-y-2.5">
                             <Leaf className="size-5 text-emerald-500"/>
                             <p className="text-sm">

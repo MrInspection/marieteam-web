@@ -8,8 +8,8 @@ import {DropdownMenuItem} from "@/components/ui/dropdown-menu";
 export const SignInButton = () => {
     return (
         <>
-            <Button variant={"outline"} size={"default"} onClick={() => signIn()}>
-                Login
+            <Button variant={"ghost"} size={"default"} onClick={() => signIn()}>
+                Sign In
             </Button>
         </>
     )

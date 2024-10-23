@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {CalendarIcon, Loader2, MapPin, TriangleAlert} from "lucide-react";
+import {CalendarIcon, MapPin, TriangleAlert} from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -216,9 +216,6 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
           className="self-end mt-1 w-full"
           disabled={isSubmitDisabled}
         >
-          {isLoading && (
-              <Loader2 className={"mr-2 size-4 animate-spin"} />
-          )}
           Search Trips
         </Button>
       </form>

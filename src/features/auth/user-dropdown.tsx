@@ -13,6 +13,8 @@ import {prisma} from "@/lib/db";
 import Link from "next/link";
 import {SignInButton, SignOutButton} from "@/features/auth/signin-button";
 import {ModeToggle} from "@/components/theme-toggle";
+import {buttonVariants} from "@/components/ui/button";
+import {cn} from "@/lib/utils";
 
 export default async function UserDropdown() {
   const session = await auth();
@@ -79,7 +81,14 @@ export async function UserMenu() {
   return (
       <>
         <div className="flex items-center gap-2">
-          {user ? <UserDropdown/> : <SignInButton/> }
+          {user ? <UserDropdown/> :
+              <>
+                <SignInButton/>
+                <Link href={"/bookings"} className={cn(buttonVariants({variant: "outline"}))}>
+                  Get started
+                </Link>
+              </>
+               }
         </div>
       </>
   )
