@@ -1,4 +1,4 @@
-"use server"
+"use server";
 
 import { prisma } from "@/lib/db";
 import { configureSeatSchema } from "@/app/(customer)/bookings/configure/configure.schema";
@@ -10,7 +10,6 @@ export async function configureSeatAction(
     totalAmount: number,
     userId: string
 ) {
-
   // Validation des données
   const validData = configureSeatSchema.safeParse({
     crossingId,
@@ -32,41 +31,19 @@ export async function configureSeatAction(
       },
     });
 
-    // Insérez ou mettez à jour les sièges réservés
+    // Créez une nouvelle entrée pour chaque type de siège dans cette réservation
     for (const seat of selectedSeats) {
       const { seatTypeId, bookedSeats } = seat;
 
-      // Vérifiez si le siège est déjà réservé pour ce crossingId et si la réservation est active
-      const existingSeat = await tx.seat.findFirst({
-        where: {
-          crossingId,
+      // Créer une nouvelle entrée de siège pour cette réservation
+      await tx.seat.create({
+        data: {
           seatTypeId,
-          reservationId: null, // Vérifie si le siège n'est pas encore réservé
+          crossingId,
+          bookedSeats,
+          reservationId: newReservation.id, // Lier la réservation à ce siège
         },
       });
-
-      if (existingSeat) {
-        // Si le siège existe déjà et n'est pas réservé, mettez à jour le bookedSeats
-        await tx.seat.update({
-          where: {
-            id: existingSeat.id,
-          },
-          data: {
-            bookedSeats: existingSeat.bookedSeats + bookedSeats,
-            reservationId: newReservation.id, // Assurez-vous que cela est mis à jour
-          },
-        });
-      } else {
-        // Sinon, créez une nouvelle réservation de siège
-        await tx.seat.create({
-          data: {
-            seatTypeId,
-            crossingId,
-            bookedSeats,
-            reservationId: newReservation.id,
-          },
-        });
-      }
     }
 
     return newReservation; // Retourner la nouvelle réservation

@@ -55,19 +55,34 @@ model Session {
 
 model Reservation {
   id          String            @id @default(cuid())
-  createdAt   DateTime          @default(now())
   userId      String
   user        User              @relation(fields: [userId], references: [id])
   totalAmount Float
   status      ReservationStatus @default(PENDING)
   seats       Seat[]
 
+  billingAddress   BillingAddress? @relation(fields: [billingAddressId], references: [id])
+  billingAddressId String?
+
+  createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 enum ReservationStatus {
   PENDING
   PAID
+}
+
+model BillingAddress {
+  id           String        @id @default(cuid())
+  name         String
+  street       String
+  city         String
+  postalCode   String
+  state        String?
+  country      String
+  phoneNumber  String?
+  reservations Reservation[]
 }
 
 model Seat {
@@ -82,8 +97,6 @@ model Seat {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@unique([crossingId, seatTypeId])
 }
 
 model Crossing {
@@ -120,9 +133,10 @@ model SeatType {
   seatCategory   SeatCategory @relation(fields: [seatCategoryId], references: [id])
   seats          Seat[]
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  Pricing   Pricing[]
+  Pricing Pricing[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model SeatCategory {
