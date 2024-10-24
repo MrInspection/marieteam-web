@@ -5,7 +5,7 @@ import {buttonVariants} from "@/components/ui/button";
 
 export default function NotFound() {
     return (
-        <div className="flex flex-col min-h-screen">
+
             <main className="flex-grow flex items-center justify-center mx-auto">
                 <div className="container mx-auto px-4">
                     <div className="max-w-md mx-auto text-center">
@@ -23,6 +23,6 @@ export default function NotFound() {
                     </div>
                 </div>
             </main>
-        </div>
+
     )
 }

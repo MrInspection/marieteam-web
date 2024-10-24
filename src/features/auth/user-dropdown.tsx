@@ -8,7 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {Bug, Settings, ShoppingCart, UserCog} from "lucide-react";
+import {HeartHandshake, Settings, ShoppingCart, UserCog} from "lucide-react";
 import {prisma} from "@/lib/db";
 import Link from "next/link";
 import {SignInButton, SignOutButton} from "@/features/auth/signin-button";
@@ -54,8 +54,8 @@ export default async function UserDropdown() {
           </Link>
           <Link href={"/contact"}>
             <DropdownMenuItem>
-              <Bug className={"size-4 mr-2"}/>
-              Get Help
+              <HeartHandshake className={"size-4 mr-2"}/>
+              Support
             </DropdownMenuItem>
           </Link>
           {isAdmin && <>

@@ -95,16 +95,16 @@ function OrderSummary({ reservation }: SummaryProps) {
                             </div>
                         </div>
                         <div>
-                            <section className={"space-y-3"}>
-                                <div className={"grid grid-cols-2 gap-3"}>
-                                    <div className={"border-2 rounded-2xl px-4 py-3"}>
+                            <section className="space-y-3">
+                                <div className="grid grid-cols-2 gap-3">
+                                    <div className="border-2 rounded-2xl px-4 py-3">
                                         <h4 className="text-xs text-muted-foreground">Boat</h4>
-                                        <p className={"line-clamp-1 text-sm font-medium"}>{boat.name}</p>
+                                        <p className="line-clamp-1 text-sm font-medium">{boat.name}</p>
                                     </div>
-                                    <div className={"border-2 rounded-2xl px-4 py-3"}>
+                                    <div className="border-2 rounded-2xl px-4 py-3">
                                         <h4 className="text-xs text-muted-foreground">Departure Time</h4>
                                         <div className="flex items-center gap-1.5">
-                                            <p className={"font-medium"}>{format(departureTime, "HH:mm")}</p>
+                                            <p className="font-medium">{format(departureTime, "HH:mm")}</p>
                                             {delayMinutes > 0 && (
                                                 <p className="font-bold text-orange-500">
                                                     {format(adjustedDepartureTime, "HH:mm")}
@@ -120,7 +120,7 @@ function OrderSummary({ reservation }: SummaryProps) {
                                     </section>
                                     <div className="flex-grow mx-4 flex items-center">
                                         <div className="h-px bg-foreground flex-grow" />
-                                        <Anchor className={"size-5 mx-2"} />
+                                        <Anchor className="size-5 mx-2" />
                                         <div className="h-px bg-foreground flex-grow" />
                                     </div>
                                     <section>
@@ -138,10 +138,7 @@ function OrderSummary({ reservation }: SummaryProps) {
                                             const individualPrice = pricing ? pricing.amount : 0;
 
                                             return (
-                                                <div
-                                                    className={
-                                                        "border-2 rounded-2xl px-4 py-3 flex items-center justify-between"
-                                                    }
+                                                <div className="border-2 rounded-2xl px-4 py-3 flex items-center justify-between"
                                                     key={seat.id}
                                                 >
                                                     <div>
@@ -152,19 +149,19 @@ function OrderSummary({ reservation }: SummaryProps) {
                                                     </div>
                                                     <div>
                                                         <span
-                                                            className={"text-muted-foreground"}>{seat.bookedSeats}x </span>
+                                                            className="text-muted-foreground">{seat.bookedSeats}x </span>
                                                         <span
-                                                            className={"font-medium"}>{individualPrice.toFixed(2)}€</span>
+                                                            className="font-medium">{individualPrice.toFixed(2)}€</span>
                                                     </div>
                                                 </div>
                                             );
                                         })}
                                     </div>
-                                    <ScrollBar className={"-pr-6"} />
+                                    <ScrollBar className="-pr-6" />
                                 </ScrollArea>
-                                <div className={"border-t-2 pt-4 flex items-center justify-between mt-8"}>
-                                    <p className={"text-muted-foreground text-lg"}>Total Amount</p>
-                                    <p className={"font-bold text-lg"}>{reservation.totalAmount.toFixed(2)}€</p>
+                                <div className="border-t-2 pt-4 flex items-center justify-between mt-8">
+                                    <p className="text-muted-foreground text-lg">Total Amount</p>
+                                    <p className="font-bold text-lg">{reservation.totalAmount.toFixed(2)}€</p>
                                 </div>
                                 <Button className="mt-4 w-full" size="lg" onClick={handleCheckout}>
                                     Proceed to checkout <ChevronRight className="ml-2 w-4 h-4"/>

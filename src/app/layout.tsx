@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import "../styles/globals.css";
-import SiteHeader from "@/components/site-header";
-import SiteFooter from "@/components/site-footer";
+import "./globals.css";
 import { Inter } from "next/font/google";
 import React from "react";
 import { ThemeProvider } from "@/components/theme-provider";
 import {Toaster} from "@/components/ui/sonner";
+import SiteHeader from "@/components/site-header";
+import SiteFooter from "@/components/site-footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,10 +24,12 @@ export default  function RootLayout({children}: Readonly<{ children: React.React
             enableSystem
             disableTransitionOnChange
         >
-            <SiteHeader/>
-            {children}
-            <Toaster />
-            <SiteFooter/>
+            <div className="flex flex-col min-h-screen">
+                <SiteHeader/>
+                {children}
+                <SiteFooter/>
+            </div>
+            <Toaster/>
         </ThemeProvider>
         </body>
         </html>

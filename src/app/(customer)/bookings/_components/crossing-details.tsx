@@ -44,28 +44,28 @@ export function CrossingDetails({ crossing }: TripDetailsProps) {
               {crossing.boat.name}
             </AccordionTrigger>
             <AccordionContent className="text-sm pb-2 text-muted-foreground">
-              <div className={"grid grid-cols-2 gap-2 mt-2"}>
-                <section className={"border-2 rounded-lg p-3"}>
-                  <h4 className={"text-xs text-muted-foreground"}>Length</h4>
-                  <p className={"text-sm font-medium text-foreground"}>
+              <div className="grid grid-cols-2 gap-2 mt-2">
+                <section className="border-2 rounded-lg p-3">
+                  <h4 className="text-xs text-muted-foreground">Length</h4>
+                  <p className="text-sm font-medium text-foreground">
                     {crossing.boat.length} meters
                   </p>
                 </section>
-                <section className={"border-2 rounded-lg p-3"}>
-                  <h4 className={"text-xs text-muted-foreground"}>Width</h4>
-                  <p className={"text-sm font-medium text-foreground"}>
+                <section className="border-2 rounded-lg p-3">
+                  <h4 className="text-xs text-muted-foreground">Width</h4>
+                  <p className="text-sm font-medium text-foreground">
                     {crossing.boat.width} meters
                   </p>
                 </section>
-                <section className={"border-2 rounded-lg p-3"}>
-                  <h4 className={"text-xs text-muted-foreground"}>Speed</h4>
-                  <p className={"text-sm font-medium text-foreground"}>
+                <section className="border-2 rounded-lg p-3">
+                  <h4 className="text-xs text-muted-foreground">Speed</h4>
+                  <p className="text-sm font-medium text-foreground">
                     {crossing.boat.speed} knots
                   </p>
                 </section>
-                <section className={"border-2 rounded-lg p-3"}>
-                  <h4 className={"text-xs text-muted-foreground"}>Capacity</h4>
-                  <p className={"text-sm font-medium text-foreground"}>
+                <section className="border-2 rounded-lg p-3">
+                  <h4 className="text-xs text-muted-foreground">Capacity</h4>
+                  <p className="text-sm font-medium text-foreground">
                     {crossing.boat.categoryCapacities.reduce(
                         (total, capacity) => total + capacity.maxCapacity,
                         0
@@ -89,8 +89,8 @@ export function CrossingDetails({ crossing }: TripDetailsProps) {
           <div className="bg-muted/80 dark:bg-muted/50 p-3 rounded-lg">
             <div className="flex items-center justify-between mt-1">
               <section>
-                <h4 className={"text-xs text-muted-foreground"}>Departure</h4>
-                <p className={"text-sm font-medium"}>{crossing.route.departurePort}</p>
+                <h4 className="text-xs text-muted-foreground">Departure</h4>
+                <p className="text-sm font-medium">{crossing.route.departurePort}</p>
               </section>
               <div className="flex-grow mx-4 flex items-center">
                 <div className="h-px bg-foreground flex-grow" />
@@ -98,15 +98,15 @@ export function CrossingDetails({ crossing }: TripDetailsProps) {
                 <div className="h-px bg-foreground flex-grow" />
               </div>
               <section>
-                <h4 className={"text-xs text-muted-foreground"}>Arrival</h4>
-                <p className={"text-sm font-medium"}>{crossing.route.arrivalPort}</p>
+                <h4 className="text-xs text-muted-foreground">Arrival</h4>
+                <p className="text-sm font-medium">{crossing.route.arrivalPort}</p>
               </section>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-3 mt-3">
             <div className="bg-muted/80 dark:bg-muted/50 p-3 rounded-lg">
               <h3 className="text-xs text-muted-foreground">Departure Time</h3>
-              <section className={"flex items-center gap-2"}>
+              <section className="flex items-center gap-2">
                 <p
                     className={cn(
                         delayMinutes > 0 ? "line-through text-muted-foreground" : "",
@@ -157,7 +157,7 @@ export function CrossingDetails({ crossing }: TripDetailsProps) {
         </section>
         <div className="bg-muted/80 dark:bg-muted/50 p-3 rounded-lg">
           <p className="font-semibold text-sm text-muted-foreground">Available Seats</p>
-          <p className={"text-xs text-muted-foreground"}>
+          <p className="text-xs text-muted-foreground">
             The amount of seats available for booking
           </p>
           <div className={"grid space-y-0.5 mt-3"}>
@@ -165,8 +165,8 @@ export function CrossingDetails({ crossing }: TripDetailsProps) {
               const availableSeats = category.maxCapacity - category.bookedSeats;
 
               return (
-                  <div className={"flex items-center"} key={category.seatCategory}>
-                    <Tag className={"size-4 mr-2"} />
+                  <div className="flex items-center" key={category.seatCategory}>
+                    <Tag className="size-4 mr-2" />
                     <p className="text-sm">
                       {formatName(category.seatCategory)}:{" "}
                       <span className="font-bold">

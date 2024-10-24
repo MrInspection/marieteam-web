@@ -77,7 +77,7 @@ export function CrossingCard({ crossing, isSelected, onSelect }: TripCardProps) 
             </section>
             <section className="flex justify-between items-center pt-4 border-t-2">
               <div className="flex items-center space-x-4">
-                <div className={"flex items-center gap-2"}>
+                <div className="flex items-center gap-2">
                   <div
                       className={cn(
                           delayMinutes && delayMinutes > 0
@@ -86,7 +86,7 @@ export function CrossingCard({ crossing, isSelected, onSelect }: TripCardProps) 
                           "text-sm font-medium"
                       )}
                   >
-                    <div className={"flex items-center gap-1.5"}>
+                    <div className="flex items-center gap-1.5">
                       <Clock className="w-4 h-4" />
                       {format(crossing.departureTime, "HH:mm")}
                     </div>
@@ -104,7 +104,7 @@ export function CrossingCard({ crossing, isSelected, onSelect }: TripCardProps) 
                 </div>
                 <TooltipProvider>
                   <Tooltip>
-                    <TooltipTrigger className={"hover:cursor-help"}>
+                    <TooltipTrigger className="hover:cursor-help">
                       <div
                           className={`flex items-center space-x-1 ${
                               getSeaConditionInfo(seaCondition).color
