@@ -1,3 +1,5 @@
+@import "~slick-carousel/slick/slick.css";
+@import "~slick-carousel/slick/slick-theme.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -78,6 +80,7 @@
   * {
     @apply border-border;
     scrollbar-width: thin;
+
   }
   body {
     @apply bg-background text-foreground;
