@@ -2,10 +2,13 @@ import {Badge} from "@/components/ui/badge";
 import Link from "next/link";
 import {cn} from "@/lib/utils";
 import {buttonVariants} from "@/components/ui/button";
+import SiteHeader from "@/components/site-header";
+import SiteFooter from "@/components/site-footer";
 
 export default function NotFound() {
     return (
-
+        <div className="flex flex-col min-h-screen">
+            <SiteHeader />
             <main className="flex-grow flex items-center justify-center mx-auto">
                 <div className="container mx-auto px-4">
                     <div className="max-w-md mx-auto text-center">
@@ -23,6 +26,7 @@ export default function NotFound() {
                     </div>
                 </div>
             </main>
-
+            <SiteFooter />
+        </div>
     )
 }
