@@ -1,13 +1,13 @@
 import {auth} from "@/auth/auth";
+import NotFound from "@/app/not-found";
 
 export default async function OrdersPage() {
     const session = await auth();
     const user = session?.user;
 
     if (!user) {
-      return <div>You are not logged in</div>;
+      return NotFound()
     }
-
   return (
     <>
         <div className={"container max-w-7xl py-8"}>
