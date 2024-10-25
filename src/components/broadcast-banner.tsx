@@ -2,7 +2,6 @@ import Link from "next/link";
 import {Info, TriangleAlert, Siren, Flag} from "lucide-react";
 import { cva } from "class-variance-authority";
 
-
 type BroadcastCardProps = {
     message: string;
     link?: string;

@@ -1,12 +1,12 @@
 "use client";
 
+import { DateRange } from "react-day-picker";
 import { useState, useEffect } from "react";
 import { getDashboardKPIs } from "@/app/(admin)/admin/dashboard-kpi.data"; // Import the server function
 import { getDailyRevenue, getPassengerCounts, getPassengerDistributionByCategory } from "@/app/(admin)/admin/dashboard.data"; // Import the function for fetching passenger counts
 import { Card, CardHeader } from "@/components/ui/card";
 import { DollarSign, Sigma, Users, CreditCard } from "lucide-react";
 import { DatePickerWithRange } from "@/app/(admin)/admin/_components/date-picker";
-import { DateRange } from "react-day-picker";
 import { PassengersChart } from "@/app/(admin)/admin/_components/passengers-chart";
 import { RevenueChart } from "@/app/(admin)/admin/_components/revenues-chart";
 import { PassengersDistributionChart } from "@/app/(admin)/admin/_components/categories-chart"; // Import PassengersDistributionChart
@@ -94,7 +94,7 @@ export default function AdminDashboard() {
 
     return (
         <>
-            <div className="flex items-center justify-between">
+            <div className="flex max-md:flex-col max-md:gap-4 items-center justify-between">
                 <h1 className={"text-4xl font-bold"}>Dashboard</h1>
                 <div className="flex items-center gap-2">
                     <DatePickerWithRange onDateChange={handleDateChange} />
@@ -141,7 +141,7 @@ export default function AdminDashboard() {
             <div className="mt-8 grid grid-cols-5 gap-4">
                 <RevenueChart chartData={revenueChartData} />
                 <PassengersChart chartData={passengerChartData} />
-                <PassengersDistributionChart chartData={passengerDistributionData} /> {/* Pass the passenger distribution data */}
+                <PassengersDistributionChart chartData={passengerDistributionData} />
             </div>
         </>
     );

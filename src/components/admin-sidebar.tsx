@@ -1,9 +1,7 @@
 import {
     Anchor,
-    DollarSign, HeartHandshake,
-    Home, RockingChair, Route,
-    Ship,
-    Users
+    HeartHandshake,
+    Home,
 } from "lucide-react"
 
 import {
@@ -18,52 +16,23 @@ import {
 } from "@/components/ui/sidebar"
 import UserDropdown from "@/features/auth/user-dropdown";
 
-const navigation = {
-    general: [
-        {
-            title: "Dashboard",
-            url: "/admin",
-            icon: Home,
-        },
-        {
-            title: "Manage Users",
-            url: "/admin/users",
-            icon: Users,
-        },
-        {
-            title: "Help & Support",
-            url: "/admin/support",
-            icon: HeartHandshake,
-        }
-    ],
-    products: [
-        {
-            title: "Routes",
-            url: "#",
-            icon: Route,
-        },
-        {
-            title: "Seats",
-            url: "#",
-            icon: RockingChair,
-        },
-        {
-            title: "Pricing",
-            url: "#",
-            icon: DollarSign,
-        },
-        {
-            title: "Fleet",
-            url: "#",
-            icon: Ship,
-        },
-        {
-            title: "Crossings",
-            url: "#",
-            icon: Anchor,
-        },
-    ],
-}
+const navigation = [
+    {
+        title: "Dashboard",
+        url: "/admin",
+        icon: Home,
+    },
+    {
+        title: "Booking System",
+        url: "/admin/booking-system",
+        icon: Anchor,
+    },
+    {
+        title: "Help & Support",
+        url: "/admin/contact",
+        icon: HeartHandshake,
+    },
+]
 
 export function AdminSidebar() {
     return (
@@ -84,7 +53,6 @@ export function AdminSidebar() {
                         </SidebarMenuButton>
                         <UserDropdown />
                     </SidebarMenuItem>
-
                 </SidebarMenu>
             </SidebarHeader>
             <SidebarContent>
@@ -92,24 +60,7 @@ export function AdminSidebar() {
                     <SidebarGroupLabel>General</SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>
-                            {navigation.general.map((item) => (
-                                <SidebarMenuItem key={item.title}>
-                                    <SidebarMenuButton asChild>
-                                        <a href={item.url}>
-                                            <item.icon />
-                                            <span>{item.title}</span>
-                                        </a>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-                            ))}
-                        </SidebarMenu>
-                    </SidebarGroupContent>
-                </SidebarGroup>
-                <SidebarGroup>
-                    <SidebarGroupLabel>Products</SidebarGroupLabel>
-                    <SidebarGroupContent>
-                        <SidebarMenu>
-                            {navigation.products.map((item) => (
+                            {navigation.map((item) => (
                                 <SidebarMenuItem key={item.title}>
                                     <SidebarMenuButton asChild>
                                         <a href={item.url}>

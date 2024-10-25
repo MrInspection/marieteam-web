@@ -68,7 +68,6 @@ function OrderSummary({ reservation }: SummaryProps) {
             }
         } catch (error) {
             toast.error(`${error}`);
-            console.error(error)
         }
     };
 
