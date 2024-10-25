@@ -5,7 +5,7 @@ import Link from "next/link";
 import {cn} from "@/lib/utils";
 import {buttonVariants} from "@/components/ui/button";
 
-export default function InvalidConfiguration() {
+export default function InvalidRequest() {
     return (
         <>
             <main className="flex-grow flex items-center justify-center mx-auto">
@@ -19,10 +19,10 @@ export default function InvalidConfiguration() {
                             It seems we&apos;re experiencing some technical difficulties. Not to worry, our team is working on it. In the meantime, try refreshing the page or visiting us a bit later.
                         </p>
                         <div className="flex items-center justify-center gap-2">
-                            <Link href="/" className={cn(buttonVariants())}>
+                            <Link href="/public" className={cn(buttonVariants())}>
                                 Go back home
                             </Link>
-                            <Link href="/" className={cn(buttonVariants({variant: "outline"}))}>
+                            <Link href="/contact" className={cn(buttonVariants({variant: "outline"}))}>
                                 Contact support
                             </Link>
                         </div>

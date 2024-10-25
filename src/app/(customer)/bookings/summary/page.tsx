@@ -1,8 +1,8 @@
-import NotFound from "@/app/not-found";
 import { auth } from "@/auth/auth";
 import { prisma } from "@/lib/db";
 import OrderSummary from "@/app/(customer)/bookings/summary/order-summary";
 import React from "react";
+import InvalidRequest from "@/app/(customer)/bookings/error";
 
 type SummaryPageProps = {
     searchParams: {
@@ -17,7 +17,7 @@ const SummaryPage = async ({ searchParams }: SummaryPageProps) => {
     const userId = session?.user?.id;
 
     if (!id || typeof id !== "string" || !userId) {
-        return <NotFound />;
+        return <InvalidRequest />;
     }
 
     const reservation = await prisma.reservation.findUnique({
@@ -47,10 +47,10 @@ const SummaryPage = async ({ searchParams }: SummaryPageProps) => {
     });
 
     if (!reservation) {
-        return <NotFound />;
+        return <InvalidRequest />;
     }
 
-    // @ts-expect-error Pass the reservation and userId as props to the OrderSummary component
+    // @ts-expect-error Not taking into consideration some props elements
     return <OrderSummary reservation={reservation} />;
 };
 

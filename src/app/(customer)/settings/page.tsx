@@ -18,11 +18,11 @@ export default async function SettingsPage() {
   }
 
   return (
-    <>
+    <div className="bg-muted/50 dark:bg-black">
       <section className={"container max-w-7xl py-8"}>
         <h1 className={"text-3xl font-bold"}>Account Settings</h1>
       </section>
-      <section className={"bg-muted/50 dark:bg-black border-t-2"}>
+      <section className={"border-t-2"}>
         <div className={"container max-w-2xl py-16 space-y-10"}>
           <Card>
             <CardHeader>
@@ -52,6 +52,6 @@ export default async function SettingsPage() {
           <DeleteAccountZone userId={user.id}/>
         </div>
       </section>
-    </>
+    </div>
   );
 }

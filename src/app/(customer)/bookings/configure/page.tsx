@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/db";
-import InvalidConfiguration from "@/app/(customer)/bookings/configure/error";
+import InvalidRequest from "@/app/(customer)/bookings/error";
 import { ConfigureSeats } from "@/app/(customer)/bookings/configure/configure-seats";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
@@ -22,7 +22,7 @@ const ConfigurePage = async ({ searchParams }: ConfigurePageProps) => {
     const { trip } = searchParams;
 
     if (!trip || typeof trip !== "string") {
-        return InvalidConfiguration();
+        return InvalidRequest();
     }
 
     const configureTrip = await prisma.crossing.findUnique({
@@ -41,7 +41,7 @@ const ConfigurePage = async ({ searchParams }: ConfigurePageProps) => {
     });
 
     if (!configureTrip) {
-        return InvalidConfiguration();
+        return InvalidRequest();
     }
 
     const session = await auth()

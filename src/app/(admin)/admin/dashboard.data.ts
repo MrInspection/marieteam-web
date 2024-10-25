@@ -14,6 +14,7 @@ export async function getPassengerCounts(startDate: Date, endDate: Date): Promis
                 gte: startDate,
                 lte: endDate,
             },
+            status: "PAID",
         },
         include: {
             seats: true, // Include related seats to count the passengers
@@ -103,6 +104,7 @@ export async function getPassengerDistributionByCategory(startDate: Date, endDat
                 gte: startDate,
                 lte: endDate,
             },
+            status: "PAID",
         },
         include: {
             seats: {
