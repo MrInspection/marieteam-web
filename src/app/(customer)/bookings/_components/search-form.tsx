@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {CalendarIcon, Loader, MapPin, TriangleAlert} from "lucide-react";
+import {CalendarIcon, MapPin, TriangleAlert} from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";

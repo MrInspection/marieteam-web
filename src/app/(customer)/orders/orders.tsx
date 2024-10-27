@@ -4,7 +4,7 @@ import {useState} from 'react';
 import {Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger} from "@/components/ui/sheet";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import {Button} from "@/components/ui/button";
-import {Anchor, Eye, TextSearch} from "lucide-react";
+import {Anchor, Eye} from "lucide-react";
 import {formatName} from "@/app/(customer)/bookings/_components/utils";
 
 type BillingAddress = {
