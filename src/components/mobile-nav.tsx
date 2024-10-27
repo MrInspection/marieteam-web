@@ -7,7 +7,7 @@ import {cn} from "@/lib/utils";
 import {Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet";
 import {Button} from "@/components/ui/button";
 import {Separator} from "@/components/ui/separator";
-import {Anchor, Book, Bug, Globe, Home} from "lucide-react";
+import {Anchor, Book, Bug, Home} from "lucide-react";
 
 export function MobileNav() {
     const [open, setOpen] = React.useState(false);
@@ -69,10 +69,6 @@ export function MobileNav() {
                         <MobileLink href={"/bookings"} className="flex items-center text-muted-foreground" onOpenChange={setOpen}>
                             <Anchor className="mr-2 size-5"/>
                             <span className="">Bookings</span>
-                        </MobileLink>
-                        <MobileLink href={"/#destinations"} className="flex items-center text-muted-foreground" onOpenChange={setOpen}>
-                            <Globe className="mr-2 size-5"/>
-                            <span className="">Destinations</span>
                         </MobileLink>
                         <MobileLink href={"https://marieteam-docs.vercel.app"} className="flex items-center text-muted-foreground" onOpenChange={setOpen}>
                             <Book className="mr-2 size-5"/>

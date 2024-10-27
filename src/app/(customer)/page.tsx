@@ -1,11 +1,44 @@
-import React from "react";
-import {LandingHero} from "@/features/landing/hero";
-import {BookingSteps} from "@/features/landing/steps";
+"use client"
 
-export default async function Home() {
+import React from "react";
+import {ArrowRight} from "lucide-react";
+import Image from "next/image";
+import {RainbowButton} from "@/components/ui/rainbow-button";
+import {useRouter} from "next/navigation";
+
+export default function Home() {
+    const router = useRouter();
+
     return (
-        <div className="space-y-20 my-20">
-            <LandingHero />
+        <div className="my-24 container">
+            <section className="flex flex-col items-center justify-center mb-28">
+                <div className="border-2 px-4 py-1.5 rounded-2xl w-fit text-sm">
+                    MarieTeam is now public!
+                </div>
+                <h1 className="text-7xl text-center text-balance font-bold mt-8">Book your dream <span
+                    className="bg-gradient-to-r from-purple-500 via-indigo-500 to-blue-500 bg-clip-text text-transparent">vacation</span> <br/>with
+                    MarieTeam</h1>
+
+                <p className="text-center text-muted-foreground mt-6 text-lg text-balance">
+                    MarieTeam allows you to book your dream vacation with ease. Choose your destination, <br/>select
+                    your
+                    cruise,
+                    and enjoy your trip on board our fleet of boats.
+                </p>
+                <RainbowButton className={"mt-10 mb-24"} onClick={() => router.push("/bookings")}>
+                    Book your dream vacation
+                    <ArrowRight className={"ml-2 size-4"}/>
+                </RainbowButton>
+                <section
+                    className="col-span-full border-2 -m-2 rounded-xl bg-gray-900/5 p-2 ring-1 ring-inset ring-gray-900/10 lg:-m-4 lg:rounded-2xl lg:p-4">
+                    <Image
+                        src={"/images/demonstration.png"}
+                        alt="Spectron Labs"
+                        height={866} width={1364} quality={100}
+                        className="rounded-md bg-white p-2 sm:p-8 md:p-20 shadow-2xl ring-1 ring-gray-900/10"
+                        draggable={false}/>
+                </section>
+            </section>
             <div className={"relative isolate"}>
                 <div
                     aria-hidden='true'
@@ -19,7 +52,48 @@ export default async function Home() {
                     />
                 </div>
             </div>
-            <BookingSteps />
+            <div className="mt-40">
+                <div className="flex flex-col items-center justify-center mb-16">
+                    <h1 className="text-5xl font-bold">Schedule your trip with ease</h1>
+                    <p className="text-muted-foreground mt-2 text-lg">Going on a trip has never been easier than with
+                        MarieTeam</p>
+                </div>
+                <div className="grid grid-cols-3 gap-10 mb-24">
+                    <section className="border-t-2 pt-8">
+                        <p className="text-sm text-violet-500 font-medium">Step 1</p>
+                        <h1 className="text-xl font-medium mt-2">Choose your destination</h1>
+                        <p className="text-muted-foreground mt-4">
+                            Select your destination within the 10 geographical zones proposed around France by
+                            MarieTeam.
+                        </p>
+                    </section>
+                    <section className="border-t-2 pt-8">
+                        <p className="text-sm text-violet-500 font-mediu">Step 2</p>
+                        <h1 className="text-xl font-medium mt-2">Configure your trip</h1>
+                        <p className="text-muted-foreground mt-4">
+                            Select your cruise and configure the seats you want to book for your trip within our fleet
+                            of boats.
+                        </p>
+                    </section>
+                    <section className="border-t-2 pt-8">
+                        <p className="text-sm text-violet-500 font-mediu">Step 3</p>
+                        <h1 className="text-xl font-medium mt-2">Enjoy your trip</h1>
+                        <p className="text-muted-foreground mt-4">
+                            Enjoy your trip on board our fleet of boats and enjoy the beautiful coastal scenery with
+                            unmatched comfort.
+                        </p>
+                    </section>
+                </div>
+                <section
+                    className="col-span-full -m-2 rounded-xl bg-gray-900/5 p-2 ring-1 ring-inset ring-gray-900/10 lg:-m-4 lg:rounded-2xl lg:p-4">
+                    <Image
+                        src={`/images/demo-1.png`}
+                        alt="Spectron Labs"
+                        height={866} width={1364} quality={100}
+                        className="rounded-md bg-white p-2 sm:p-8 md:p-20 shadow-2xl ring-1 ring-gray-900/10"
+                        draggable={false}/>
+                </section>
+            </div>
         </div>
     );
 }
