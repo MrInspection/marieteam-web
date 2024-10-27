@@ -7,7 +7,6 @@ import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { ShareTripButton } from "@/app/(customer)/bookings/_components/share-crossing";
 import TripInformation from "@/app/(customer)/bookings/_components/trip-information";
-import {SessionProvider} from "next-auth/react";
 import {auth} from "@/auth/auth";
 import BroadcastBanner from "@/components/broadcast-banner";
 import React from "react";
@@ -133,23 +132,23 @@ const ConfigurePage = async ({ searchParams }: ConfigurePageProps) => {
         <>
             {!userId &&
                 <BroadcastBanner
-                    variant={"warning"}
-                    message={"Please create an account or log in to continue with your reservation and complete the checkout process."}
+                    variant="warning"
+                    message="Please create an account or log in to continue with your reservation and complete the checkout process."
                 />
             }
-            <div className={"bg-muted/40 dark:bg-black"}>
-                <div className={"container max-lg:py-14 py-20"}>
-                    <div className={"flex items-center gap-2 mb-6"}>
+            <div className="bg-muted/40 dark:bg-black">
+                <div className="container max-lg:py-14 py-20">
+                    <div className="flex items-center gap-2 mb-6">
                         <Link
-                            href={"/bookings"}
+                            href="/bookings"
                             className={cn(buttonVariants({variant: "outline"}))}
                         >
-                            <ChevronLeft className={"size-4 mr-2"}/>
+                            <ChevronLeft className="size-4 mr-2" />
                             Back
                         </Link>
                         <ShareTripButton id={configureTrip.id}/>
                     </div>
-                    <div className={"grid lg:grid-cols-3 gap-10"}>
+                    <div className="grid lg:grid-cols-3 gap-10">
                         <TripInformation
                             boat={configureTrip.boat}
                             route={configureTrip.route}
@@ -158,10 +157,11 @@ const ConfigurePage = async ({ searchParams }: ConfigurePageProps) => {
                             delayMinutes={delayMinutes}
                             delayReason={configureTrip.captainLogs[0]?.delayReason}
                         />
-                        <SessionProvider session={session}>
-                            <ConfigureSeats crossingId={configureTrip.id} seatCategories={formattedSeatCategories}
-                                            userId={userId}/>
-                        </SessionProvider>
+                        <ConfigureSeats
+                            crossingId={configureTrip.id}
+                            seatCategories={formattedSeatCategories}
+                            userId={userId}
+                        />
                     </div>
                 </div>
             </div>

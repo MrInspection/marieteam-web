@@ -29,7 +29,7 @@ const navigation = [
     },
     {
         title: "Help & Support",
-        url: "/admin/contact",
+        url: "/admin/support",
         icon: HeartHandshake,
     },
 ]

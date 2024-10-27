@@ -4,7 +4,7 @@ import {useState} from 'react';
 import {Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger} from "@/components/ui/sheet";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import {Button} from "@/components/ui/button";
-import {Anchor, TextSearch} from "lucide-react";
+import {Anchor, Eye, TextSearch} from "lucide-react";
 import {formatName} from "@/app/(customer)/bookings/_components/utils";
 
 type BillingAddress = {
@@ -98,7 +98,7 @@ export function Orders({reservations}: OrderProps) {
                                 <Sheet>
                                     <SheetTrigger asChild>
                                         <Button variant="ghost" size="sm" onClick={() => setSelectedOrder(order)}>
-                                            <TextSearch className="size-5"/> View
+                                            <Eye className="size-5"/> View
                                         </Button>
                                     </SheetTrigger>
                                     <SheetContent>
@@ -117,9 +117,7 @@ export function Orders({reservations}: OrderProps) {
                                                             {selectedOrder.seats[0].crossing.boat.name}
                                                         </p>
                                                     </div>
-
-                                                    <div
-                                                        className="bg-muted/80 dark:bg-muted/50 p-3 rounded-lg">
+                                                    <div className="bg-muted/80 dark:bg-muted/50 p-3 rounded-lg">
                                                         <div className="flex items-center justify-between mt-1">
                                                             <section>
                                                                 <h4 className="text-xs text-muted-foreground">Departure</h4>

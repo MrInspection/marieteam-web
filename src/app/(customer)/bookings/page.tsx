@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {CalendarSearch, CalendarX2, ChevronRight, EyeOff} from "lucide-react";
+import {CalendarSearch, ChevronRight, EyeOff, Frown, Loader} from "lucide-react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,9 +22,8 @@ import { useRouter } from "next/navigation";
 
 export default function BookingPage() {
   const [crossings, setCrossings] = useState<Crossing[] | null>(null);
-  const [selectedCrossing, setSelectedCrossing] = useState<Crossing | null>(
-    null
-  );
+  const [selectedCrossing, setSelectedCrossing] = useState<Crossing | null>(null);
+  const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
   const router = useRouter();
 
@@ -38,12 +37,17 @@ export default function BookingPage() {
     }
   };
 
+  const handleRedirect = (crossingId: string) => {
+    setLoading(true);
+    router.push(`/bookings/configure?trip=${crossingId}`);
+  };
+
   return (
-    <>
+    <main className="flex flex-col flex-grow">
       <section className="container max-w-7xl py-8">
         <SearchForm onSubmit={handleSearch} />
       </section>
-      <div className="border-t-2 dark:bg-black bg-muted/40 min-h-[36rem]">
+      <div className="border-t-2 dark:bg-black bg-muted/40 flex flex-col flex-grow">
         <div className="container max-w-7xl py-14">
           {!searched && (
             <Card className="rounded-2xl h-96 flex flex-col items-center justify-center border-dashed">
@@ -106,14 +110,12 @@ export default function BookingPage() {
                     <CardFooter className="border-t px-6 py-4">
                       <Button
                         className="w-full"
-                        onClick={() =>
-                          router.push(
-                            "/bookings/configure?trip=" + selectedCrossing.id
-                          )
-                        }
+                        onClick={() => handleRedirect(selectedCrossing.id)}
+                        disabled={loading}
                       >
+                        {loading && <Loader className="size-4 animate-spin" /> }
                         Buy your ticket
-                        <ChevronRight className={"size-4 ml-2"}/>
+                        <ChevronRight className="size-4 ml-2" />
                       </Button>
                     </CardFooter>
                   )}
@@ -125,10 +127,10 @@ export default function BookingPage() {
           {searched && (!crossings || crossings.length === 0) && (
             <Card className="rounded-2xl h-96 flex flex-col items-center justify-center">
               <CardContent className="p-6 flex flex-col items-center justify-center">
-                <CalendarX2 className="size-10 text-destructive" />
+                <Frown className="size-10 text-destructive" />
                 <h1 className="text-lg font-bold mt-4">No Trips Found</h1>
-                <p className="text-center text-muted-foreground text-sm mt-1 max-w-md">
-                  We couldn&apos;t find any trips for the selected criteria.
+                <p className="text-center text-muted-foreground text-sm mt-1 max-w-md text-balance">
+                  We couldn&apos;t find any trips for the selected date and route.
                   Please try different dates or routes.
                 </p>
               </CardContent>
@@ -153,20 +155,18 @@ export default function BookingPage() {
                 </div>
                 <Button
                   className="w-full mt-4"
-                  onClick={() =>
-                    router.push(
-                      "/bookings/configure?trip=" + selectedCrossing.id
-                    )
-                  }
+                  onClick={() => handleRedirect(selectedCrossing.id)}
+                  disabled={loading}
                 >
+                  {loading && <Loader className="size-4 animate-spin" /> }
                   Buy your ticket
-                  <ChevronRight className={"size-4 ml-2"}/>
+                  <ChevronRight className="size-4 ml-2" />
                 </Button>
               </SheetContent>
             </Sheet>
           )}
         </div>
       </div>
-    </>
+    </main>
   );
 }

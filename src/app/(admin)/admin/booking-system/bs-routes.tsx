@@ -209,7 +209,7 @@ export function RoutesManagement({ routes }: RouteFormsProps) {
                             {localRoutes.map((route, index) => (
                                 <TableRow key={route?.id ?? index}> {/* Use index as fallback for key */}
                                     <TableCell className="max-lg:hidden">{route?.id ?? 'N/A'}</TableCell>
-                                    <TableCell>{route?.distance ? `${route.distance}m` : 'N/A'}</TableCell>
+                                    <TableCell>{route?.distance ? `${route.distance}` : 'N/A'}</TableCell>
                                     <TableCell>{route?.departurePort || 'N/A'}</TableCell>
                                     <TableCell>{route?.arrivalPort || 'N/A'}</TableCell>
                                     <TableCell className="max-md:hidden">{route?.geographicalZone || 'N/A'}</TableCell>

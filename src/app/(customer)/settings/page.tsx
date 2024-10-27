@@ -3,6 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {Card, CardFooter, CardHeader} from "@/components/ui/card";
 import EditAccountForm from "@/app/(customer)/settings/edit-account-form";
 import DeleteAccountZone from "@/app/(customer)/settings/delete-account";
+import NotSignedIn from "@/features/auth/not-signin";
 
 export const metadata = {
   title: "Settings - MarieTeam",
@@ -14,7 +15,7 @@ export default async function SettingsPage() {
   const user = session?.user;
 
   if (!user) {
-    return <div>You are not logged in</div>;
+    return <NotSignedIn />;
   }
 
   return (

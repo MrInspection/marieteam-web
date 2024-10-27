@@ -127,7 +127,7 @@ export default function TripInformation({
                         </h4>
                         <div className="flex items-center gap-1.5">
                             <p className={cn(
-                                delayMinutes > 0 ? "line-through text-muted-foreground" : "",
+                                delayMinutes > 0 && "line-through text-muted-foreground",
                                 "font-medium"
                             )}>
                                 {format(departureTime, "HH:mm")}

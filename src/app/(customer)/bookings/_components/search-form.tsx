@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {CalendarIcon, MapPin, TriangleAlert} from "lucide-react";
+import {CalendarIcon, Loader, MapPin, TriangleAlert} from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -76,7 +76,6 @@ export function SearchForm({ onSubmit }: SearchFormProps) {
 
   useEffect(() => {
     if (selectedZone) {
-      setIsLoading(true);
       getRoutes(selectedZone)
         .then((fetchedRoutes) => {
           setRoutes(fetchedRoutes);

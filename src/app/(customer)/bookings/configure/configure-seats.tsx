@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { Button } from "@/components/ui/button"
-import {ChevronRight, Loader2, Minus, Plus} from "lucide-react"
+import {ChevronRight, Loader, Minus, Plus} from "lucide-react"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { configureSeatAction } from './configure.action'
 import { formatName } from "@/app/(customer)/bookings/_components/utils"
@@ -114,7 +114,7 @@ export function ConfigureSeats({ crossingId, seatCategories, userId }: Configure
                           <div>
                             <h3 className="font-medium">
                               {formatName(seatType.name)}{" "}
-                              <span className="text-sm bg-pink-700/10 dark:bg-pink-700/15 text-pink-500 px-1.5 py-0.5 rounded-lg font-bold ml-1">
+                              <span className="text-sm bg-cyan-700/10 dark:bg-cyan-700/25 text-cyan-500 px-1.5 py-0.5 rounded-lg font-bold ml-1">
                                 {seatType.price.toFixed(2)} €
                               </span>
                             </h3>
@@ -152,9 +152,7 @@ export function ConfigureSeats({ crossingId, seatCategories, userId }: Configure
             <span>{totalAmount.toFixed(2)} €</span>
           </div>
           <Button onClick={handleContinue} className="mt-4 w-full" disabled={totalAmount === 0 || isLoading}>
-            {isLoading && (
-                <Loader2 className="mr-2 size-4 animate-spin" />
-            )}
+            {isLoading && <Loader className="size-4 animate-spin" /> }
             Continue <ChevronRight className="ml-2 w-4 h-4" />
           </Button>
         </div>

@@ -1,8 +1,8 @@
 "use client";
 
-import React from "react";
+import React, {useState} from "react";
 import { Button } from "@/components/ui/button";
-import { Anchor, ChevronRight } from "lucide-react";
+import {Anchor, ChevronRight, Loader} from "lucide-react";
 import { formatName } from "@/app/(customer)/bookings/_components/utils";
 import Image from "next/image";
 import { format } from "date-fns";
@@ -10,6 +10,7 @@ import { createCheckoutSession } from "@/app/(customer)/bookings/summary/summary
 import {toast} from "sonner";
 import {useRouter} from "next/navigation";
 import {ScrollArea, ScrollBar} from "@/components/ui/scroll-area";
+import {cn} from "@/lib/utils";
 
 type Seat = {
     id: string;
@@ -59,14 +60,19 @@ function OrderSummary({ reservation }: SummaryProps) {
     const adjustedDepartureTime = new Date(departureTime.getTime() + delayMinutes * 60000);
 
     const router = useRouter();
+    const [isLoading, setIsLoading] = useState(false);
+
+
 
     const handleCheckout = async () => {
         try {
+            setIsLoading(true);
             const { url } = await createCheckoutSession({ reservationId: reservation.id, userId: reservation.userId });
             if (typeof url === "string") {
                 router.push(url)
             }
         } catch (error) {
+            setIsLoading(false);
             toast.error(`${error}`);
         }
     };
@@ -103,7 +109,12 @@ function OrderSummary({ reservation }: SummaryProps) {
                                     <div className="border-2 rounded-2xl px-4 py-3">
                                         <h4 className="text-xs text-muted-foreground">Departure Time</h4>
                                         <div className="flex items-center gap-1.5">
-                                            <p className="font-medium">{format(departureTime, "HH:mm")}</p>
+                                            <p className={cn(
+                                                delayMinutes > 0 && "line-through text-muted-foreground",
+                                                "font-medium"
+                                            )}>
+                                                {format(departureTime, "HH:mm")}
+                                            </p>
                                             {delayMinutes > 0 && (
                                                 <p className="font-bold text-orange-500">
                                                     {format(adjustedDepartureTime, "HH:mm")}
@@ -112,9 +123,10 @@ function OrderSummary({ reservation }: SummaryProps) {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex items-center justify-between border-2 py-3 px-4 rounded-2xl max-md:col-span-2">
+                                <div
+                                    className="flex items-center justify-between border-2 py-3 px-4 rounded-2xl max-md:col-span-2">
                                     <section>
-                                        <h4 className="text-xs text-muted-foreground">Departure</h4>
+                                    <h4 className="text-xs text-muted-foreground">Departure</h4>
                                         <p className="text-sm font-medium">{route.departurePort}</p>
                                     </section>
                                     <div className="flex-grow mx-4 flex items-center">
@@ -162,7 +174,8 @@ function OrderSummary({ reservation }: SummaryProps) {
                                     <p className="text-muted-foreground text-lg">Total Amount</p>
                                     <p className="font-bold text-lg">{reservation.totalAmount.toFixed(2)}€</p>
                                 </div>
-                                <Button className="mt-4 w-full" size="lg" onClick={handleCheckout}>
+                                <Button className="mt-4 w-full" size="lg" onClick={handleCheckout} disabled={isLoading}>
+                                    {isLoading && <Loader className="size-4 animate-spin" /> }
                                     Proceed to checkout <ChevronRight className="ml-2 w-4 h-4"/>
                                 </Button>
                             </section>
