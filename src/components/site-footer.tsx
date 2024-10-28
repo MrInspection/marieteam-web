@@ -22,7 +22,7 @@ export default function SiteFooter() {
               height={38}
               draggable={false}
             />
-            <p className=" font-bold">MarieTeam Corp.</p>
+            <p className=" font-bold">MarieTeam</p>
           </div>
           <div className={"flex flex-wrap justify-center items-center gap-6"}>
             <Link

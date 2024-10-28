@@ -10,6 +10,11 @@ import TripInformation from "@/app/(customer)/bookings/_components/trip-informat
 import {auth} from "@/auth/auth";
 import BroadcastBanner from "@/components/broadcast-banner";
 import React from "react";
+import type {Metadata} from "next";
+
+export const metadata: Metadata = {
+    title: "Configurator - MarieTeam",
+};
 
 type ConfigurePageProps = {
     searchParams: {

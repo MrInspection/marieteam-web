@@ -3,6 +3,11 @@ import { prisma } from "@/lib/db";
 import OrderSummary from "@/app/(customer)/bookings/summary/order-summary";
 import React from "react";
 import InvalidRequest from "@/app/(customer)/bookings/error";
+import type {Metadata} from "next";
+
+export const metadata: Metadata = {
+    title: "Summary - MarieTeam",
+};
 
 type SummaryPageProps = {
     searchParams: {

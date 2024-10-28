@@ -1,5 +1,9 @@
 import ContactForm from "@/app/(customer)/contact/contact-form";
+import type {Metadata} from "next";
 
+export const metadata: Metadata = {
+    title: "Contact Us - MarieTeam",
+};
 
 export default function ContactPage() {
     return (

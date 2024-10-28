@@ -6,6 +6,11 @@ import {cn} from "@/lib/utils";
 import {prisma} from "@/lib/db";
 import {Orders} from "@/app/(customer)/orders/orders";
 import NotSignedIn from "@/features/auth/not-signin";
+import type {Metadata} from "next";
+
+export const metadata: Metadata = {
+    title: "My Orders - MarieTeam",
+};
 
 export default async function OrdersPage() {
     const session = await auth();

@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import {
     Table,
@@ -24,12 +24,12 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { X, Plus, AlertCircle } from 'lucide-react'
-import { Boat, BoatSchema } from "@/app/(admin)/admin/booking-system/booking-system.schema";
+import { BoatInput, BoatInputSchema } from "@/app/(admin)/admin/booking-system/booking-system.schema";
 import { RegisterBoat } from "@/app/(admin)/admin/booking-system/booking-system.action";
 import { toast } from "sonner";
 
 type BoatFormsProps = {
-    boats: Boat[]
+    boats: BoatInput[]
 }
 
 export function BoatsManagement({ boats }: BoatFormsProps) {
@@ -38,8 +38,8 @@ export function BoatsManagement({ boats }: BoatFormsProps) {
     const [newEquipment, setNewEquipment] = useState('')
     const [localBoats, setLocalBoats] = useState(boats)
 
-    const form = useForm<Boat>({
-        resolver: zodResolver(BoatSchema),
+    const form = useForm<BoatInput>({
+        resolver: zodResolver(BoatInputSchema),
         defaultValues: {
             name: "",
             length: 0,
@@ -61,7 +61,7 @@ export function BoatsManagement({ boats }: BoatFormsProps) {
         </div>
     )
 
-    async function onSubmit(values: Boat) {
+    async function onSubmit(values: BoatInput) {
         try {
             const newBoat = await RegisterBoat(values);
             {/* @ts-expect-error not taking into consideration some props elements */}
@@ -81,13 +81,14 @@ export function BoatsManagement({ boats }: BoatFormsProps) {
                 <h2 className="text-2xl font-semibold">Fleet of boats</h2>
                 <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
                     <DialogTrigger asChild>
-                        <Button variant={"outline"}>
+                        <Button>
                             <Plus className="size-4" /> New
                         </Button>
                     </DialogTrigger>
                     <DialogContent>
                         <DialogHeader>
                             <DialogTitle>Create boat</DialogTitle>
+                            <DialogDescription>Fill in the details of the boat to register.</DialogDescription>
                         </DialogHeader>
                         <Form {...form}>
                             <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -175,8 +176,8 @@ export function BoatsManagement({ boats }: BoatFormsProps) {
                                                     <div>
                                                         <div className="flex flex-wrap gap-2 mb-4">
                                                             {field.value.length === 0 && (
-                                                                <div className="border-2 border-dashed rounded-lg flex items-center justify-center p-8 w-full">
-                                                                    <p className="text-muted-foreground text-center text-sm">No equipment added yet</p>
+                                                                <div className="border-2 border-primary-40 border-dashed rounded-lg flex items-center justify-center p-8 w-full shadow-sm">
+                                                                    <p className="text-muted-foreground text-center text-sm">No equipments added yet</p>
                                                                 </div>
                                                             )}
                                                             {field.value.map((item, index) => (
@@ -213,7 +214,6 @@ export function BoatsManagement({ boats }: BoatFormsProps) {
                                                         </div>
                                                     </div>
                                                 </FormControl>
-                                                <FormDescription>The list of equipment on the boat</FormDescription>
                                                 <FormMessage />
                                             </FormItem>
                                         )}

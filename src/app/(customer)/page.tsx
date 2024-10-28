@@ -15,18 +15,18 @@ export default function Home() {
                 <div className="border-2 px-4 py-1.5 rounded-2xl w-fit text-sm">
                     MarieTeam is now public!
                 </div>
-                <h1 className="text-7xl text-center text-balance font-bold mt-8">Book your dream <span
+                <h1 className="text-4xl md:text-5xl lg:text-7xl text-center text-balance font-bold mt-8">Book your dream <span
                     className="bg-gradient-to-r from-purple-500 via-indigo-500 to-blue-500 bg-clip-text text-transparent">vacation</span> <br/>with
                     MarieTeam</h1>
 
-                <p className="text-center text-muted-foreground mt-6 text-lg text-balance">
-                    MarieTeam allows you to book your dream vacation with ease. Choose your destination, <br/>select
+                <p className="text-center text-muted-foreground mt-6 text-sm md:text-lg max-md:text-balance">
+                    MarieTeam allows you to book your dream vacation with ease. Choose your destination, <br className="max-lg:hidden"/>select
                     your
                     cruise,
                     and enjoy your trip on board our fleet of boats.
                 </p>
                 <RainbowButton className={"mt-10 mb-24"} onClick={() => router.push("/bookings")}>
-                    Book your dream vacation
+                    Get Started
                     <ArrowRight className={"ml-2 size-4"}/>
                 </RainbowButton>
                 <section
@@ -54,11 +54,11 @@ export default function Home() {
             </div>
             <div className="mt-40">
                 <div className="flex flex-col items-center justify-center mb-16">
-                    <h1 className="text-5xl font-bold">Schedule your trip with ease</h1>
-                    <p className="text-muted-foreground mt-2 text-lg">Going on a trip has never been easier than with
+                    <h1 className="text-3xl lg:text-5xl font-bold text-center">Schedule your trip with ease</h1>
+                    <p className="text-muted-foreground mt-2 text-sm md:text-lg text-center text-balance">Going on a trip has never been easier than with
                         MarieTeam</p>
                 </div>
-                <div className="grid grid-cols-3 gap-10 mb-24">
+                <div className="grid md:grid-cols-3 gap-10 mb-24">
                     <section className="border-t-2 pt-8">
                         <p className="text-sm text-violet-500 font-medium">Step 1</p>
                         <h1 className="text-xl font-medium mt-2">Choose your destination</h1>

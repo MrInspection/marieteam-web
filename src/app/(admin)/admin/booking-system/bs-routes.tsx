@@ -4,7 +4,14 @@ import { useState } from 'react'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger
+} from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import {
     Table,
@@ -28,6 +35,7 @@ import { RegisterRoute, UpdateRoute } from "@/app/(admin)/admin/booking-system/b
 import { toast } from "sonner"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { GeographicalZone } from "@prisma/client"
+import {formatName} from "@/app/(customer)/bookings/_components/utils";
 
 type RouteFormsProps = {
     routes: Route[]
@@ -106,17 +114,18 @@ export function RoutesManagement({ routes }: RouteFormsProps) {
                 <h2 className="text-2xl font-semibold">Manage Routes</h2>
                 <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
                     <DialogTrigger asChild>
-                        <Button variant="outline">
+                        <Button>
                             <Plus className="size-4" /> New
                         </Button>
                     </DialogTrigger>
-                    <DialogContent className="max-w-screen-sm">
+                    <DialogContent>
                         <DialogHeader>
                             <DialogTitle>Create route</DialogTitle>
+                            <DialogDescription>Fill in the details of the route to register.</DialogDescription>
                         </DialogHeader>
                         <Form {...form}>
                             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                                <div className="grid md:grid-cols-2 gap-4 mb-4">
+                                <div className="grid md:grid-cols-2 gap-4 mb-2">
                                     <FormField
                                         control={form.control}
                                         name="departurePort"
@@ -158,7 +167,7 @@ export function RoutesManagement({ routes }: RouteFormsProps) {
                                                     <SelectContent>
                                                         {zones.map((zone) => (
                                                             <SelectItem key={zone} value={zone}>
-                                                                {zone}
+                                                                {formatName(zone)}
                                                             </SelectItem>
                                                         ))}
                                                     </SelectContent>
@@ -197,7 +206,7 @@ export function RoutesManagement({ routes }: RouteFormsProps) {
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead className="max-lg:hidden">Id</TableHead>
+                                <TableHead className="max-lg:hidden">Route Id</TableHead>
                                 <TableHead>Distance</TableHead>
                                 <TableHead>Departure</TableHead>
                                 <TableHead>Arrival</TableHead>
@@ -212,7 +221,7 @@ export function RoutesManagement({ routes }: RouteFormsProps) {
                                     <TableCell>{route?.distance ? `${route.distance}` : 'N/A'}</TableCell>
                                     <TableCell>{route?.departurePort || 'N/A'}</TableCell>
                                     <TableCell>{route?.arrivalPort || 'N/A'}</TableCell>
-                                    <TableCell className="max-md:hidden">{route?.geographicalZone || 'N/A'}</TableCell>
+                                    <TableCell className="max-md:hidden">{formatName(route?.geographicalZone ?? 'N/A')}</TableCell>
                                     <TableCell>
                                         <Button variant="ghost" size="sm" onClick={() => {
                                             setSelectedRoute(route)
@@ -231,17 +240,15 @@ export function RoutesManagement({ routes }: RouteFormsProps) {
                 )}
             </section>
             <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
-                <DialogContent className="max-w-screen-sm">
+                <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>
-                            Edit Route
-                            <p className="text-muted-foreground text-sm font-normal mt-2">Route ID: {selectedRoute?.id ?? 'N/A'}</p>
-                        </DialogTitle>
+                        <DialogTitle>Edit Route</DialogTitle>
+                        <DialogDescription>Fill in the details of the route to update.</DialogDescription>
                     </DialogHeader>
                     {selectedRoute && (
                         <Form {...editForm}>
                             <form onSubmit={editForm.handleSubmit(onEditSubmit)} className="space-y-4">
-                                <div className="grid md:grid-cols-2 gap-4 mb-4">
+                                <div className="grid md:grid-cols-2 gap-4 mb-2">
                                     <FormField
                                         control={editForm.control}
                                         name="departurePort"
@@ -283,7 +290,7 @@ export function RoutesManagement({ routes }: RouteFormsProps) {
                                                     <SelectContent>
                                                         {zones.map((zone) => (
                                                             <SelectItem key={zone} value={zone}>
-                                                                {zone}
+                                                                {formatName(zone)}
                                                             </SelectItem>
                                                         ))}
                                                     </SelectContent>

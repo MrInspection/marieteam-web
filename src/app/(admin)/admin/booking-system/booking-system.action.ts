@@ -1,7 +1,13 @@
 "use server"
 
 import {prisma} from "@/lib/db";
-import {Boat, Route, RouteInput} from "@/app/(admin)/admin/booking-system/booking-system.schema";
+import {
+    BoatInput,
+    Crossing,
+    CrossingInput,
+    Route,
+    RouteInput
+} from "@/app/(admin)/admin/booking-system/booking-system.schema";
 
 /**
  * Register a new boat in the database.
@@ -9,7 +15,7 @@ import {Boat, Route, RouteInput} from "@/app/(admin)/admin/booking-system/bookin
  * @returns The created boat or an error if validation fails.
  */
 
-export async function RegisterBoat(boat: Boat) {
+export async function RegisterBoat(boat: BoatInput) {
     try {
         await prisma.boat.create({
             data: {
@@ -72,5 +78,38 @@ export async function UpdateRoute(id: string, route: Route) {
         return updatedRoute;
     } catch (error) {
         throw new Error("Failed to update route");
+    }
+}
+
+
+export async function RegisterCrossing(crossing: CrossingInput) {
+    try {
+        await prisma.crossing.create({
+            data: {
+                departureTime: crossing.departureTime,
+                boatId: crossing.boatId,
+                routeId: crossing.routeId,
+            },
+        });
+    } catch (error) {
+        throw new Error("Failed to register crossing");
+    }
+}
+
+export async function UpdateCrossing(id: string, crossing: Crossing) {
+    try {
+        await prisma.crossing.update({
+            where: {
+                id: id,
+            },
+            data: {
+                departureTime: crossing.departureTime,
+                boatId: crossing.boatId,
+                routeId: crossing.routeId,
+            },
+        });
+        return crossing;
+    } catch (error) {
+        throw new Error("Failed to update crossing");
     }
 }

@@ -1,19 +1,20 @@
-import {UserMenu} from "@/features/auth/user-dropdown";
-import {MainNav} from "@/components/main-nav";
-import {MobileNav} from "@/components/mobile-nav";
+import { UserMenu } from "@/features/auth/user-dropdown";
+import { MainNav } from "@/components/main-nav";
+import { MobileNav } from "@/components/mobile-nav";
 
 export default function SiteHeader() {
-    return (
-        <>
-            <header className="sticky top-0 z-50 w-full border-y bg-background /95
+  return (
+    <>
+      <header
+        className="sticky top-0 z-50 w-full border-y bg-background /95
              backdrop-blur supports-[backdrop-filter]:bg-background/60"
-            >
-                <div className="container flex h-16 max-w-screen-2xl items-center justify-between max-md:px-6">
-                    <MainNav/>
-                    <MobileNav/>
-                    <UserMenu/>
-                </div>
-            </header>
-        </>
-    );
+      >
+        <div className="container flex h-16 max-w-screen-2xl items-center justify-between max-md:px-6">
+          <MainNav />
+          <MobileNav />
+          <UserMenu />
+        </div>
+      </header>
+    </>
+  );
 }
