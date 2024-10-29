@@ -56,7 +56,7 @@ export default function ContactForm() {
         try {
             setIsLoading(true);
             registerContact(data.name, data.email, data.subject, data.content)
-            toast.success("You have been successfully registered")
+            toast.success("You message has been submitted to MarieTeam")
             form.reset()
             router.push("/")
         } catch (error) {
