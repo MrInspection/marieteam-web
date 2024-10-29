@@ -19,6 +19,7 @@ import { CrossingDetails } from "@/app/(customer)/bookings/_components/crossing-
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { useRouter } from "next/navigation";
+import BroadcastBanner from "@/components/broadcast-banner";
 
 export default function BookingPage() {
   const [crossings, setCrossings] = useState<Crossing[] | null>(null);

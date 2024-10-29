@@ -33,8 +33,8 @@ export async function searchCrossings(search: CrossingSearch) {
           geographicalZone: zone,
         },
         departureTime: {
-          gte: new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 0, 0, 0)),
-          lt: new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 23, 59, 59, 999)),
+          gte: new Date(date.setHours(0, 0, 0, 0)),
+          lt: new Date(date.setHours(23, 59, 59, 999)),
         },
       },
       include: {
