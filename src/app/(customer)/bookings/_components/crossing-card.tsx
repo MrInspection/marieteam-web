@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { Anchor, Clock, Waves } from "lucide-react";
+import {Anchor, Clock, Users, Waves} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 import {
@@ -128,8 +128,8 @@ export function CrossingCard({ crossing, isSelected, onSelect }: TripCardProps) 
                 {isFullyBooked ? (
                     <div className="text-red-500 font-bold">Not bookable</div>
                 ) : (
-                    <div className="text-muted-foreground font-medium">
-                      {totalAvailableSeats} available seats
+                    <div className="text-muted-foreground font-medium flex items-center gap-2">
+                      {totalAvailableSeats} <Users className="size-4" />
                     </div>
                 )}
               </div>

@@ -19,7 +19,6 @@ import { CrossingDetails } from "@/app/(customer)/bookings/_components/crossing-
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { useRouter } from "next/navigation";
-import BroadcastBanner from "@/components/broadcast-banner";
 
 export default function BookingPage() {
   const [crossings, setCrossings] = useState<Crossing[] | null>(null);
@@ -40,15 +39,12 @@ export default function BookingPage() {
 
   const handleRedirect = (crossingId: string) => {
     setLoading(true);
-    toast.success("You will be redirected...");
+    toast.info("You will be redirected...");
     router.push(`/bookings/configure?trip=${crossingId}`);
   };
 
   return (
     <main className="flex flex-col flex-grow">
-
-      {process.env.NODE_ENV === "production" && <BroadcastBanner message={"The deployed version of MarieTeam on Vercel has an issue: to view the registered results from our database, you need to add +1 day to the target date."} variant="critical" />}
-
       <section className="container max-w-7xl py-8">
         <SearchForm onSubmit={handleSearch} />
       </section>
@@ -151,7 +147,7 @@ export default function BookingPage() {
                   </Button>
                 </div>
               </SheetTrigger>
-              <SheetContent className="w-screen">
+              <SheetContent className="w-screen overflow-y-auto">
                 <SheetHeader>
                   <SheetTitle className="text-left">Trip Information</SheetTitle>
                 </SheetHeader>

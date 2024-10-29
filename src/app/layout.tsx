@@ -18,7 +18,7 @@ export default function RootLayout({children}: Readonly<{ children: React.ReactN
         <body className={inter.className} suppressHydrationWarning={true}>
         <ThemeProvider
             attribute="class"
-            defaultTheme="light"
+            defaultTheme="system"
             enableSystem
             disableTransitionOnChange
         >

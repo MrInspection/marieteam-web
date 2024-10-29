@@ -100,7 +100,7 @@ export function ConfigureSeats({ crossingId, seatCategories, userId }: Configure
       <div>
         <h1 className="font-bold text-2xl">Book your seats</h1>
         <p className="text-muted-foreground text-sm">Select the seats you want to book for your trip.</p>
-        <ScrollArea className="h-[26rem] mt-8 pr-6">
+        <ScrollArea className="lg:h-[26rem] mt-8 lg:pr-6">
           <section className="space-y-6">
             {seatCategories.map((category) => (
                 <div key={category.id} className="space-y-4">

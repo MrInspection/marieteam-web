@@ -101,7 +101,7 @@ export function Orders({reservations}: OrderProps) {
                                             <Eye className="size-5"/> View
                                         </Button>
                                     </SheetTrigger>
-                                    <SheetContent>
+                                    <SheetContent className="w-screen overflow-y-auto">
                                         <SheetHeader>
                                             <SheetTitle className="text-left">
                                                 Order Details

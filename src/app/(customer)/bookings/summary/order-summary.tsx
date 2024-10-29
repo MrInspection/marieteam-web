@@ -142,7 +142,7 @@ function OrderSummary({ reservation }: SummaryProps) {
                             </section>
                             <section>
                                 <h2 className="text-lg font-semibold mt-6 mb-4">Seats Reserved</h2>
-                                <ScrollArea className="h-52 mt-8">
+                                <ScrollArea className="lg:h-52 mt-8 lg:pr-6">
                                     <div className={"grid gap-4"}>
                                         {reservation.seats.map((seat) => {
                                             const pricing = seat.seatType.Pricing.find((p) => p.routeId === route.id);
@@ -168,7 +168,7 @@ function OrderSummary({ reservation }: SummaryProps) {
                                             );
                                         })}
                                     </div>
-                                    <ScrollBar className="-pr-6" />
+                                    <ScrollBar />
                                 </ScrollArea>
                                 <div className="border-t-2 pt-4 flex items-center justify-between mt-8">
                                     <p className="text-muted-foreground text-lg">Total Amount</p>
