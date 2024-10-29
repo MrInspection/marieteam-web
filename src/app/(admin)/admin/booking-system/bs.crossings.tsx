@@ -243,22 +243,24 @@ export function CrossingManagement({ crossings, boats, routes }: CrossingFormsPr
                             {localCrossings.map((crossing, index) => (
                                 <TableRow key={crossing?.id ?? index}>
                                     <TableCell className="max-lg:hidden">{crossing?.id ?? 'N/A'}</TableCell>
-                                    <TableCell className="max-md:hidden">{boats.find(b => b.id === crossing?.boatId)?.name || 'N/A'}</TableCell>
+                                    <TableCell className="max-md:hidden">
+                                        {boats.find(b => b.id === crossing?.boatId)?.name || 'N/A'}
+                                    </TableCell>
                                     <TableCell>
-                                        {format(new Date(crossing.departureTime), "PPP HH:mm:ss") || 'N/A'}
+                                        {crossing?.departureTime ? format(new Date(crossing.departureTime), "PPP HH:mm:ss") : 'N/A'}
                                     </TableCell>
                                     <TableCell>
                                         {routes.find(r => r.id === crossing?.routeId)?.departurePort || 'N/A'} - {" "}
                                         {routes.find(r => r.id === crossing?.routeId)?.arrivalPort || 'N/A'}
                                     </TableCell>
                                     <TableCell>
-                                        {editingId === crossing.id ? (
+                                        {editingId === crossing?.id ? (
                                             <Button variant="ghost" size="sm" onClick={() => setEditingId(null)}>
                                                 <X className="size-4" /> Cancel
                                             </Button>
                                         ) : (
                                             <Button variant="ghost" size="sm" onClick={() => {
-                                                setEditingId(crossing.id)
+                                                setEditingId(crossing?.id)
                                                 editForm.reset(crossing)
                                             }}>
                                                 <Pencil className="size-4" /> Edit
