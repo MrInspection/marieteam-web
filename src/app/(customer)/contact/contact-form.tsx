@@ -19,6 +19,7 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import {registerContact} from "@/app/(customer)/contact/contact.action";
+import {useRouter} from "next/navigation";
 
 const FormSchema = z.object({
     name: z.string().min(2, {
@@ -39,6 +40,8 @@ const FormSchema = z.object({
 
 export default function ContactForm() {
     const [isLoading, setIsLoading] = useState(false);
+    const router = useRouter()
+
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
@@ -55,6 +58,7 @@ export default function ContactForm() {
             registerContact(data.name, data.email, data.subject, data.content)
             toast.success("You have been successfully registered")
             form.reset()
+            router.push("/")
         } catch (error) {
             setIsLoading(false);
             toast.error(`${error}`)
