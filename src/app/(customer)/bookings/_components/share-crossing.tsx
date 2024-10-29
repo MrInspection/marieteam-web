@@ -12,7 +12,7 @@ export function ShareTripButton({id}: {id: string}) {
 
     return (
         <Button variant="outline" onClick={copyToClipboard}>
-            <Share2 className="size-4 mr-2" /> Share
+            <Share2 className="size-4" /> Share
         </Button>
     )
 }

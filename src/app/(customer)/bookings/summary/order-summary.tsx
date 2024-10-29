@@ -176,7 +176,7 @@ function OrderSummary({ reservation }: SummaryProps) {
                                 </div>
                                 <Button className="mt-4 w-full" size="lg" onClick={handleCheckout} disabled={isLoading}>
                                     {isLoading && <Loader className="size-4 animate-spin" /> }
-                                    Proceed to checkout <ChevronRight className="ml-2 w-4 h-4"/>
+                                    Proceed to checkout <ChevronRight className="w-4 h-4"/>
                                 </Button>
                             </section>
                         </div>

@@ -153,7 +153,7 @@ export function ConfigureSeats({ crossingId, seatCategories, userId }: Configure
           </div>
           <Button onClick={handleContinue} className="mt-4 w-full" disabled={totalAmount === 0 || isLoading}>
             {isLoading && <Loader className="size-4 animate-spin" /> }
-            Continue <ChevronRight className="ml-2 w-4 h-4" />
+            Continue <ChevronRight className="w-4 h-4" />
           </Button>
         </div>
       </div>

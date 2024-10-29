@@ -148,7 +148,7 @@ const ConfigurePage = async ({ searchParams }: ConfigurePageProps) => {
                             href="/bookings"
                             className={cn(buttonVariants({variant: "outline"}))}
                         >
-                            <ChevronLeft className="size-4 mr-2" />
+                            <ChevronLeft className="size-4" />
                             Back
                         </Link>
                         <ShareTripButton id={configureTrip.id}/>

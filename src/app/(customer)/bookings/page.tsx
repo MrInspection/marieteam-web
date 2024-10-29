@@ -116,7 +116,7 @@ export default function BookingPage() {
                       >
                         {loading && <Loader className="size-4 animate-spin" /> }
                         Buy your ticket
-                        <ChevronRight className="size-4 ml-2" />
+                        <ChevronRight className="size-4" />
                       </Button>
                     </CardFooter>
                   )}
@@ -161,7 +161,7 @@ export default function BookingPage() {
                 >
                   {loading && <Loader className="size-4 animate-spin" /> }
                   Buy your ticket
-                  <ChevronRight className="size-4 ml-2" />
+                  <ChevronRight className="size-4" />
                 </Button>
               </SheetContent>
             </Sheet>
