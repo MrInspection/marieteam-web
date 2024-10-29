@@ -3,7 +3,7 @@
 import React, {useState} from "react";
 import { Button } from "@/components/ui/button";
 import {Anchor, ChevronRight, Loader} from "lucide-react";
-import { formatName } from "@/app/(customer)/bookings/_components/utils";
+import { formatName } from "@/utils/text-formatter";
 import Image from "next/image";
 import { format } from "date-fns";
 import { createCheckoutSession } from "@/app/(customer)/bookings/summary/summary.action";

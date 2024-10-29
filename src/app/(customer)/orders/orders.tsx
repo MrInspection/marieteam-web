@@ -5,7 +5,7 @@ import {Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger} from "@/comp
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import {Button} from "@/components/ui/button";
 import {Anchor, Eye} from "lucide-react";
-import {formatName} from "@/app/(customer)/bookings/_components/utils";
+import {formatName} from "@/utils/text-formatter";
 
 type BillingAddress = {
     name: string;

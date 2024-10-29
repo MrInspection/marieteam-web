@@ -32,7 +32,7 @@ import {
 } from "@/components/ui/form";
 import { GeographicalZone } from "@prisma/client";
 import {getRoutes} from "@/app/(customer)/bookings/crossing.action";
-import {formatName} from "@/app/(customer)/bookings/_components/utils";
+import {formatName} from "@/utils/text-formatter";
 
 type Route = {
   id: string;

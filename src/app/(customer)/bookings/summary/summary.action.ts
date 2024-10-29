@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/db";
 import { stripe } from "@/lib/stripe";
-import {formatName} from "@/app/(customer)/bookings/_components/utils";
+import {formatName} from "@/utils/text-formatter";
 
 type CheckoutSessionsProps = {
     reservationId: string;

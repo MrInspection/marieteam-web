@@ -35,7 +35,7 @@ import { RegisterRoute, UpdateRoute } from "@/app/(admin)/admin/booking-system/b
 import { toast } from "sonner"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { GeographicalZone } from "@prisma/client"
-import {formatName} from "@/app/(customer)/bookings/_components/utils";
+import {formatName} from "@/utils/text-formatter";
 
 type RouteFormsProps = {
     routes: Route[]

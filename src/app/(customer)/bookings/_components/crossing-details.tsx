@@ -12,7 +12,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
-import {formatName, getSeaConditionInfo} from "@/app/(customer)/bookings/_components/utils";
+import {formatName, getSeaConditionInfo} from "@/utils/text-formatter";
 import Image from "next/image";
 
 interface TripDetailsProps {

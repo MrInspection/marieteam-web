@@ -9,7 +9,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Crossing } from "@/app/(customer)/bookings/crossing.schema";
-import { getSeaConditionInfo } from "@/app/(customer)/bookings/_components/utils";
+import { getSeaConditionInfo } from "@/utils/text-formatter";
 
 interface TripCardProps {
   crossing: Crossing;

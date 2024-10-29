@@ -2,8 +2,8 @@
 
 import { DateRange } from "react-day-picker";
 import { useState, useEffect } from "react";
-import { getDashboardKPIs } from "@/app/(admin)/admin/dashboard-kpi.data"; // Import the server function
-import { getDailyRevenue, getPassengerCounts, getPassengerDistributionByCategory } from "@/app/(admin)/admin/dashboard.data"; // Import the function for fetching passenger counts
+import { getDashboardKPIs } from "@/app/(admin)/admin/dashboard-kpi.action"; // Import the server function
+import { getDailyRevenue, getPassengerCounts, getPassengerDistributionByCategory } from "@/app/(admin)/admin/dashboard.action"; // Import the function for fetching passenger counts
 import { Card, CardHeader } from "@/components/ui/card";
 import { DollarSign, Sigma, Users, CreditCard } from "lucide-react";
 import { DatePickerWithRange } from "@/app/(admin)/admin/_components/date-picker";

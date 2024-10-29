@@ -1,5 +1,6 @@
 {
   "name": "marieteam-web",
+  "author": "Spectron Labs",
   "version": "0.1.0",
   "private": true,
   "scripts": {

@@ -45,7 +45,6 @@ export async function getPassengerCounts(startDate: Date, endDate: Date): Promis
         allDates.push({ date: dateString, totalPassengers });
         currentDate.setDate(currentDate.getDate() + 1); // Move to the next day
     }
-
     return allDates;
 }
 
@@ -88,7 +87,6 @@ export async function getDailyRevenue(startDate: Date, endDate: Date): Promise<R
         allDates.push({ date: dateString, totalRevenue });
         currentDate.setDate(currentDate.getDate() + 1);
     }
-
     return allDates;
 }
 
@@ -139,6 +137,5 @@ export async function getPassengerDistributionByCategory(startDate: Date, endDat
         category,
         totalPassengers: categoryCounts[category],
     }));
-
     return passengerDistribution;
 }

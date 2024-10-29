@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import {ChevronRight, Loader, Minus, Plus} from "lucide-react"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { configureSeatAction } from './configure.action'
-import { formatName } from "@/app/(customer)/bookings/_components/utils"
+import { formatName } from "@/utils/text-formatter"
 import {toast} from "sonner";
 
 type SeatType = {

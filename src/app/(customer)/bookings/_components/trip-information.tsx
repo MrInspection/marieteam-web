@@ -9,7 +9,7 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion"
-import { getSeaConditionInfo } from "@/app/(customer)/bookings/_components/utils"
+import { getSeaConditionInfo } from "@/utils/text-formatter"
 
 type TripInformationProps = {
     boat: {
