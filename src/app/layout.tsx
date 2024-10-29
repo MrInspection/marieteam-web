@@ -8,8 +8,8 @@ import {Toaster} from "@/components/ui/sonner";
 const inter = Inter({subsets: ["latin"]});
 
 export const metadata: Metadata = {
-    title: "MarieTeam - Your marine transportation company",
-    description: "Spectron Labs",
+    title: "MarieTeam",
+    description: "Your marine transportation company. A Spectron Labs project.",
 };
 
 export default function RootLayout({children}: Readonly<{ children: React.ReactNode; }>) {
@@ -18,7 +18,7 @@ export default function RootLayout({children}: Readonly<{ children: React.ReactN
         <body className={inter.className} suppressHydrationWarning={true}>
         <ThemeProvider
             attribute="class"
-            defaultTheme="dark"
+            defaultTheme="light"
             enableSystem
             disableTransitionOnChange
         >

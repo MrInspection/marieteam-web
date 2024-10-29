@@ -29,13 +29,14 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
-import { Plus, AlertCircle, Pencil } from 'lucide-react'
+import { Plus, Pencil } from 'lucide-react'
 import { Route, RouteInputSchema, RouteInput } from "@/app/(admin)/admin/booking-system/booking-system.schema"
 import { RegisterRoute, UpdateRoute } from "@/app/(admin)/admin/booking-system/booking-system.action"
 import { toast } from "sonner"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { GeographicalZone } from "@prisma/client"
 import {formatName} from "@/utils/text-formatter";
+import {ExclamationTriangleIcon} from "@radix-ui/react-icons";
 
 type RouteFormsProps = {
     routes: Route[]
@@ -69,12 +70,12 @@ export function RoutesManagement({ routes }: RouteFormsProps) {
     })
 
     const renderEmptyState = () => (
-        <div className="flex flex-col items-center justify-center p-8 text-center">
-            <AlertCircle className="size-12 text-muted-foreground mb-4" />
-            <h3 className="text-lg font-semibold mb-2">No routes found</h3>
-            <p className="text-muted-foreground mb-4">There are no routes in the system yet.</p>
+        <div className="flex flex-col items-center justify-center p-8 text-center h-96">
+            <ExclamationTriangleIcon className="size-10 text-muted-foreground" />
+            <h3 className="text-lg mt-4 font-semibold mb-2">No routes found</h3>
+            <p className="text-muted-foreground mb-4 text-sm">There are no routes in the system yet.</p>
             <Button onClick={() => setDialogOpen(true)}>
-                <Plus className="size-4 mr-2" /> Add Your First Route
+                <Plus className="size-4 " /> Add Route
             </Button>
         </div>
     )

@@ -28,8 +28,8 @@ export type BoatInput = z.infer<typeof BoatInputSchema>;
 export type Boat = z.infer<typeof BoatSchema>;
 
 export const RouteInputSchema = z.object({
-    distance: z.number().positive().min(10, {
-        message: "Distance must be at least 10 meters",
+    distance: z.number().positive().min(5, {
+        message: "Distance must be at least 5 meters",
     }),
     departurePort: z.string().min(3, {
         message: "Departure port must be at least 3 characters long",

@@ -10,7 +10,7 @@ type BroadcastCardProps = {
 };
 
 const broadcastBannerStyles = cva(
-    "max-md:h-fit h-12 max-md:py-3 flex items-center justify-center border-y",
+    "max-xl:h-fit h-12 max-xl:py-3 flex items-center justify-center border-y",
     {
         variants: {
             variant: {

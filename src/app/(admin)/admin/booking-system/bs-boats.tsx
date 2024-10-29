@@ -23,10 +23,11 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
-import { X, Plus, AlertCircle } from 'lucide-react'
+import { X, Plus } from 'lucide-react'
 import { BoatInput, BoatInputSchema } from "@/app/(admin)/admin/booking-system/booking-system.schema";
 import { RegisterBoat } from "@/app/(admin)/admin/booking-system/booking-system.action";
 import { toast } from "sonner";
+import {ExclamationTriangleIcon} from "@radix-ui/react-icons";
 
 type BoatFormsProps = {
     boats: BoatInput[]
@@ -51,12 +52,12 @@ export function BoatsManagement({ boats }: BoatFormsProps) {
     })
 
     const renderEmptyState = () => (
-        <div className="flex flex-col items-center justify-center p-8 text-center">
-            <AlertCircle className="size-12 text-muted-foreground mb-4" />
-            <h3 className="text-lg font-semibold mb-2">No boats found</h3>
-            <p className="text-muted-foreground mb-4">There are no boats in the system yet.</p>
+        <div className="flex flex-col items-center justify-center p-8 text-center h-96">
+            <ExclamationTriangleIcon className="size-10 text-muted-foreground" />
+            <h3 className="mt-4 text-lg font-semibold">No boats found</h3>
+            <p className="text-muted-foreground text-sm mt-2 mb-4">There are no boats in the system yet.</p>
             <Button onClick={() => setDialogOpen(true)}>
-                <Plus className="size-4 mr-2" /> Add Your First Boat
+                <Plus className="size-4" /> Add Boat
             </Button>
         </div>
     )

@@ -20,7 +20,7 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
-import { Plus, AlertCircle, Pencil, CalendarIcon, X } from 'lucide-react'
+import { Plus, Pencil, CalendarIcon, X } from 'lucide-react'
 import { toast } from "sonner"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { RegisterCrossing, UpdateCrossing } from "@/app/(admin)/admin/booking-system/booking-system.action"
@@ -36,6 +36,7 @@ import { cn } from '@/lib/utils'
 import { format } from "date-fns"
 import { Calendar } from "@/components/ui/calendar"
 import { TimePicker } from "@/components/ui/time-picker/time-picker"
+import {ExclamationTriangleIcon} from "@radix-ui/react-icons";
 
 type CrossingFormsProps = {
     crossings: Crossing[]
@@ -67,12 +68,12 @@ export function CrossingManagement({ crossings, boats, routes }: CrossingFormsPr
     })
 
     const renderEmptyState = () => (
-        <div className="flex flex-col items-center justify-center p-8 text-center">
-            <AlertCircle className="size-12 text-muted-foreground mb-4" />
+        <div className="flex flex-col items-center justify-center p-8 text-center h-96">
+            <ExclamationTriangleIcon className="size-10 text-muted-foreground mb-4" />
             <h3 className="text-lg font-semibold mb-2">No crossings found</h3>
-            <p className="text-muted-foreground mb-4">There are no crossings in the system yet.</p>
+            <p className="text-muted-foreground mb-4 text-sm">There are no crossings in the system yet.</p>
             <Button onClick={() => setIsCreating(true)}>
-                <Plus className="size-4 mr-2" /> Add Your First Crossing
+                <Plus className="size-4" /> Add Crossing
             </Button>
         </div>
     )
