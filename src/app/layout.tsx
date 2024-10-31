@@ -9,7 +9,20 @@ const inter = Inter({subsets: ["latin"]});
 
 export const metadata: Metadata = {
     title: "MarieTeam",
-    description: "Your marine transportation company. A Spectron Labs project.",
+    description: "Your marine transportation company. Book your dream vacation with ease.",
+    openGraph: {
+        url: "https://marieteam.vercel.app",
+        title: "MarieTeam",
+        description: "Your marine transportation company. Book your dream vacation with ease.",
+        images: [
+            {
+                url: "https://marieteam.vercel.app/og.png",
+                width: 1200,
+                height: 630,
+                alt: "MarieTeam",
+            },
+        ],
+    }
 };
 
 export default function RootLayout({children}: Readonly<{ children: React.ReactNode; }>) {

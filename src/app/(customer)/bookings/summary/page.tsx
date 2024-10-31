@@ -6,7 +6,7 @@ import InvalidRequest from "@/app/(customer)/bookings/error";
 import type {Metadata} from "next";
 
 export const metadata: Metadata = {
-    title: "Summary - MarieTeam",
+    title: "Order Summary - MarieTeam",
 };
 
 type SummaryPageProps = {

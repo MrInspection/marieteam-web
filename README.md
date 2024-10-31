@@ -1,7 +1,7 @@
 
 # MarieTeam Website
 
-![](/public/marieteam.png)
+![](/public/og.png)
 
 MarieTeam Projects is a series of three distinct school projects, each focused on building a different type of application: a web application, a desktop application, and a mobile app.
 
@@ -28,9 +28,9 @@ The MarieTeam Web application implements a booking system, allowing users to sel
 
 ### 💰 Stripe Integration:
 
-- I have learned how to set up and create a Stripe checkout Session. I have also implemented an API route to received the metadata from the checkout session and update the user's payment status in the database.
+- I have learned how to set up and create a Stripe checkout Session. I have also implemented an API route to receive the metadata from the checkout session and update the user's payment status in the database.
 
-### ✅ Unit Testing:
+### ✅ Writing tests:
 
 
 
