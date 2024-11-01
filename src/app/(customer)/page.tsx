@@ -1,24 +1,24 @@
 "use client"
 
 import React from "react";
-import {ArrowRight} from "lucide-react";
+import {ArrowRight, Infinity} from "lucide-react";
 import Image from "next/image";
 import {RainbowButton} from "@/components/ui/rainbow-button";
 import {useRouter} from "next/navigation";
 
-export default function Home() {
+export default function HomePage() {
     const router = useRouter();
 
     return (
         <div className="my-24 container">
             <section className="flex flex-col items-center justify-center mb-28">
-                <div className="border-2 px-4 py-1.5 rounded-2xl w-fit text-sm">
-                    MarieTeam is now public!
+                <div className="border-2 px-4 py-1.5 rounded-2xl w-fit text-sm flex items-center gap-2">
+                   <Infinity className="size-4" />  Spectron Loop project
                 </div>
                 <h1 className="text-4xl md:text-5xl lg:text-7xl text-center text-balance font-bold mt-8">Book your dream <span
                     className="bg-gradient-to-r from-purple-500 via-indigo-500 to-blue-500 bg-clip-text text-transparent">vacation</span> <br/>with
-                    MarieTeam</h1>
-
+                    MarieTeam
+                </h1>
                 <p className="text-center text-muted-foreground mt-6 text-sm md:text-lg max-md:text-balance">
                     MarieTeam allows you to book your dream vacation with ease. Choose your destination, <br className="max-lg:hidden"/>select
                     your

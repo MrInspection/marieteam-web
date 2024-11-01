@@ -7,6 +7,7 @@ type BroadcastCardProps = {
     link?: string;
     hasLink?: boolean;
     variant?: "info" | "warning" | "error" | "critical";
+    action?: string;
 };
 
 const broadcastBannerStyles = cva(
@@ -62,7 +63,8 @@ export default function BroadcastBanner({
                                             message,
                                             link,
                                             hasLink,
-                                            variant = "info", // Default variant
+                                            variant = "info",
+                                            action // Default variant
                                         }: BroadcastCardProps) {
     return (
         <div className={broadcastBannerStyles({ variant })}>
@@ -76,11 +78,10 @@ export default function BroadcastBanner({
                         {hasLink && (
                             <Link
                                 href={link || ""}
-                                target="_blank"
                                 className={`underline underline-offset-4 inline-flex items-center group ${getLinkColor(variant)}`}
                             >
                 <span className={`group-hover:${getLinkColor(variant)}`}>
-                  Learn more
+                  {action || "Learn more"}
                 </span>
                             </Link>
                         )}

@@ -114,7 +114,7 @@ export function ConfigureSeats({ crossingId, seatCategories, userId }: Configure
                           <div>
                             <h3 className="font-medium">
                               {formatName(seatType.name)}{" "}
-                              <span className="text-sm bg-cyan-700/10 dark:bg-cyan-700/25 text-cyan-500 px-1.5 py-0.5 rounded-lg font-bold ml-1">
+                              <span className="text-sm bg-violet-700/10 dark:bg-violet-700/25 text-violet-500 px-1.5 py-0.5 rounded-lg font-bold ml-1">
                                 {seatType.price.toFixed(2)} €
                               </span>
                             </h3>

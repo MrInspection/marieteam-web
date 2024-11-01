@@ -137,8 +137,10 @@ const ConfigurePage = async ({ searchParams }: ConfigurePageProps) => {
         <>
             {!userId &&
                 <BroadcastBanner
-                    variant="warning"
-                    message="Please create an account or log in to continue with your reservation and complete the checkout process."
+                    variant="error"
+                    message="You must be signed in to continue with your reservation and complete the checkout process."
+                    link={"/sign-in?callbackUrl=/bookings/configure?trip=" + trip}
+                    hasLink={true} action="Sign in"
                 />
             }
             <div className="bg-muted/40 dark:bg-black">

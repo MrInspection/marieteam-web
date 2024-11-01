@@ -13,9 +13,10 @@ The MarieTeam Web application implements a booking system, allowing users to sel
 - `TailwindCSS`
 - `Shadcn UI`
 - `Prisma & Neon Database`
-- `Auth.js`
+- `Auth.js` : Credentials auth & 0auth providers
 - `Stripe`
 - `Zod`
+- `Jest` (Testing)
 
 ## ⚡Features 
 
@@ -24,21 +25,22 @@ The MarieTeam Web application implements a booking system, allowing users to sel
 - Booking System with Prisma
 - Administration dashboard with statistics data
 
-## 🧠 What I learned ?
+## ☑️ How can it be improved ?
 
-### 💰 Stripe Integration:
+- **ADMIN!** Automatically refresh the data in the dashboard
+- **ADMIN!** Transform the admin dashboard into a CRUD dashboard to fully manage everything
+  - Manage `seatCategory`, `seatType` (create, edit, delete and read)
+  - Manage `boats` (ability to edit & delete)
+  - Manage `crossings` (ability to delete)
+  - Manage `routes` (ability to delete)
+  - Manage `pricings` (ability to create, edit & delete)
+- **ADMIN!** View information about a **customer** and their reservations and manage their account & permissions
 
-- I have learned how to set up and create a Stripe checkout Session. I have also implemented an API route to receive the metadata from the checkout session and update the user's payment status in the database.
 
-### ✅ Writing tests:
-
-
-
-## 🔍 How can it be improved ?
-
-- Make the admin dashboard like a CRUD dashboard
-- Have a map to view the route of the crossing
-- An illustration of the boat to be able to select the seat
+- **CUSTOMER!** Ability to download the invoice for their reservation in `/orders`
+- **CUSTOMER!** Ability to cancel their reservation and get a full refund 
+- **CUSTOMER!** Have a map to view the route of the crossing
+- **CUSTOMER!** An illustration of the boat to be able to select the seat
 
 ## 📗 How to run this project ?
 To run this project on your local environment, follow the following steps :
@@ -46,10 +48,15 @@ To run this project on your local environment, follow the following steps :
 - Run the command `npm install` in the project directory to install the **required** dependencies
 - Create a new file named `.env` in the project directory and add the following environment variables:
 
-```
+```dotenv
 AUTH_SECRET=
+
 AUTH_GITHUB_ID=
 AUTH_GITHUB_SECRET=
+
+AUTH_GOOGLE_ID=
+AUTH_GOOGLE_SECRET=
+
 DATABASE_URL=
 NEXT_PUBLIC_SERVER_URL=
 STRIPE_SECRET_KEY=

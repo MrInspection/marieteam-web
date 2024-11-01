@@ -19,7 +19,8 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import {registerContact} from "@/app/(customer)/contact/contact.action";
-import {useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
+
 
 const FormSchema = z.object({
     name: z.string().min(2, {

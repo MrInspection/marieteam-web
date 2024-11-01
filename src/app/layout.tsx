@@ -8,7 +8,7 @@ import {Toaster} from "@/components/ui/sonner";
 const inter = Inter({subsets: ["latin"]});
 
 export const metadata: Metadata = {
-    title: "MarieTeam",
+    title: "MarieTeam Corp.",
     description: "Your marine transportation company. Book your dream vacation with ease.",
     openGraph: {
         url: "https://marieteam.vercel.app",
