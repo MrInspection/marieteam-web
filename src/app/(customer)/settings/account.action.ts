@@ -49,12 +49,7 @@ export async function DeleteAccount({ userId }: { userId: string }) {
       where: { userId: userId },
     });
 
-    // Step 4: Delete sessions for the user
-    await prisma.session.deleteMany({
-      where: { userId: userId },
-    });
-
-    // Step 5: Finally, delete the user
+    // Step 4: Finally, delete the user
     await prisma.user.delete({
       where: { id: userId },
     });
