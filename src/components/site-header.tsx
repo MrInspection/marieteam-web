@@ -1,6 +1,6 @@
-import { UserMenu } from "@/features/auth/user-dropdown";
-import { MainNav } from "@/components/main-nav";
-import { MobileNav } from "@/components/mobile-nav";
+import {UserMenu} from "@/features/auth/user-dropdown";
+import {MainNav} from "@/components/main-nav";
+import {MobileNav} from "@/components/mobile-nav";
 
 export default function SiteHeader() {
   return (
@@ -10,9 +10,9 @@ export default function SiteHeader() {
              backdrop-blur supports-[backdrop-filter]:bg-background/60"
       >
         <div className="container flex h-14 max-w-screen-2xl items-center justify-between max-md:px-6">
-          <MainNav />
-          <MobileNav />
-          <UserMenu />
+          <MainNav/>
+          <MobileNav/>
+          <UserMenu/>
         </div>
       </header>
     </>

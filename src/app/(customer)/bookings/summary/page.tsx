@@ -1,62 +1,62 @@
-import { auth } from "@/auth/auth";
-import { prisma } from "@/lib/db";
+import {auth} from "@/auth/auth";
+import {prisma} from "@/lib/db";
 import OrderSummary from "@/app/(customer)/bookings/summary/order-summary";
 import React from "react";
 import InvalidRequest from "@/app/(customer)/bookings/error";
 import type {Metadata} from "next";
 
 export const metadata: Metadata = {
-    title: "Order Summary - MarieTeam",
+  title: "Order Summary - MarieTeam",
 };
 
 type SummaryPageProps = {
-    searchParams: {
-        [key: string]: string | string[] | undefined;
-    };
+  searchParams: {
+    [key: string]: string | string[] | undefined;
+  };
 };
 
-const SummaryPage = async ({ searchParams }: SummaryPageProps) => {
-    const { id } = searchParams;
+const SummaryPage = async ({searchParams}: SummaryPageProps) => {
+  const {id} = searchParams;
 
-    const session = await auth();
-    const userId = session?.user?.id;
+  const session = await auth();
+  const userId = session?.user?.id;
 
-    if (!id || typeof id !== "string" || !userId) {
-        return <InvalidRequest />;
-    }
+  if (!id || typeof id !== "string" || !userId) {
+    return <InvalidRequest/>;
+  }
 
-    const reservation = await prisma.reservation.findUnique({
-        where: {
-            id: id,
-            userId: userId,
-            status: "PENDING",
-        },
+  const reservation = await prisma.reservation.findUnique({
+    where: {
+      id: id,
+      userId: userId,
+      status: "PENDING",
+    },
+    include: {
+      seats: {
         include: {
-            seats: {
-                include: {
-                    seatType: {
-                        include: {
-                            Pricing: true,
-                        },
-                    },
-                    crossing: {
-                        include: {
-                            boat: true,
-                            route: true,
-                            captainLogs: true,
-                        },
-                    },
-                },
+          seatType: {
+            include: {
+              Pricing: true,
             },
+          },
+          crossing: {
+            include: {
+              boat: true,
+              route: true,
+              captainLogs: true,
+            },
+          },
         },
-    });
+      },
+    },
+  });
 
-    if (!reservation) {
-        return <InvalidRequest />;
-    }
+  if (!reservation) {
+    return <InvalidRequest/>;
+  }
 
-    // @ts-expect-error Not taking into consideration some props elements
-    return <OrderSummary reservation={reservation} />;
+  // @ts-expect-error Not taking into consideration some props elements
+  return <OrderSummary reservation={reservation}/>;
 };
 
 export default SummaryPage;

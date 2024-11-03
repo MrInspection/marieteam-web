@@ -1,9 +1,9 @@
 "use server";
 
-import { prisma } from "@/lib/db";
-import { revalidatePath } from "next/cache";
-import { CrossingSchema, CrossingSearch } from "./crossing.schema";
-import { GeographicalZone } from "@prisma/client";
+import {prisma} from "@/lib/db";
+import {revalidatePath} from "next/cache";
+import {CrossingSchema, CrossingSearch} from "./crossing.schema";
+import {GeographicalZone} from "@prisma/client";
 
 export async function getRoutes(zone: GeographicalZone) {
   try {
@@ -24,7 +24,7 @@ export async function getRoutes(zone: GeographicalZone) {
 
 export async function searchCrossings(search: CrossingSearch) {
   try {
-    const { zone, date, routeId } = search;
+    const {zone, date, routeId} = search;
 
     const crossings = await prisma.crossing.findMany({
       where: {
@@ -72,8 +72,8 @@ export async function searchCrossings(search: CrossingSearch) {
         const maxCapacity = capacity.maxCapacity;
 
         const bookedSeatsForCategory = crossing.seatAvailability
-            .filter((seat) => seat.seatType.seatCategory.name === category)
-            .reduce((total, seat) => total + seat.bookedSeats, 0);
+          .filter((seat) => seat.seatType.seatCategory.name === category)
+          .reduce((total, seat) => total + seat.bookedSeats, 0);
 
         const availableSeats = maxCapacity - bookedSeatsForCategory;
 
@@ -107,7 +107,7 @@ export async function searchCrossings(search: CrossingSearch) {
         },
         seatAvailability: crossing.seatAvailability.map((seat) => {
           const capacity = seatCategories.find(
-              (category) => category.seatCategory === seat.seatType.seatCategory.name
+            (category) => category.seatCategory === seat.seatType.seatCategory.name
           )?.maxCapacity;
 
           return {
@@ -127,7 +127,7 @@ export async function searchCrossings(search: CrossingSearch) {
     });
 
     const validatedCrossings = formattedCrossings.map((crossing) =>
-        CrossingSchema.parse(crossing)
+      CrossingSchema.parse(crossing)
     );
 
     revalidatePath("/");

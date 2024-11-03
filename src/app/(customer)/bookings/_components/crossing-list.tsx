@@ -1,5 +1,5 @@
-import { CrossingCard } from "./crossing-card";
-import { Crossing } from "@/app/(customer)/bookings/crossing.schema";
+import {CrossingCard} from "./crossing-card";
+import {Crossing} from "@/app/(customer)/bookings/crossing.schema";
 
 interface TripListProps {
   crossings: Crossing[];
@@ -8,10 +8,10 @@ interface TripListProps {
 }
 
 export function CrossingList({
-  crossings,
-  selectedCrossing,
-  onSelectCrossing,
-}: TripListProps) {
+                               crossings,
+                               selectedCrossing,
+                               onSelectCrossing,
+                             }: TripListProps) {
   return (
     <div>
       <div className="space-y-4">

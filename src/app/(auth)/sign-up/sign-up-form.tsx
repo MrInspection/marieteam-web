@@ -14,7 +14,7 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {toast} from "sonner";
 import {
     Form,
-    FormControl,
+    FormControl, FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -101,6 +101,7 @@ export function SignUpForm({ callbackUrl }: { callbackUrl: string }) {
                                             <FormControl>
                                                 <Input type="password" placeholder="Your password" {...field} />
                                             </FormControl>
+                                            <FormDescription>Your password must be 12 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character.</FormDescription>
                                             <FormMessage />
                                         </FormItem>
                                     )}

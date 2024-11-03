@@ -1,28 +1,28 @@
 // page.tsx
 
-import { auth } from "@/auth/auth";
+import {auth} from "@/auth/auth";
 import NotFound from "@/app/not-found";
 import AdminDashboard from "@/app/(admin)/admin/dashboard";
 import {prisma} from "@/lib/db";
 
 export default async function AdminPage() {
-    const session = await auth();
-    const user = session?.user;
+  const session = await auth();
+  const user = session?.user;
 
-    if (!user) {
-        return NotFound();
-    }
+  if (!user) {
+    return NotFound();
+  }
 
-    const isAdmin = await prisma.user.findUnique({
-        where: {
-            id: user.id,
-            role: "ADMIN",
-        },
-    });
+  const isAdmin = await prisma.user.findUnique({
+    where: {
+      id: user.id,
+      role: "ADMIN",
+    },
+  });
 
-    if (!isAdmin) {
-        return NotFound();
-    }
+  if (!isAdmin) {
+    return NotFound();
+  }
 
-    return <AdminDashboard />
+  return <AdminDashboard/>
 }

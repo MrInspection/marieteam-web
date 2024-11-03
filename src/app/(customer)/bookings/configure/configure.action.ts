@@ -1,14 +1,14 @@
 "use server";
 
-import { prisma } from "@/lib/db";
-import { configureSeatSchema } from "@/app/(customer)/bookings/configure/configure.schema";
-import { redirect } from "next/navigation";
+import {prisma} from "@/lib/db";
+import {configureSeatSchema} from "@/app/(customer)/bookings/configure/configure.schema";
+import {redirect} from "next/navigation";
 
 export async function configureSeatAction(
-    crossingId: string,
-    selectedSeats: Array<{ seatTypeId: string; bookedSeats: number }>,
-    totalAmount: number,
-    userId: string
+  crossingId: string,
+  selectedSeats: Array<{ seatTypeId: string; bookedSeats: number }>,
+  totalAmount: number,
+  userId: string
 ) {
   // Validation des données
   const validData = configureSeatSchema.safeParse({
@@ -33,7 +33,7 @@ export async function configureSeatAction(
 
     // Créez une nouvelle entrée pour chaque type de siège dans cette réservation
     for (const seat of selectedSeats) {
-      const { seatTypeId, bookedSeats } = seat;
+      const {seatTypeId, bookedSeats} = seat;
 
       // Créer une nouvelle entrée de siège pour cette réservation
       await tx.seat.create({

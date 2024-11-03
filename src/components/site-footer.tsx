@@ -1,7 +1,7 @@
-import { InstagramLogoIcon, LinkedInLogoIcon } from "@radix-ui/react-icons";
+import {InstagramLogoIcon, LinkedInLogoIcon} from "@radix-ui/react-icons";
 import Image from "next/image";
-import { BiLogoTiktok } from "react-icons/bi";
-import { BsTwitterX } from "react-icons/bs";
+import {BiLogoTiktok} from "react-icons/bi";
+import {BsTwitterX} from "react-icons/bs";
 import Link from "next/link";
 
 export default function SiteFooter() {

@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import {useState} from "react";
 import {CalendarSearch, ChevronRight, EyeOff, Frown, Loader} from "lucide-react";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import {Card, CardContent, CardFooter} from "@/components/ui/card";
+import {Button} from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
@@ -11,14 +11,14 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { SearchForm } from "./_components/search-form";
-import { searchCrossings } from "./crossing.action";
-import { Crossing, CrossingSearch } from "./crossing.schema";
-import { CrossingList } from "@/app/(customer)/bookings/_components/crossing-list";
-import { CrossingDetails } from "@/app/(customer)/bookings/_components/crossing-details";
-import { toast } from "sonner";
-import { Badge } from "@/components/ui/badge";
-import { useRouter } from "next/navigation";
+import {SearchForm} from "./_components/search-form";
+import {searchCrossings} from "./crossing.action";
+import {Crossing, CrossingSearch} from "./crossing.schema";
+import {CrossingList} from "@/app/(customer)/bookings/_components/crossing-list";
+import {CrossingDetails} from "@/app/(customer)/bookings/_components/crossing-details";
+import {toast} from "sonner";
+import {Badge} from "@/components/ui/badge";
+import {useRouter} from "next/navigation";
 
 export default function BookingPage() {
   const [crossings, setCrossings] = useState<Crossing[] | null>(null);
@@ -39,21 +39,21 @@ export default function BookingPage() {
 
   const handleRedirect = (crossingId: string) => {
     setLoading(true);
-    toast.info("You will be redirected...");
+    toast.info("Redirecting to the configurator...");
     router.push(`/bookings/configure?trip=${crossingId}`);
   };
 
   return (
     <main className="flex flex-col flex-grow">
       <section className="container max-w-7xl py-8">
-        <SearchForm onSubmit={handleSearch} />
+        <SearchForm onSubmit={handleSearch}/>
       </section>
       <div className="border-t-2 dark:bg-black bg-muted/40 flex flex-col flex-grow">
         <div className="container max-w-7xl py-14">
           {!searched && (
             <Card className="rounded-2xl h-96 flex flex-col items-center justify-center border-dashed">
               <CardContent className="p-6 flex flex-col items-center justify-center">
-                <CalendarSearch className="size-10 text-muted-foreground" />
+                <CalendarSearch className="size-10 text-muted-foreground"/>
                 <h1 className="text-lg font-bold mt-4">MarieTeam Bookings</h1>
                 <p className="text-center text-muted-foreground text-sm mt-1 max-w-lg text-balance leading-6">
                   Select a geographical zone, a travel date, and a trip route,
@@ -95,10 +95,10 @@ export default function BookingPage() {
                 <Card className="rounded-2xl border-2 shadow-none">
                   <CardContent className="pt-6">
                     {selectedCrossing ? (
-                      <CrossingDetails crossing={selectedCrossing} />
+                      <CrossingDetails crossing={selectedCrossing}/>
                     ) : (
                       <div className="flex flex-col items-center justify-center h-96 text-center">
-                        <EyeOff className="size-10 text-muted-foreground mb-4" />
+                        <EyeOff className="size-10 text-muted-foreground mb-4"/>
                         <p className="font-bold">No Trip Selected</p>
                         <p className="text-sm text-muted-foreground mt-1 text-balance">
                           Select a trip to view information about it and buy
@@ -114,9 +114,9 @@ export default function BookingPage() {
                         onClick={() => handleRedirect(selectedCrossing.id)}
                         disabled={loading}
                       >
-                        {loading && <Loader className="size-4 animate-spin" /> }
+                        {loading && <Loader className="size-4 animate-spin"/>}
                         Buy your ticket
-                        <ChevronRight className="size-4" />
+                        <ChevronRight className="size-4"/>
                       </Button>
                     </CardFooter>
                   )}
@@ -128,7 +128,7 @@ export default function BookingPage() {
           {searched && (!crossings || crossings.length === 0) && (
             <Card className="rounded-2xl h-96 flex flex-col items-center justify-center">
               <CardContent className="p-6 flex flex-col items-center justify-center">
-                <Frown className="size-10 text-destructive" />
+                <Frown className="size-10 text-destructive"/>
                 <h1 className="text-lg font-bold mt-4">No Trips Found</h1>
                 <p className="text-center text-muted-foreground text-sm mt-1 max-w-md text-balance">
                   We couldn&apos;t find any trips for the selected date and route.
@@ -152,16 +152,16 @@ export default function BookingPage() {
                   <SheetTitle className="text-left">Trip Information</SheetTitle>
                 </SheetHeader>
                 <div className="mt-4">
-                  <CrossingDetails crossing={selectedCrossing} />
+                  <CrossingDetails crossing={selectedCrossing}/>
                 </div>
                 <Button
                   className="w-full mt-4"
                   onClick={() => handleRedirect(selectedCrossing.id)}
                   disabled={loading}
                 >
-                  {loading && <Loader className="size-4 animate-spin" /> }
+                  {loading && <Loader className="size-4 animate-spin"/>}
                   Buy your ticket
-                  <ChevronRight className="size-4" />
+                  <ChevronRight className="size-4"/>
                 </Button>
               </SheetContent>
             </Sheet>

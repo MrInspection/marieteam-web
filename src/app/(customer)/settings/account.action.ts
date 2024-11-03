@@ -2,28 +2,26 @@
 
 import { prisma } from "@/lib/db";
 import { redirect } from "next/navigation";
+import {AccountSchemaType} from "@/app/(customer)/settings/account.schema";
+import {signOut} from "@/auth/auth";
+import {revalidatePath} from "next/cache";
 
-type AccountInformationProps = {
-  name: string;
-  email: string;
-  userId: string;
-};
-
-export async function UpdateAccountInformation({
-                                                 name,
-                                                 email,
-                                                 userId,
-                                               }: AccountInformationProps) {
-  await prisma.user.update({
-    where: {
-      id: userId,
-    },
-    data: {
-      name,
-      email,
-    },
-  });
-  console.log("REQUEST! Updated information for USER :", userId);
+export async function UpdateAccount(userId: string, data: AccountSchemaType) {
+  try {
+    await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        name: data.name,
+        email: data.email,
+      },
+    })
+  } catch (error) {
+    throw new Error(`Error updating account: ${error}`);
+  } finally {
+    revalidatePath('/settings');
+  }
 }
 
 export async function DeleteAccount({ userId }: { userId: string }) {
@@ -37,14 +35,25 @@ export async function DeleteAccount({ userId }: { userId: string }) {
       },
     });
 
-    // Step 2: Delete reservations for the user
+    // Step 2: Delete billing addresses associated with the user's reservations
+    await prisma.billingAddress.deleteMany({
+      where: {
+        reservations: {
+          some: {
+            userId: userId,
+          },
+        },
+      },
+    });
+
+    // Step 3: Delete reservations for the user
     await prisma.reservation.deleteMany({
       where: {
         userId: userId,
       },
     });
 
-    // Step 3: Delete accounts associated with the user
+    // Step 4: Delete accounts associated with the user
     await prisma.account.deleteMany({
       where: { userId: userId },
     });
@@ -53,11 +62,10 @@ export async function DeleteAccount({ userId }: { userId: string }) {
     await prisma.user.delete({
       where: { id: userId },
     });
-
-    console.log(`User with ID ${userId} and all related data have been deleted manually.`);
   } catch (error) {
-    console.error("Error deleting user account:", error);
+    throw new Error(`Error deleting user account: ${error}`);
   } finally {
+    await signOut({redirect: false});
     await prisma.$disconnect();
     redirect("/");
   }

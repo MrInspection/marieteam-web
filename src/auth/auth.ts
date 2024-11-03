@@ -2,11 +2,11 @@ import NextAuth from "next-auth";
 import GitHub from "@auth/core/providers/github";
 import Google from "@auth/core/providers/google";
 import Credentials from "next-auth/providers/credentials";
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import { prisma } from "@/lib/db";
+import {PrismaAdapter} from "@auth/prisma-adapter";
+import {prisma} from "@/lib/db";
 import bcrypt from "bcryptjs";
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
+export const {handlers, signIn, signOut, auth} = NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [
     GitHub,
@@ -14,8 +14,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     Credentials({
       name: "Credentials",
       credentials: {
-        email: { label: "Email", type: "email", placeholder: "john.doe@example.com" },
-        password: { label: "Password", type: "password", placeholder: "Your password" },
+        email: {label: "Email", type: "email", placeholder: "john.doe@example.com"},
+        password: {label: "Password", type: "password", placeholder: "Your password"},
       },
       async authorize(credentials) {
         const email = credentials?.email as string;
@@ -26,7 +26,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         }
 
         const user = await prisma.user.findFirst({
-          where: { email },
+          where: {email},
         });
 
         // Await the comparison
@@ -44,12 +44,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     strategy: "jwt",
   },
   callbacks: {
-    async session({ session, token }) {
+    async session({session, token}) {
       // @ts-expect-error - session.user is not defined
       session.user = token.user;
       return session;
     },
-    async jwt({ token, user }) {
+    async jwt({token, user}) {
       if (user) {
         token.user = user;
       }
