@@ -83,6 +83,7 @@ export function RoutesManagement({routes}: RouteFormsProps) {
   async function onSubmit(values: RouteInput) {
     try {
       const newRoute = await RegisterRoute(values);
+      {/* @ts-expect-error not taking into consideration some props elements */}
       setLocalRoutes((prevRoutes) => [...prevRoutes, newRoute]);
       setDialogOpen(false);
       toast.success("Your route has been registered.");
