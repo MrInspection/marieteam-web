@@ -45,9 +45,9 @@ export function Users({users}: UserListProps) {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
+      <div className="flex max-md:flex-col items-center justify-between max-md:gap-6">
         <h2 className="text-2xl font-bold">Manage Users</h2>
-        <div className="relative max-w-sm ml-auto">
+        <div className="relative max-md:w-full md:max-w-sm md:ml-auto">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4"/>
           <Input
             type="text"
@@ -63,9 +63,9 @@ export function Users({users}: UserListProps) {
           <TableHeader>
             <TableRow>
               <TableHead>User</TableHead>
-              <TableHead className="max-md:hidden">Email</TableHead>
-              <TableHead>Role</TableHead>
-              <TableHead>Reservations</TableHead>
+              <TableHead className="max-lg:hidden">Email</TableHead>
+              <TableHead className="max-md:hidden">Role</TableHead>
+              <TableHead className="max-md:hidden">Reservations</TableHead>
               <TableHead className="max-md:hidden">Joined</TableHead>
               <TableHead>Actions</TableHead>
             </TableRow>
@@ -85,8 +85,8 @@ export function Users({users}: UserListProps) {
                       <span className="font-medium">{user.name || 'Unnamed User'}</span>
                     </div>
                   </TableCell>
-                  <TableCell className="max-md:hidden">{user.email}</TableCell>
-                  <TableCell>
+                  <TableCell className="max-lg:hidden">{user.email}</TableCell>
+                  <TableCell className="max-md:hidden">
                     <span
                       className={cn(
                         user.role === "ADMIN"
@@ -100,7 +100,7 @@ export function Users({users}: UserListProps) {
                       {formatName(user.role)}
                     </span>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="max-md:hidden">
                     <span
                       className="bg-cyan-100/80 dark:bg-cyan-700/20 rounded-lg px-2 py-1 text-xs font-medium text-cyan-700 dark:text-cyan-500">
                       {user._count.reservations} reservations
