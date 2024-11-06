@@ -1,7 +1,7 @@
 import {
   Anchor,
   HeartHandshake,
-  Home,
+  Home, Users,
 } from "lucide-react"
 
 import {
@@ -28,6 +28,11 @@ const navigation = [
     icon: Anchor,
   },
   {
+    title: "User Management",
+    url: "/admin/users",
+    icon: Users,
+  },
+  {
     title: "Help & Support",
     url: "/admin/support",
     icon: HeartHandshake,
@@ -48,7 +53,7 @@ export function AdminSidebar() {
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">MarieTeam</span>
-                  <span className="truncate text-xs text-muted-foreground">Administration</span>
+                  <span className="truncate text-xs text-muted-foreground">Spectron Labs</span>
                 </div>
               </a>
             </SidebarMenuButton>

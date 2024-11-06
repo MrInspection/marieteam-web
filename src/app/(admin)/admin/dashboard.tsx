@@ -2,35 +2,32 @@
 
 import {DateRange} from "react-day-picker";
 import {useState, useEffect} from "react";
-import {getDashboardKPIs} from "@/app/(admin)/admin/dashboard-kpi.action"; // Import the server function
+import {getDashboardKPIs} from "@/app/(admin)/admin/dashboard-kpi.action";
 import {
   getDailyRevenue,
   getPassengerCounts,
   getPassengerDistributionByCategory
-} from "@/app/(admin)/admin/dashboard.action"; // Import the function for fetching passenger counts
+} from "@/app/(admin)/admin/dashboard.action";
 import {Card, CardHeader} from "@/components/ui/card";
 import {DollarSign, Sigma, Users, CreditCard} from "lucide-react";
 import {DatePickerWithRange} from "@/app/(admin)/admin/_components/date-picker";
 import {PassengersChart} from "@/app/(admin)/admin/_components/passengers-chart";
 import {RevenueChart} from "@/app/(admin)/admin/_components/revenues-chart";
-import {PassengersDistributionChart} from "@/app/(admin)/admin/_components/categories-chart"; // Import PassengersDistributionChart
+import {PassengersDistributionChart} from "@/app/(admin)/admin/_components/categories-chart";
 
-// Define the type for your passenger chart data
-interface PassengerChartData {
-  date: string; // Assuming the date is a string, adjust type as needed
-  totalPassengers: number; // Adjust this property based on your actual data structure
+type PassengerChartData = {
+  date: string;
+  totalPassengers: number;
 }
 
-// Define the type for your revenue chart data
-interface RevenueChartData {
-  date: string; // Assuming the date is a string, adjust type as needed
-  totalRevenue: number; // Adjust this property based on your actual data structure
+type RevenueChartData = {
+  date: string;
+  totalRevenue: number;
 }
 
-// Define the type for passenger category data
-interface PassengerCategory {
-  category: string; // The seat category name
-  totalPassengers: number; // Total passengers for this category
+type PassengerCategory = {
+  category: string;
+  totalPassengers: number;
 }
 
 // Client component to manage the dashboard KPIs
@@ -99,12 +96,12 @@ export default function AdminDashboard() {
   return (
     <>
       <div className="flex max-md:flex-col max-md:gap-4 items-center justify-between">
-        <h1 className={"text-4xl font-bold"}>Dashboard</h1>
+        <h1 className={"text-3xl font-bold"}>Dashboard</h1>
         <div className="flex items-center gap-2">
           <DatePickerWithRange onDateChange={handleDateChange}/>
         </div>
       </div>
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
         <Card className="rounded-2xl">
           <CardHeader>
             <div className="flex items-center justify-between pb-1">

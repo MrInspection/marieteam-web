@@ -10,7 +10,7 @@ export default async function ShipsPage() {
 
   return (
     <>
-      <h1 className="text-3xl lg:text-4xl font-bold">Booking System</h1>
+      <h1 className="text-3xl font-bold">Booking System</h1>
       <p className="max-md:text-sm mb-8 mt-1.5">Manage everything related to the booking system to make it work.</p>
       {/* @ts-expect-error not taking into consideration some props elements */}
       <BoatsManagement boats={boats}/>

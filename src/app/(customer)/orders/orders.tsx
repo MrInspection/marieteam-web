@@ -1,11 +1,12 @@
-"use client"
+"use client";
 
-import {useState} from 'react';
-import {Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger} from "@/components/ui/sheet";
-import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
-import {Button} from "@/components/ui/button";
-import {Anchor, Eye} from "lucide-react";
-import {formatName} from "@/utils/text-formatter";
+import { useState } from "react";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { Anchor, Eye } from "lucide-react";
+import { formatName } from "@/utils/text-formatter";
+import {cn} from "@/lib/utils";
 
 type BillingAddress = {
   name: string;
@@ -51,14 +52,14 @@ type Reservations = {
   createdAt: Date;
   seats: Seat[];
   userId: string;
-  billingAddress: BillingAddress;
+  billingAddress?: BillingAddress; // Make billingAddress optional to handle PENDING reservations
 };
 
 type OrderProps = {
   reservations: Reservations[];
 };
 
-export function Orders({reservations}: OrderProps) {
+export function Orders({ reservations }: OrderProps) {
   const [selectedOrder, setSelectedOrder] = useState<Reservations | null>(null);
   const sortedReservations = [...reservations].sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 
@@ -79,18 +80,26 @@ export function Orders({reservations}: OrderProps) {
           {sortedReservations.map((order) => (
             <TableRow key={order.id}>
               <TableCell className="max-lg:hidden">{order.id}</TableCell>
-              <TableCell className="max-sm:hidden">{order.billingAddress.name}</TableCell>
+              <TableCell className="max-sm:hidden">
+                {order.billingAddress ? order.billingAddress.name : "No Billing Information"}
+              </TableCell>
               <TableCell>
                 {new Date(order.createdAt).toLocaleDateString("en-US", {
                   year: "numeric",
                   month: "short",
-                  day: "numeric"
+                  day: "numeric",
                 })}
               </TableCell>
               <TableCell className="max-sm:hidden">${order.totalAmount.toFixed(2)}</TableCell>
               <TableCell>
                 <div
-                  className="bg-green-700/5 dark:bg-green-700/20 text-green-500 text-xs font-medium px-2 py-1 rounded-lg w-fit">
+                  className={cn(
+                    order.status === "PAID"
+                      ? "bg-emerald-100/70 dark:bg-emerald-700/20 text-emerald-500"
+                      : "bg-yellow-700/10 dark:bg-yellow-700/20 text-yellow-500",
+                    "text-xs font-medium px-2 py-1 rounded-lg w-fit"
+                  )}
+                >
                   {order.status}
                 </div>
               </TableCell>
@@ -98,7 +107,7 @@ export function Orders({reservations}: OrderProps) {
                 <Sheet>
                   <SheetTrigger asChild>
                     <Button variant="ghost" size="sm" onClick={() => setSelectedOrder(order)}>
-                      <Eye className="size-5"/> View
+                      <Eye className="size-5" /> View
                     </Button>
                   </SheetTrigger>
                   <SheetContent className="w-screen overflow-y-auto">
@@ -121,25 +130,25 @@ export function Orders({reservations}: OrderProps) {
                             <div className="flex items-center justify-between mt-1">
                               <section>
                                 <h4 className="text-xs text-muted-foreground">Departure</h4>
-                                <p
-                                  className="text-sm font-medium">{selectedOrder.seats[0].crossing.route.departurePort}</p>
+                                <p className="text-sm font-medium">
+                                  {selectedOrder.seats[0].crossing.route.departurePort}
+                                </p>
                               </section>
                               <div className="flex-grow mx-4 flex items-center">
-                                <div className="h-px bg-foreground flex-grow"/>
-                                <Anchor className="h-4 w-4 mx-2"/>
-                                <div className="h-px bg-foreground flex-grow"/>
+                                <div className="h-px bg-foreground flex-grow" />
+                                <Anchor className="h-4 w-4 mx-2" />
+                                <div className="h-px bg-foreground flex-grow" />
                               </div>
                               <section>
                                 <h4 className="text-xs text-muted-foreground">Arrival</h4>
-                                <p
-                                  className="text-sm font-medium">{selectedOrder.seats[0].crossing.route.arrivalPort}</p>
+                                <p className="text-sm font-medium">
+                                  {selectedOrder.seats[0].crossing.route.arrivalPort}
+                                </p>
                               </section>
                             </div>
                           </div>
-                          <div
-                            className="bg-muted/80 dark:bg-muted/50 p-3 rounded-lg">
-                            <h3 className="text-xs text-muted-foreground">Departure
-                              Time</h3>
+                          <div className="bg-muted/80 dark:bg-muted/50 p-3 rounded-lg">
+                            <h3 className="text-xs text-muted-foreground">Departure Time</h3>
                             <p className="text-sm font-medium">
                               {new Date(selectedOrder.seats[0].crossing.departureTime).toLocaleString("en-US", {
                                 year: "numeric",
@@ -147,45 +156,53 @@ export function Orders({reservations}: OrderProps) {
                                 day: "numeric",
                                 hour: "numeric",
                                 minute: "2-digit",
-                                hour12: true
+                                hour12: true,
                               })}
                             </p>
                           </div>
                         </div>
-
                         <div className="bg-muted/80 dark:bg-muted/50 p-3 rounded-lg">
                           <h3 className="font-semibold mb-2">Reservation Details</h3>
                           {selectedOrder.seats.map((seat) => (
-                            <div key={seat.id}
-                                 className="flex items-center justify-between text-sm">
-                              <p className="font-medium">{formatName(seat.seatType.name)} </p>
+                            <div key={seat.id} className="flex items-center justify-between text-sm">
+                              <p className="font-medium">{formatName(seat.seatType.name)}</p>
                               <div>
-                                                                    <span
-                                                                      className="text-muted-foreground">{seat.bookedSeats}x</span> {" "}
-                                <span
-                                  className="font-medium">{seat.seatType.Pricing[0].amount.toFixed(2)} €</span>
+                                <span className="text-muted-foreground">{seat.bookedSeats}x</span>{" "}
+                                <span className="font-medium">
+                                  {seat.seatType.Pricing[0].amount.toFixed(2)} €
+                                </span>
                               </div>
                             </div>
                           ))}
-                          <div
-                            className={"flex items-center justify-between border-t mt-4 pt-2 text-sm"}>
+                          <div className="flex items-center justify-between border-t mt-4 pt-2 text-sm">
                             <h3 className="font-semibold">Amount Paid</h3>
                             <p className="font-bold">{selectedOrder.totalAmount.toFixed(2)} €</p>
                           </div>
                         </div>
-                        <div className="bg-muted/80 dark:bg-muted/50 p-3 rounded-lg">
-                          <h3 className="font-semibold mb-2">Billing Information</h3>
-                          <p className="text-sm">{selectedOrder.billingAddress.name}</p>
-                          <p className="text-sm">{selectedOrder.billingAddress.street}</p>
-                          <p
-                            className="text-sm">{selectedOrder.billingAddress.postalCode} {selectedOrder.billingAddress.city}</p>
-                          <p className="text-sm">{selectedOrder.billingAddress.country}</p>
-                        </div>
+                        {selectedOrder.billingAddress ? (
+                          <div className="bg-muted/80 dark:bg-muted/50 p-3 rounded-lg">
+                            <h3 className="font-semibold mb-2">Billing Information</h3>
+                            <p className="text-sm">{selectedOrder.billingAddress.name}</p>
+                            <p className="text-sm">{selectedOrder.billingAddress.street}</p>
+                            <p className="text-sm">
+                              {selectedOrder.billingAddress.postalCode}{" "}
+                              {selectedOrder.billingAddress.city ?? ""}
+                            </p>
+                            <p className="text-sm">{selectedOrder.billingAddress.country}</p>
+                          </div>
+                        ) : (
+                          <div className="bg-muted/80 dark:bg-muted/50 p-3 rounded-lg h-28 flex flex-col items-center justify-center">
+                            <p className="text-muted-foreground text-sm text-center">
+                              No billing address available for pending
+                              reservations.
+                            </p>
+                          </div>
+                        )}
                       </div>
                     )}
                   </SheetContent>
-                </Sheet>
-              </TableCell>
+                      </Sheet>
+                      </TableCell>
             </TableRow>
           ))}
         </TableBody>
