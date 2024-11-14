@@ -30,7 +30,6 @@ type PassengerCategory = {
   totalPassengers: number;
 }
 
-// Client component to manage the dashboard KPIs
 export default function AdminDashboard() {
   const [kpis, setKpis] = useState({
     totalRevenue: 0,

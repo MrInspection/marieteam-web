@@ -51,7 +51,7 @@ export function CrossingCard({crossing, isSelected, onSelect}: TripCardProps) {
           isSelected
             ? "bg-emerald-50 border-emerald-500 dark:bg-emerald-700/15 dark:border-emerald-700 border-2 shadow-md"
             : isFullyBooked
-              ? "opacity-60 dark:opacity-50 cursor-not-allowed" // Disable hover effect for fully booked
+              ? "opacity-60 dark:opacity-50 cursor-not-allowed"
               : "hover:ring-2 ring-emerald-500 dark:ring-emerald-700"
         )}
       >

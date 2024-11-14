@@ -39,7 +39,6 @@ export default function BookingPage() {
 
   const handleRedirect = (crossingId: string) => {
     setLoading(true);
-    toast.info("Redirecting to the configurator...");
     router.push(`/bookings/configure?trip=${crossingId}`);
   };
 

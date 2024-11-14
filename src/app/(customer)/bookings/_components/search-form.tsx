@@ -33,6 +33,7 @@ import {
 import {GeographicalZone} from "@prisma/client";
 import {getRoutes} from "@/app/(customer)/bookings/crossing.action";
 import {formatName} from "@/utils/text-formatter";
+import {toast} from "sonner";
 
 type Route = {
   id: string;
@@ -82,7 +83,7 @@ export function SearchForm({onSubmit}: SearchFormProps) {
           setRoutes(fetchedRoutes);
         })
         .catch((error) => {
-          console.error("Error fetching routes:", error);
+          toast.error(error);
         })
         .finally(() => {
           setIsLoading(false);
@@ -97,7 +98,7 @@ export function SearchForm({onSubmit}: SearchFormProps) {
     try {
       await onSubmit(values as CrossingSearch);
     } catch (error) {
-      console.error("Error submitting form:", error);
+      toast.error(`${error}`);
     } finally {
       setIsSubmitting(false);
     }

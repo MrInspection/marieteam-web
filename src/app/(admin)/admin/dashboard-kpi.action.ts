@@ -4,7 +4,6 @@ import {z} from "zod";
 import {prisma} from "@/lib/db";
 import {formatISO} from "date-fns";
 
-// Zod schema to validate the date range
 const dateRangeSchema = z.object({
   from: z.date().nullable(),
   to: z.date().nullable(),

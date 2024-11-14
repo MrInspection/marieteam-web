@@ -13,19 +13,19 @@ export const createCheckoutSession = async ({reservationId, userId}: CheckoutSes
   const reservation = await prisma.reservation.findUnique({
     where: {
       id: reservationId,
-      userId: userId, // Ensure the reservation belongs to the user
+      userId: userId,
     },
     include: {
       seats: {
         include: {
           seatType: {
             include: {
-              Pricing: true, // Include pricing info
+              Pricing: true,
             },
           },
           crossing: {
             include: {
-              route: true, // Include route information
+              route: true,
             },
           },
         },

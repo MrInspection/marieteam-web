@@ -12,9 +12,5 @@ export default async function UsersPage() {
     }
   })
 
-  return (
-    <>
-      <Users users={users}/>
-    </>
-  )
+  return <Users users={users}/>
 }

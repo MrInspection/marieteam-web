@@ -1,5 +1,3 @@
-// page.tsx
-
 import {auth} from "@/auth/auth";
 import NotFound from "@/app/not-found";
 import AdminDashboard from "@/app/(admin)/admin/dashboard";

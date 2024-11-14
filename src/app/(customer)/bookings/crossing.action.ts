@@ -130,10 +130,9 @@ export async function searchCrossings(search: CrossingSearch) {
       CrossingSchema.parse(crossing)
     );
 
-    revalidatePath("/");
+    revalidatePath("/bookings");
     return validatedCrossings;
   } catch (error) {
-    console.error("Error searching crossings:", error);
     throw new Error("Failed to search crossings");
   }
 }

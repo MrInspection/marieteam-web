@@ -8,7 +8,6 @@ import {
   Route,
   RouteInput
 } from "@/app/(admin)/admin/booking-system/booking-system.schema";
-import {revalidatePath} from "next/cache";
 
 export async function RegisterBoat(boat: BoatInput) {
   try {
@@ -24,8 +23,6 @@ export async function RegisterBoat(boat: BoatInput) {
     });
   } catch (error) {
     throw new Error("Failed to register boat");
-  } finally {
-    revalidatePath("/admin/booking-system");
   }
 }
 
@@ -41,8 +38,6 @@ export async function RegisterRoute(route: RouteInput) {
     });
   } catch (error) {
     throw new Error("Failed to register route");
-  } finally {
-    revalidatePath("/admin/booking-system");
   }
 }
 
@@ -62,8 +57,6 @@ export async function UpdateRoute(id: string, route: Route) {
     return updatedRoute
   } catch (error) {
     throw new Error("Failed to update route");
-  } finally {
-    revalidatePath("/admin/booking-system");
   }
 }
 
@@ -78,8 +71,6 @@ export async function RegisterCrossing(crossing: CrossingInput) {
     });
   } catch (error) {
     throw new Error("Failed to register crossing");
-  } finally {
-    revalidatePath("/admin/booking-system");
   }
 }
 
@@ -98,7 +89,5 @@ export async function UpdateCrossing(id: string, crossing: Crossing) {
     return crossing;
   } catch (error) {
     throw new Error("Failed to update crossing");
-  } finally {
-    revalidatePath("/admin/booking-system");
   }
 }

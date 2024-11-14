@@ -229,7 +229,7 @@ export function BoatsManagement({boats}: BoatFormsProps) {
                     )}
                   />
                 </div>
-                <Button type="submit" className="w-full mt-2">Create</Button>
+                <Button type="submit" className="w-full mt-2">Create Boat</Button>
               </form>
             </Form>
           </DialogContent>

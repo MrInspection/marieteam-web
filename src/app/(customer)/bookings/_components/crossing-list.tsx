@@ -7,11 +7,7 @@ interface TripListProps {
   onSelectCrossing: (crossing: Crossing) => void;
 }
 
-export function CrossingList({
-                               crossings,
-                               selectedCrossing,
-                               onSelectCrossing,
-                             }: TripListProps) {
+export function CrossingList({crossings, selectedCrossing, onSelectCrossing,}: TripListProps) {
   return (
     <div>
       <div className="space-y-4">
