@@ -3,7 +3,7 @@ import {GeographicalZone, SeaCondition} from "@prisma/client";
 
 export const CrossingSearchSchema = z.object({
   zone: z.nativeEnum(GeographicalZone),
-  date: z.coerce.date(),
+  date: z.date(),
   routeId: z.string(),
 });
 

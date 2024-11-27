@@ -19,6 +19,7 @@ import {CrossingDetails} from "@/app/(customer)/bookings/_components/crossing-de
 import {toast} from "sonner";
 import {Badge} from "@/components/ui/badge";
 import {useRouter} from "next/navigation";
+import BroadcastBanner from "@/components/broadcast-banner";
 
 export default function BookingPage() {
   const [crossings, setCrossings] = useState<Crossing[] | null>(null);
@@ -44,6 +45,7 @@ export default function BookingPage() {
 
   return (
     <main className="flex flex-col flex-grow">
+      <BroadcastBanner message="To test the booking system, please select Belle Ile En Mer, November 27th, 2024 for the date and Vannes - Le Palais for the route." />
       <section className="container max-w-7xl py-8">
         <SearchForm onSubmit={handleSearch}/>
       </section>
@@ -79,7 +81,6 @@ export default function BookingPage() {
                     {crossings.length} offers available
                   </Badge>
                 </div>
-
                 <div>
                   <CrossingList
                     crossings={crossings}

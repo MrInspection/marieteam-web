@@ -57,12 +57,12 @@ export default function EditAccountForm({email, name, userId}: AccountFormProps)
 
   return (
     <Card className="rounded-2xl">
-      <CardHeader>
+      <CardHeader className="py-5">
         <CardTitle className="text-lg">Account Information</CardTitle>
       </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <CardContent className="grid gap-6 border-t py-8">
+          <CardContent className="grid gap-6 border-t py-6">
             <div className="grid gap-4">
               <FormField
                 control={form.control}

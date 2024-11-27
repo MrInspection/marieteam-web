@@ -49,10 +49,10 @@ export function CrossingCard({crossing, isSelected, onSelect}: TripCardProps) {
         className={cn(
           "flex flex-col rounded-2xl border-2 p-4 cursor-pointer transition-all overflow-hidden group bg-background",
           isSelected
-            ? "bg-emerald-50 border-emerald-500 dark:bg-emerald-700/15 dark:border-emerald-700 border-2 shadow-md"
+            ? "bg-blue-50 border-blue-500 dark:bg-blue-700/15 dark:border-blue-700 border-2 shadow-md"
             : isFullyBooked
               ? "opacity-60 dark:opacity-50 cursor-not-allowed"
-              : "hover:ring-2 ring-emerald-500 dark:ring-emerald-700"
+              : "hover:ring-2 ring-blue-500 dark:ring-blue-700"
         )}
       >
         <div className="flex flex-col space-y-4 w-full rounded-2xl p-4">
@@ -87,8 +87,8 @@ export function CrossingCard({crossing, isSelected, onSelect}: TripCardProps) {
                   )}
                 >
                   <div className="flex items-center gap-1.5">
-                    <Clock className="w-4 h-4"/>
-                    {format(crossing.departureTime, "HH:mm")}
+                    <Clock className={cn(delayMinutes  ? "max-sm:text-orange-500" : "", "w-4 h-4")}/>
+                    <p className={cn(delayMinutes ? "max-sm:hidden" : "")}>{format(crossing.departureTime, "HH:mm")}</p>
                   </div>
                 </div>
                 {delayMinutes && delayMinutes > 0 && (

@@ -28,7 +28,6 @@ export default function DeleteAccountZone({userId}: DeleteAccountDialogProps) {
       await DeleteAccount({userId: userId});
       toast.success("Your account has been deleted successfully");
     } catch (error) {
-      console.error('Failed to delete account:', error);
       toast.error("Unable to delete your account.");
       setIsDeleting(false);
     }

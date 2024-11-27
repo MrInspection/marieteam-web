@@ -18,7 +18,7 @@ export const getSeaConditionInfo = (condition: string) => {
         bgColor: "bg-orange-100",
         label: "Rough",
       };
-    case "VERY_ROUGH":
+    case "VERY_ROUGH": 
       return {
         color: "text-purple-700",
         bgColor: "bg-purple-100",

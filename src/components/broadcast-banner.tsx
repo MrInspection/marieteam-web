@@ -71,7 +71,7 @@ export default function BroadcastBanner({
       <div className="container text-sm">
         <div className="flex max-md:items-start items-center justify-center">
           <div>
-            {getIcon(variant)} {/* Display the appropriate icon */}
+            {getIcon(variant)}
           </div>
           <p className="font-medium">
             {message}{" "}

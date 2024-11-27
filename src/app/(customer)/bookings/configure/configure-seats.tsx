@@ -89,7 +89,7 @@ export function ConfigureSeats({crossingId, seatCategories, userId}: ConfigureSe
 
     try {
       await configureSeatAction(crossingId, seatsToReserve, totalAmount, userId);
-      toast.success("Your reservation has been registered.");
+      toast.success("Reservation saved. Redirecting...");
     } catch (error) {
       setIsLoading(false)
       toast.error(`${error}`);
@@ -100,7 +100,7 @@ export function ConfigureSeats({crossingId, seatCategories, userId}: ConfigureSe
     <div>
       <h1 className="font-bold text-2xl">Book your seats</h1>
       <p className="text-muted-foreground text-sm">Select the seats you want to book for your trip.</p>
-      <ScrollArea className="lg:h-[26rem] mt-8 lg:pr-6">
+      <ScrollArea className="lg:h-[28rem] mt-8 lg:pr-6">
         <section className="space-y-6">
           {seatCategories.map((category) => (
             <div key={category.id} className="space-y-4">
@@ -115,11 +115,11 @@ export function ConfigureSeats({crossingId, seatCategories, userId}: ConfigureSe
                       <h3 className="font-medium">
                         {formatName(seatType.name)}{" "}
                         <span
-                          className="text-sm bg-violet-700/10 dark:bg-violet-700/25 text-violet-500 px-1.5 py-0.5 rounded-lg font-bold ml-1">
+                          className="text-sm bg-blue-700/10 dark:bg-blue-700/25 text-blue-500 px-1.5 py-0.5 rounded-lg font-bold ml-1">
                                 {seatType.price.toFixed(2)} €
                               </span>
                       </h3>
-                      <p className="text-sm text-muted-foreground">{seatType.description}</p>
+                      <p className="text-sm text-muted-foreground line-clamp-1">{seatType.description}</p>
                     </div>
                     <div className="flex items-center space-x-2">
                       <Button

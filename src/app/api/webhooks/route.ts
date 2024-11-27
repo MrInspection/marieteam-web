@@ -10,7 +10,7 @@ export async function POST(req: Request) {
     const signature = headers().get("stripe-signature");
 
     if (!signature) {
-      return new Response("Invalid signature", {status: 400});
+      return new Response("[MarieTeam API] Invalid signature", {status: 400});
     }
 
     // Verify if the actual request is from Stripe
@@ -60,7 +60,6 @@ export async function POST(req: Request) {
 
     return NextResponse.json({result: event, ok: true});
   } catch (error) {
-    console.error(error);
     return NextResponse.json({message: "Something went wrong", ok: false}, {status: 500});
   }
 }

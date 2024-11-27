@@ -5,6 +5,7 @@ import EditAccountForm from "@/app/(customer)/settings/edit-account-form";
 import DeleteAccountZone from "@/app/(customer)/settings/delete-account";
 import NotSignedIn from "@/features/auth/not-signin";
 import {prisma} from "@/lib/db";
+import {EditPasswordForm} from "@/app/(customer)/settings/edit-password-form";
 
 export const metadata = {
   title: "Settings - MarieTeam",
@@ -39,7 +40,7 @@ export default async function SettingsPage() {
         <h1 className="text-3xl font-bold">Account Settings</h1>
       </section>
       <section className="border-t-2">
-        <div className="container max-w-3xl py-16 space-y-10">
+        <div className="container max-w-3xl py-16 space-y-8">
           <Card className="rounded-2xl">
             <CardHeader>
               <div className="py-2 flex items-center gap-3">
@@ -65,6 +66,7 @@ export default async function SettingsPage() {
             </CardFooter>
           </Card>
           <EditAccountForm email={userData.email!} name={userData.name!} userId={user.id} />
+          <EditPasswordForm userId={user.id} />
           <DeleteAccountZone userId={user.id}/>
         </div>
       </section>

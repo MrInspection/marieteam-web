@@ -19,7 +19,7 @@ export default function InvalidRequest() {
             the meantime, try refreshing the page or visiting us a bit later.
           </p>
           <div className="flex items-center justify-center gap-2">
-            <Link href="/public" className={cn(buttonVariants())}>
+            <Link href="/" className={cn(buttonVariants())}>
               Go back home
             </Link>
             <Link href="/contact" className={cn(buttonVariants({variant: "outline"}))}>

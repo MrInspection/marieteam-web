@@ -13,6 +13,7 @@ export async function signUpAction({name, email, password}: SignUpProps, callbac
       name,
       email,
       password: hashedPassword,
+      image: `https://avatar.vercel.sh/${name.replace(/\s+/g, "")}`
     },
   });
 

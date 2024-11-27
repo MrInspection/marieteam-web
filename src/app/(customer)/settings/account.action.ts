@@ -5,6 +5,25 @@ import { redirect } from "next/navigation";
 import {AccountSchemaType} from "@/app/(customer)/settings/account.schema";
 import {signOut} from "@/auth/auth";
 import {revalidatePath} from "next/cache";
+import bcrypt from "bcryptjs";
+
+export async function UpdatePassword(userId: string, password: string) {
+  const hashedPassword = await bcrypt.hash(password, 10);
+  try {
+    await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        password: hashedPassword,
+      },
+    })
+  } catch (error) {
+    throw new Error(`Error updating password: ${error}`);
+  } finally {
+    revalidatePath('/settings');
+  }
+}
 
 export async function UpdateAccount(userId: string, data: AccountSchemaType) {
   try {

@@ -140,16 +140,16 @@ function OrderSummary({reservation}: SummaryProps) {
                 </div>
               </section>
               <section>
-                <h2 className="text-lg font-semibold mt-6 mb-4">Seats Reserved</h2>
-                <ScrollArea className="lg:h-52 mt-8 lg:pr-6">
-                  <div className={"grid gap-4"}>
+                <h2 className="text-lg font-semibold mt-6">Seats Reserved</h2>
+                <ScrollArea className="lg:h-52 mt-4">
+                  <div className="grid gap-4">
                     {reservation.seats.map((seat) => {
                       const pricing = seat.seatType.Pricing.find((p) => p.routeId === route.id);
                       const individualPrice = pricing ? pricing.amount : 0;
-
                       return (
-                        <div className="border-2 rounded-2xl px-4 py-3 flex items-center justify-between"
-                             key={seat.id}
+                        <div
+                          className="border-2 rounded-2xl px-4 py-3 flex items-center justify-between"
+                          key={seat.id}
                         >
                           <div>
                             <h3 className="font-medium">{formatName(seat.seatType.name)}</h3>
@@ -158,10 +158,8 @@ function OrderSummary({reservation}: SummaryProps) {
                             </p>
                           </div>
                           <div>
-                                                        <span
-                                                          className="text-muted-foreground">{seat.bookedSeats}x </span>
-                            <span
-                              className="font-medium">{individualPrice.toFixed(2)}€</span>
+                            <span className="text-muted-foreground">{seat.bookedSeats}x </span>
+                            <span className="font-medium">{individualPrice.toFixed(2)}€</span>
                           </div>
                         </div>
                       );

@@ -160,7 +160,8 @@ export function CrossingManagement({crossings, boats, routes}: CrossingFormsProp
                 <FormMessage/>
               </FormItem>
             )}
-          /><FormField
+          />
+          <FormField
           control={form.control}
           name="departureTime"
           render={({field}) => (
