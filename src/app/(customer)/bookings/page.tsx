@@ -45,7 +45,7 @@ export default function BookingPage() {
 
   return (
     <main className="flex flex-col flex-grow">
-      <BroadcastBanner message="To test the booking system, please select Belle Ile En Mer, November 27th, 2024 for the date and Vannes - Le Palais for the route." />
+      <BroadcastBanner message="To test the booking system, please select Belle Ile En Mer, November 27th, 2024 for the date and Le Palais - Vannes for the route." />
       <section className="container max-w-7xl py-8">
         <SearchForm onSubmit={handleSearch}/>
       </section>
