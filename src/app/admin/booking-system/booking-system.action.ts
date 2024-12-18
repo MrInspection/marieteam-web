@@ -7,7 +7,7 @@ import {
   CrossingInput,
   Route,
   RouteInput
-} from "@/app/(admin)/admin/booking-system/booking-system.schema";
+} from "@/app/admin/booking-system/booking-system.schema";
 
 export async function RegisterBoat(boat: BoatInput) {
   try {
@@ -22,6 +22,7 @@ export async function RegisterBoat(boat: BoatInput) {
       },
     });
   } catch (error) {
+    console.error(error)
     throw new Error("Failed to register boat");
   }
 }
@@ -37,6 +38,7 @@ export async function RegisterRoute(route: RouteInput) {
       },
     });
   } catch (error) {
+    console.error(error)
     throw new Error("Failed to register route");
   }
 }
@@ -56,6 +58,7 @@ export async function UpdateRoute(id: string, route: Route) {
     });
     return updatedRoute
   } catch (error) {
+    console.error(error)
     throw new Error("Failed to update route");
   }
 }
@@ -70,6 +73,7 @@ export async function RegisterCrossing(crossing: CrossingInput) {
       },
     });
   } catch (error) {
+    console.error(error)
     throw new Error("Failed to register crossing");
   }
 }
@@ -88,6 +92,7 @@ export async function UpdateCrossing(id: string, crossing: Crossing) {
     });
     return crossing;
   } catch (error) {
+    console.error(error)
     throw new Error("Failed to update crossing");
   }
 }

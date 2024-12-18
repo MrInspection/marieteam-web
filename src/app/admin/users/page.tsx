@@ -1,5 +1,5 @@
 import {prisma} from "@/lib/db";
-import {Users} from "@/app/(admin)/admin/users/users";
+import {Users} from "@/app/admin/users/users";
 
 export default async function UsersPage() {
   const users = await prisma.user.findMany({

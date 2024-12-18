@@ -14,6 +14,7 @@ export async function registerContact(contact: ContactSchemaType) {
       },
     })
   } catch (error) {
+    console.error(error)
     throw new Error("Failed to register contact");
   }
 }

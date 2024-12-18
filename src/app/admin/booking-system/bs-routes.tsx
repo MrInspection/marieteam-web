@@ -30,8 +30,8 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import {Plus, Pencil} from 'lucide-react'
-import {Route, RouteInputSchema, RouteInput} from "@/app/(admin)/admin/booking-system/booking-system.schema"
-import {RegisterRoute, UpdateRoute} from "@/app/(admin)/admin/booking-system/booking-system.action"
+import {Route, RouteInputSchema, RouteInput} from "@/app/admin/booking-system/booking-system.schema"
+import {RegisterRoute, UpdateRoute} from "@/app/admin/booking-system/booking-system.action"
 import {toast} from "sonner"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
 import {GeographicalZone} from "@prisma/client"

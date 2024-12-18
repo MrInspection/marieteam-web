@@ -58,7 +58,7 @@ export function Users({users}: UserListProps) {
           />
         </div>
       </div>
-      <div className="border rounded-2xl p-4">
+      <div className="border rounded-2xl px-6 py-4">
         <Table>
           <TableHeader>
             <TableRow>
@@ -90,7 +90,7 @@ export function Users({users}: UserListProps) {
                     <span
                       className={cn(
                         user.role === "ADMIN"
-                          ? "bg-pink-700/20 text-pink-500"
+                          ? "bg-red-700/20 text-red-500"
                           : user.role === "CAPTAIN"
                             ? "bg-orange-700/20 text-orange-500"
                             : "bg-neutral-700/25 text-primary",

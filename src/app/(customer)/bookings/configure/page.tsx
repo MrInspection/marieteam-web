@@ -17,12 +17,13 @@ export const metadata: Metadata = {
 };
 
 type ConfigurePageProps = {
-  searchParams: {
+  searchParams: Promise<{
     [key: string]: string | string[] | undefined;
-  };
+  }>;
 };
 
-const ConfigurePage = async ({searchParams}: ConfigurePageProps) => {
+const ConfigurePage = async (props: ConfigurePageProps) => {
+  const searchParams = await props.searchParams;
   const {trip} = searchParams;
 
   if (!trip || typeof trip !== "string") {
@@ -134,7 +135,7 @@ const ConfigurePage = async ({searchParams}: ConfigurePageProps) => {
       : 0;
 
   return (
-    <>
+    <div className="flex flex-col flex-grow bg-muted/40 dark:bg-black">
       {!userId &&
           <BroadcastBanner
               variant="error"
@@ -143,7 +144,7 @@ const ConfigurePage = async ({searchParams}: ConfigurePageProps) => {
               hasLink={true} action="Sign in"
           />
       }
-      <div className="bg-muted/40 dark:bg-black">
+      <div className="">
         <div className="container max-lg:py-14 py-20">
           <div className="flex items-center gap-2 mb-6">
             <Link
@@ -151,7 +152,6 @@ const ConfigurePage = async ({searchParams}: ConfigurePageProps) => {
               className={cn(buttonVariants({variant: "outline"}))}
             >
               <ChevronLeft className="size-4"/>
-              Back
             </Link>
             <ShareTripButton id={configureTrip.id}/>
           </div>
@@ -172,7 +172,7 @@ const ConfigurePage = async ({searchParams}: ConfigurePageProps) => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

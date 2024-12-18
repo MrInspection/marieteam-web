@@ -14,7 +14,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import UserDropdown from "@/features/auth/user-dropdown";
+import UserDropdown from "@/components/user-dropdown";
 
 const navigation = [
   {
@@ -41,7 +41,7 @@ const navigation = [
 
 export function AdminSidebar() {
   return (
-    <Sidebar variant={"inset"}>
+    <Sidebar variant="inset">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem className="flex items-center justify-between">

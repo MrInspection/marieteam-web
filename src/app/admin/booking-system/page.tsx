@@ -1,7 +1,7 @@
-import {BoatsManagement} from "@/app/(admin)/admin/booking-system/bs-boats"
+import {BoatsManagement} from "@/app/admin/booking-system/bs-boats"
 import {prisma} from "@/lib/db"
-import {RoutesManagement} from "@/app/(admin)/admin/booking-system/bs-routes";
-import {CrossingManagement} from "@/app/(admin)/admin/booking-system/bs.crossings";
+import {RoutesManagement} from "@/app/admin/booking-system/bs-routes";
+import {CrossingManagement} from "@/app/admin/booking-system/bs.crossings";
 
 export default async function ShipsPage() {
   const boats = await prisma.boat.findMany({

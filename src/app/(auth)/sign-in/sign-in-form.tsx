@@ -37,6 +37,7 @@ export function SignInForm({callbackUrl}: { callbackUrl: string }) {
       await signInAction(values, callbackUrl)
       toast.success("You will be redirected")
     } catch (error) {
+      console.error(error)
       toast.error("Your email or password is incorrect.")
     }
   }

@@ -7,13 +7,12 @@ import {NextResponse} from "next/server";
 export async function POST(req: Request) {
   try {
     const body = await req.text();
-    const signature = headers().get("stripe-signature");
+    const signature = (await headers()).get("stripe-signature");
 
     if (!signature) {
-      return new Response("[MarieTeam API] Invalid signature", {status: 400});
+      return new Response("Invalid signature", {status: 400});
     }
 
-    // Verify if the actual request is from Stripe
     const event = stripe.webhooks.constructEvent(
       body,
       signature,
@@ -22,7 +21,7 @@ export async function POST(req: Request) {
 
     if (event.type === "checkout.session.completed") {
       if (!event.data.object.customer_details?.email) {
-        throw new Error("Missing email in customer details");
+        return new Response("Missing email in customer details", {status: 400});
       }
 
       const session = event.data.object as Stripe.Checkout.Session
@@ -32,7 +31,7 @@ export async function POST(req: Request) {
       }
 
       if (!userId || !reservationId) {
-        throw new Error("Invalid request metadata");
+        return new Response("Invalid request metadata", {status: 400})
       }
 
       const billingAddress = session.customer_details!.address
@@ -59,7 +58,8 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json({result: event, ok: true});
-  } catch (error) {
+  } catch (err) {
+    console.error(err);
     return NextResponse.json({message: "Something went wrong", ok: false}, {status: 500});
   }
 }

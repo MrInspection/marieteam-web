@@ -43,6 +43,5 @@ export async function configureSeatAction(
 
     return newReservation;
   });
-
-  redirect(`/bookings/summary?id=${reservation.id}`);
+  return redirect(`/bookings/summary?id=${reservation.id}`);
 }

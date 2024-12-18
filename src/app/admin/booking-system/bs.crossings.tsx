@@ -23,14 +23,14 @@ import {
 import {Plus, Pencil, CalendarIcon, X} from 'lucide-react'
 import {toast} from "sonner"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
-import {RegisterCrossing, UpdateCrossing} from "@/app/(admin)/admin/booking-system/booking-system.action"
+import {RegisterCrossing, UpdateCrossing} from "@/app/admin/booking-system/booking-system.action"
 import {
   Boat,
   Crossing,
   CrossingInput,
   CrossingInputSchema,
   Route,
-} from "@/app/(admin)/admin/booking-system/booking-system.schema"
+} from "@/app/admin/booking-system/booking-system.schema"
 import {Popover, PopoverContent, PopoverTrigger} from '@/components/ui/popover'
 import {cn} from '@/lib/utils'
 import {format} from "date-fns"

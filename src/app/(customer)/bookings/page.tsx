@@ -1,7 +1,7 @@
 "use client";
 
 import {useState} from "react";
-import {CalendarSearch, ChevronRight, EyeOff, Frown, Loader} from "lucide-react";
+import {CalendarSearch, CalendarX2, ChevronRight, EyeOff, Loader} from "lucide-react";
 import {Card, CardContent, CardFooter} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";
 import {
@@ -19,7 +19,6 @@ import {CrossingDetails} from "@/app/(customer)/bookings/_components/crossing-de
 import {toast} from "sonner";
 import {Badge} from "@/components/ui/badge";
 import {useRouter} from "next/navigation";
-import BroadcastBanner from "@/components/broadcast-banner";
 
 export default function BookingPage() {
   const [crossings, setCrossings] = useState<Crossing[] | null>(null);
@@ -45,18 +44,17 @@ export default function BookingPage() {
 
   return (
     <main className="flex flex-col flex-grow">
-      <BroadcastBanner message="To test the booking system, please select Belle Ile En Mer, November 27th, 2024 for the date and Le Palais - Vannes for the route." />
-      <section className="container max-w-7xl py-8">
+      <section className="container max-w-7xl py-8 sticky">
         <SearchForm onSubmit={handleSearch}/>
       </section>
       <div className="border-t-2 dark:bg-black bg-muted/40 flex flex-col flex-grow">
         <div className="container max-w-7xl py-14">
           {!searched && (
-            <Card className="rounded-2xl h-96 flex flex-col items-center justify-center border-dashed">
+            <Card className="rounded-2xl h-96 flex flex-col items-center justify-center ring-1 ring-muted">
               <CardContent className="p-6 flex flex-col items-center justify-center">
                 <CalendarSearch className="size-10 text-muted-foreground"/>
-                <h1 className="text-lg font-bold mt-4">MarieTeam Bookings</h1>
-                <p className="text-center text-muted-foreground text-sm mt-1 max-w-lg text-balance leading-6">
+                <h1 className="text-lg/7 font-bold mt-4 mb-2">MarieTeam Bookings</h1>
+                <p className="text-center text-muted-foreground text-sm max-w-sm text-balance leading-6">
                   Select a geographical zone, a travel date, and a trip route,
                   then click{" "}
                   <span
@@ -128,9 +126,9 @@ export default function BookingPage() {
           {searched && (!crossings || crossings.length === 0) && (
             <Card className="rounded-2xl h-96 flex flex-col items-center justify-center">
               <CardContent className="p-6 flex flex-col items-center justify-center">
-                <Frown className="size-10 text-destructive"/>
-                <h1 className="text-lg font-bold mt-4">No Trips Found</h1>
-                <p className="text-center text-muted-foreground text-sm mt-1 max-w-md text-balance">
+                <CalendarX2 className="size-10 text-muted-foreground"/>
+                <h1 className="text-lg font-bold mt-4 mb-2">No Trips Found</h1>
+                <p className="text-center text-muted-foreground text-sm max-w-sm text-pretty">
                   We couldn&apos;t find any trips for the selected date and route.
                   Please try different dates or routes.
                 </p>

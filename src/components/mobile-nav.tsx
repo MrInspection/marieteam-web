@@ -48,12 +48,12 @@ export function MobileNav() {
               strokeLinejoin="round"
             ></path>
           </svg>
-          <span className={"pl-2 font-bold sm:inline-block"}>MarieTeam</span>
+          <span className="pl-2 font-bold sm:inline-block">MarieTeam</span>
           <span className="sr-only">Toggle Menu</span>
         </Button>
       </SheetTrigger>
       <SheetContent side="left" className="p-10">
-        <div className={"flex items-center gap-2"}>
+        <div className="flex items-center gap-2">
           <MobileLink href="/" className="flex items-center" onOpenChange={setOpen}>
             <Anchor className="mr-2 size-5 rotate-45"/>
             <span className="font-bold">MarieTeam Corp.</span>
@@ -62,17 +62,17 @@ export function MobileNav() {
         <Separator className={"mt-4 mr-0 pr-0"}/>
         <div className="my-5">
           <div className="flex flex-col space-y-3 text-lg">
-            <MobileLink href={"/"} className="flex items-center text-muted-foreground" onOpenChange={setOpen}>
+            <MobileLink href="/" className="flex items-center text-muted-foreground" onOpenChange={setOpen}>
               <Home className="mr-2 size-5"/>
-              <span className="">Home</span>
+              <span>Home</span>
             </MobileLink>
-            <MobileLink href={"/bookings"} className="flex items-center text-muted-foreground" onOpenChange={setOpen}>
+            <MobileLink href="/bookings" className="flex items-center text-muted-foreground" onOpenChange={setOpen}>
               <Anchor className="mr-2 size-5"/>
-              <span className="">Bookings</span>
+              <span>Bookings</span>
             </MobileLink>
-            <MobileLink href={"/"} className="flex items-center text-muted-foreground" onOpenChange={setOpen}>
+            <MobileLink href="/" className="flex items-center text-muted-foreground" onOpenChange={setOpen}>
               <Bug className="mr-2 size-5"/>
-              <span className="">Contact</span>
+              <span>Contact</span>
             </MobileLink>
           </div>
         </div>

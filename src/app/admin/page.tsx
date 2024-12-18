@@ -1,6 +1,6 @@
 import {auth} from "@/auth/auth";
 import NotFound from "@/app/not-found";
-import AdminDashboard from "@/app/(admin)/admin/dashboard";
+import AdminDashboard from "@/app/admin/dashboard";
 import {prisma} from "@/lib/db";
 
 export default async function AdminPage() {

@@ -31,8 +31,8 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import {X, Plus} from 'lucide-react'
-import {BoatInput, BoatInputSchema} from "@/app/(admin)/admin/booking-system/booking-system.schema";
-import {RegisterBoat} from "@/app/(admin)/admin/booking-system/booking-system.action";
+import {BoatInput, BoatInputSchema} from "@/app/admin/booking-system/booking-system.schema";
+import {RegisterBoat} from "@/app/admin/booking-system/booking-system.action";
 import {toast} from "sonner";
 import {ExclamationTriangleIcon} from "@radix-ui/react-icons";
 

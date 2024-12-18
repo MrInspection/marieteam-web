@@ -18,22 +18,22 @@ export function ModeToggle() {
   return (
     <DropdownMenuSub>
       <DropdownMenuSubTrigger>
-        <SunMoon className={"size-4 mr-2"}/>
+        <SunMoon className="size-4 mr-2"/>
         Theme
       </DropdownMenuSubTrigger>
       <DropdownMenuPortal>
         <DropdownMenuSubContent>
           <DropdownMenuItem onClick={() => setTheme("light")}>
-            <SunIcon className={"size-4 mr-2"}/>
+            <SunIcon className="size-4 mr-2"/>
             <span>Light</span>
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setTheme("dark")}>
-            <MoonIcon className={"size-4 mr-2"}/>
+            <MoonIcon className="size-4 mr-2"/>
             <span>Dark</span>
           </DropdownMenuItem>
           <DropdownMenuSeparator/>
           <DropdownMenuItem onClick={() => setTheme("system")}>
-            <GearIcon className={"size-4 mr-2"}/>
+            <GearIcon className="size-4 mr-2"/>
             <span>System</span>
           </DropdownMenuItem>
         </DropdownMenuSubContent>

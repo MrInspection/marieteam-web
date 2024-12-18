@@ -7,7 +7,8 @@ import {ChevronLeft, Calendar, Mail, User} from "lucide-react";
 import {redirect} from "next/navigation";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 
-export default async function UserPage({params}: { params: { id: string } }) {
+export default async function UserPage(props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const {id} = params;
 
   const user = await prisma.user.findUnique({

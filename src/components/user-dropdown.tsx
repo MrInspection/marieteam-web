@@ -11,7 +11,7 @@ import {
 import {HeartHandshake, Settings, ShoppingCart, UserCog} from "lucide-react";
 import {prisma} from "@/lib/db";
 import Link from "next/link";
-import {SignInButton, SignOutButton} from "@/features/auth/signin-button";
+import {SignInButton, SignOutButton} from "@/components/signin-button";
 import {ModeToggle} from "@/components/theme-toggle";
 import {buttonVariants} from "@/components/ui/button";
 import {cn} from "@/lib/utils";
@@ -30,40 +30,45 @@ export default async function UserDropdown() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <Avatar className={"focus:ring-0"}>
-          <AvatarImage src={user?.image?.toString()} className={"shadow-md border-2 rounded-full"}/>
+        <Avatar className="focus:ring-0">
+          <AvatarImage src={user?.image?.toString()} className="shadow-md border-2 rounded-full"/>
           <AvatarFallback>{user?.name?.[0]}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+      <DropdownMenuContent className="w-56 max-h-fit">
+        <DropdownMenuLabel>
+          {user?.name}
+          <p className="text-xs text-muted-foreground">
+            {user?.email}
+          </p>
+        </DropdownMenuLabel>
         <DropdownMenuSeparator/>
-        <Link href={"/settings"}>
+        <Link href="/settings">
           <DropdownMenuItem>
-            <Settings className={"size-4 mr-2"}/>
+            <Settings className="size-4 mr-2" />
             Settings
           </DropdownMenuItem>
         </Link>
         <ModeToggle/>
-        <Link href={"/orders"}>
+        <Link href="/orders">
           <DropdownMenuItem>
-            <ShoppingCart className={"size-4 mr-2"}/>
+            <ShoppingCart className="size-4 mr-2" />
             Orders
           </DropdownMenuItem>
         </Link>
-        <Link href={"/contact"}>
+        <Link href="/contact">
           <DropdownMenuItem>
-            <HeartHandshake className={"size-4 mr-2"}/>
+            <HeartHandshake className="size-4 mr-2" />
             Support
           </DropdownMenuItem>
         </Link>
         {isAdmin && <>
-            <DropdownMenuSeparator/>
-            <Link href={"/admin"}>
-                <DropdownMenuItem>
-                    <UserCog className={"size-4 mr-2"}/> Admin
-                </DropdownMenuItem>
-            </Link>
+          <DropdownMenuSeparator/>
+          <Link href={"/admin"}>
+            <DropdownMenuItem>
+              <UserCog className={"size-4 mr-2"}/> Admin
+            </DropdownMenuItem>
+          </Link>
         </>}
         <DropdownMenuSeparator/>
         <SignOutButton/>
@@ -81,7 +86,7 @@ export async function UserMenu() {
       {user ? <UserDropdown/> :
         <>
           <SignInButton/>
-          <Link href={"/bookings"} className={cn(buttonVariants({variant: "outline"}))}>
+          <Link href="/bookings" className={cn(buttonVariants({variant: "outline"}))}>
             Get started
           </Link>
         </>

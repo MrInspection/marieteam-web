@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Anchor, Eye } from "lucide-react";
-import { formatName } from "@/utils/text-formatter";
+import {useState} from "react";
+import {Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger} from "@/components/ui/sheet";
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
+import {Button} from "@/components/ui/button";
+import {Anchor, Eye} from "lucide-react";
+import {formatName} from "@/utils/text-formatter";
 import {cn} from "@/lib/utils";
 
 type BillingAddress = {
@@ -59,12 +59,12 @@ type OrderProps = {
   reservations: Reservations[];
 };
 
-export function Orders({ reservations }: OrderProps) {
+export function Orders({reservations}: OrderProps) {
   const [selectedOrder, setSelectedOrder] = useState<Reservations | null>(null);
   const sortedReservations = [...reservations].sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 
   return (
-    <div className="border rounded-2xl p-4">
+    <div className="border rounded-xl px-6 py-4">
       <Table>
         <TableHeader>
           <TableRow>
@@ -107,102 +107,104 @@ export function Orders({ reservations }: OrderProps) {
                 <Sheet>
                   <SheetTrigger asChild>
                     <Button variant="ghost" size="sm" onClick={() => setSelectedOrder(order)}>
-                      <Eye className="size-5" /> View
+                      <Eye className="size-5"/> View
                     </Button>
                   </SheetTrigger>
-                  <SheetContent className="w-screen overflow-y-auto">
-                    <SheetHeader>
+                  <SheetContent className="w-screen overflow-y-auto p-0">
+                    <SheetHeader className="border-b p-6">
                       <SheetTitle className="text-left">
                         Order Details
-                        <p className="text-muted-foreground text-sm font-normal">ID: {selectedOrder?.id}</p>
+                        <p className="text-muted-foreground font-normal text-sm">{selectedOrder?.id}</p>
                       </SheetTitle>
                     </SheetHeader>
-                    {selectedOrder && (
-                      <div className="mt-6 space-y-3">
-                        <div className="grid gap-3">
-                          <div className="bg-muted/80 dark:bg-muted/50 p-3 rounded-lg">
-                            <h3 className="text-xs text-muted-foreground">Boat</h3>
-                            <p className="text-sm font-medium">
-                              {selectedOrder.seats[0].crossing.boat.name}
-                            </p>
-                          </div>
-                          <div className="bg-muted/80 dark:bg-muted/50 p-3 rounded-lg">
-                            <div className="flex items-center justify-between mt-1">
-                              <section>
-                                <h4 className="text-xs text-muted-foreground">Departure</h4>
-                                <p className="text-sm font-medium">
-                                  {selectedOrder.seats[0].crossing.route.departurePort}
-                                </p>
-                              </section>
-                              <div className="flex-grow mx-4 flex items-center">
-                                <div className="h-px bg-foreground flex-grow" />
-                                <Anchor className="h-4 w-4 mx-2" />
-                                <div className="h-px bg-foreground flex-grow" />
+                    <section className="p-6">
+                      {selectedOrder && (
+                        <div className="space-y-3">
+                          <div className="grid gap-3">
+                            <div className="bg-muted/80 dark:bg-muted/50 p-3 rounded-lg">
+                              <h3 className="text-xs text-muted-foreground">Boat</h3>
+                              <p className="text-sm font-medium">
+                                {selectedOrder.seats[0].crossing.boat.name}
+                              </p>
+                            </div>
+                            <div className="bg-muted/80 dark:bg-muted/50 p-3 rounded-lg">
+                              <div className="flex items-center justify-between mt-1">
+                                <section>
+                                  <h4 className="text-xs text-muted-foreground">Departure</h4>
+                                  <p className="text-sm font-medium">
+                                    {selectedOrder.seats[0].crossing.route.departurePort}
+                                  </p>
+                                </section>
+                                <div className="flex-grow mx-4 flex items-center">
+                                  <div className="h-px bg-foreground flex-grow"/>
+                                  <Anchor className="h-4 w-4 mx-2"/>
+                                  <div className="h-px bg-foreground flex-grow"/>
+                                </div>
+                                <section>
+                                  <h4 className="text-xs text-muted-foreground">Arrival</h4>
+                                  <p className="text-sm font-medium">
+                                    {selectedOrder.seats[0].crossing.route.arrivalPort}
+                                  </p>
+                                </section>
                               </div>
-                              <section>
-                                <h4 className="text-xs text-muted-foreground">Arrival</h4>
-                                <p className="text-sm font-medium">
-                                  {selectedOrder.seats[0].crossing.route.arrivalPort}
-                                </p>
-                              </section>
+                            </div>
+                            <div className="bg-muted/80 dark:bg-muted/50 p-3 rounded-lg">
+                              <h3 className="text-xs text-muted-foreground">Departure Time</h3>
+                              <p className="text-sm font-medium">
+                                {new Date(selectedOrder.seats[0].crossing.departureTime).toLocaleString("en-US", {
+                                  year: "numeric",
+                                  month: "short",
+                                  day: "numeric",
+                                  hour: "numeric",
+                                  minute: "2-digit",
+                                  hour12: true,
+                                })}
+                              </p>
                             </div>
                           </div>
                           <div className="bg-muted/80 dark:bg-muted/50 p-3 rounded-lg">
-                            <h3 className="text-xs text-muted-foreground">Departure Time</h3>
-                            <p className="text-sm font-medium">
-                              {new Date(selectedOrder.seats[0].crossing.departureTime).toLocaleString("en-US", {
-                                year: "numeric",
-                                month: "short",
-                                day: "numeric",
-                                hour: "numeric",
-                                minute: "2-digit",
-                                hour12: true,
-                              })}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="bg-muted/80 dark:bg-muted/50 p-3 rounded-lg">
-                          <h3 className="font-semibold mb-2">Reservation Details</h3>
-                          {selectedOrder.seats.map((seat) => (
-                            <div key={seat.id} className="flex items-center justify-between text-sm">
-                              <p className="font-medium">{formatName(seat.seatType.name)}</p>
-                              <div>
-                                <span className="text-muted-foreground">{seat.bookedSeats}x</span>{" "}
-                                <span className="font-medium">
+                            <h3 className="font-semibold mb-2">Reservation Details</h3>
+                            {selectedOrder.seats.map((seat) => (
+                              <div key={seat.id} className="flex items-center justify-between text-sm">
+                                <p className="font-medium">{formatName(seat.seatType.name)}</p>
+                                <div>
+                                  <span className="text-muted-foreground">{seat.bookedSeats}x</span>{" "}
+                                  <span className="font-medium">
                                   {seat.seatType.Pricing[0].amount.toFixed(2)} €
                                 </span>
+                                </div>
                               </div>
+                            ))}
+                            <div className="flex items-center justify-between border-t mt-4 pt-2 text-sm">
+                              <h3 className="font-semibold">Amount Paid</h3>
+                              <p className="font-bold">{selectedOrder.totalAmount.toFixed(2)} €</p>
                             </div>
-                          ))}
-                          <div className="flex items-center justify-between border-t mt-4 pt-2 text-sm">
-                            <h3 className="font-semibold">Amount Paid</h3>
-                            <p className="font-bold">{selectedOrder.totalAmount.toFixed(2)} €</p>
                           </div>
+                          {selectedOrder.billingAddress ? (
+                            <div className="bg-muted/80 dark:bg-muted/50 p-3 rounded-lg">
+                              <h3 className="font-semibold mb-2">Billing Information</h3>
+                              <p className="text-sm text-muted-foreground">{selectedOrder.billingAddress.name}</p>
+                              <p className="text-sm text-muted-foreground">{selectedOrder.billingAddress.street}</p>
+                              <p className="text-sm text-muted-foreground">
+                                {selectedOrder.billingAddress.postalCode}{" "}
+                                {selectedOrder.billingAddress.city ?? ""}
+                              </p>
+                              <p className="text-sm text-muted-foreground">{selectedOrder.billingAddress.country}</p>
+                            </div>
+                          ) : (
+                            <div className="bg-muted/80 dark:bg-muted/50 p-3 rounded-lg h-40 flex flex-col items-center justify-center">
+                              <p className="text-muted-foreground text-sm text-center">
+                                No billing address available for pending
+                                reservations.
+                              </p>
+                            </div>
+                          )}
                         </div>
-                        {selectedOrder.billingAddress ? (
-                          <div className="bg-muted/80 dark:bg-muted/50 p-3 rounded-lg">
-                            <h3 className="font-semibold mb-2">Billing Information</h3>
-                            <p className="text-sm">{selectedOrder.billingAddress.name}</p>
-                            <p className="text-sm">{selectedOrder.billingAddress.street}</p>
-                            <p className="text-sm">
-                              {selectedOrder.billingAddress.postalCode}{" "}
-                              {selectedOrder.billingAddress.city ?? ""}
-                            </p>
-                            <p className="text-sm">{selectedOrder.billingAddress.country}</p>
-                          </div>
-                        ) : (
-                          <div className="bg-muted/80 dark:bg-muted/50 p-3 rounded-lg h-28 flex flex-col items-center justify-center">
-                            <p className="text-muted-foreground text-sm text-center">
-                              No billing address available for pending
-                              reservations.
-                            </p>
-                          </div>
-                        )}
-                      </div>
-                    )}
+                      )}
+                    </section>
                   </SheetContent>
-                      </Sheet>
-                      </TableCell>
+                </Sheet>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

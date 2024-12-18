@@ -9,15 +9,14 @@ import {Button} from "@/components/ui/button";
 import {Calendar} from "@/components/ui/calendar";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 
-export function DatePickerWithRange({
-                                      className,
-                                      onDateChange,
-                                    }: React.HTMLAttributes<HTMLDivElement> & {
+export function DatePickerWithRange({className, onDateChange,}: React.HTMLAttributes<HTMLDivElement> & {
   onDateChange: (range: DateRange) => void
 }) {
+  const currentDate = new Date();
+
   const [date, setDate] = React.useState<DateRange>({
-    from: new Date(2024, 9, 20),
-    to: addDays(new Date(2024, 9, 20), 20),
+    from: currentDate,
+    to: addDays(currentDate, 30),
   });
 
   const handleDateChange = (range: DateRange | undefined) => {

@@ -1,11 +1,16 @@
 import type {Metadata} from "next";
 import "./globals.css";
-import {Inter} from "next/font/google";
+import {EB_Garamond, Inter} from "next/font/google";
 import React from "react";
 import {ThemeProvider} from "@/components/theme-provider";
 import {Toaster} from "@/components/ui/sonner";
+import {cn} from "@/lib/utils";
 
-const inter = Inter({subsets: ["latin"]});
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
+const eb_garamond = EB_Garamond({
+  subsets: ["latin"],
+  variable: "--font-heading",
+})
 
 export const metadata: Metadata = {
   title: "MarieTeam Corp.",
@@ -27,11 +32,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({children}: Readonly<{ children: React.ReactNode; }>) {
   return (
-    <html lang="en">
-    <body className={inter.className} suppressHydrationWarning={true}>
+    <html lang="en" className={cn(inter.variable, eb_garamond.variable)}>
+    <body className="font-sans" suppressHydrationWarning={true}>
     <ThemeProvider
       attribute="class"
-      defaultTheme="system"
+      defaultTheme="light"
       enableSystem
       disableTransitionOnChange
     >

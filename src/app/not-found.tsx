@@ -1,6 +1,5 @@
 import {Badge} from "@/components/ui/badge";
 import Link from "next/link";
-import {cn} from "@/lib/utils";
 import {buttonVariants} from "@/components/ui/button";
 import SiteHeader from "@/components/site-header";
 import SiteFooter from "@/components/site-footer";
@@ -20,7 +19,7 @@ export default function NotFound() {
               Sorry, we couldn&apos;t find the page you&apos;re looking for.
               This is perhaps a temporary issue, so please try again later.
             </p>
-            <Link href="/" className={cn(buttonVariants())}>
+            <Link href="/" className={buttonVariants()}>
               Go back home
             </Link>
           </div>

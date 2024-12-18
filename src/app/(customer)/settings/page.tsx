@@ -1,11 +1,11 @@
-import { auth } from "@/auth/auth";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {auth} from "@/auth/auth";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {Card, CardFooter, CardHeader} from "@/components/ui/card";
 import EditAccountForm from "@/app/(customer)/settings/edit-account-form";
 import DeleteAccountZone from "@/app/(customer)/settings/delete-account";
-import NotSignedIn from "@/features/auth/not-signin";
 import {prisma} from "@/lib/db";
 import {EditPasswordForm} from "@/app/(customer)/settings/edit-password-form";
+import {redirect} from "next/navigation";
 
 export const metadata = {
   title: "Settings - MarieTeam",
@@ -16,9 +16,7 @@ export default async function SettingsPage() {
   const session = await auth();
   const user = session?.user;
 
-  if (!user || !user.id) {
-    return <NotSignedIn />;
-  }
+  if (!user || !user.id) return redirect("/sign-in");
 
   const userData = await prisma.user.findUnique({
     where: {
@@ -30,9 +28,7 @@ export default async function SettingsPage() {
     },
   });
 
-  if (!userData) {
-    return <NotSignedIn />;
-  }
+  if (!userData) return redirect("/sign-in");
 
   return (
     <div className="bg-muted/50 dark:bg-black">
@@ -65,8 +61,8 @@ export default async function SettingsPage() {
               </p>
             </CardFooter>
           </Card>
-          <EditAccountForm email={userData.email!} name={userData.name!} userId={user.id} />
-          <EditPasswordForm userId={user.id} />
+          <EditAccountForm email={userData.email!} name={userData.name!} userId={user.id}/>
+          <EditPasswordForm userId={user.id}/>
           <DeleteAccountZone userId={user.id}/>
         </div>
       </section>

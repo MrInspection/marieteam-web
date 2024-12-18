@@ -2,18 +2,18 @@
 
 import {DateRange} from "react-day-picker";
 import {useState, useEffect} from "react";
-import {getDashboardKPIs} from "@/app/(admin)/admin/dashboard-kpi.action";
+import {getDashboardKPIs} from "@/app/admin/dashboard-kpi.action";
 import {
   getDailyRevenue,
   getPassengerCounts,
   getPassengerDistributionByCategory
-} from "@/app/(admin)/admin/dashboard.action";
+} from "@/app/admin/dashboard.action";
 import {Card, CardHeader} from "@/components/ui/card";
 import {DollarSign, Sigma, Users, CreditCard} from "lucide-react";
-import {DatePickerWithRange} from "@/app/(admin)/admin/_components/date-picker";
-import {PassengersChart} from "@/app/(admin)/admin/_components/passengers-chart";
-import {RevenueChart} from "@/app/(admin)/admin/_components/revenues-chart";
-import {PassengersDistributionChart} from "@/app/(admin)/admin/_components/categories-chart";
+import {DatePickerWithRange} from "@/app/admin/_components/date-picker";
+import {PassengersChart} from "@/app/admin/_components/passengers-chart";
+import {RevenueChart} from "@/app/admin/_components/revenues-chart";
+import {PassengersDistributionChart} from "@/app/admin/_components/categories-chart";
 
 type PassengerChartData = {
   date: string;
@@ -95,7 +95,7 @@ export default function AdminDashboard() {
   return (
     <>
       <div className="flex max-md:flex-col max-md:gap-4 items-center justify-between">
-        <h1 className={"text-3xl font-bold"}>Dashboard</h1>
+        <h1 className="text-3xl font-bold">Dashboard</h1>
         <div className="flex items-center gap-2">
           <DatePickerWithRange onDateChange={handleDateChange}/>
         </div>
@@ -107,7 +107,7 @@ export default function AdminDashboard() {
               <p className="font-medium text-sm tracking-tight">Total Revenue</p>
               <DollarSign className="size-4 text-muted-foreground"/>
             </div>
-            <p className="text-2xl font-extrabold">{formatCurrency(kpis.totalRevenue)}</p>
+            <p className="text-2xl font-bold">{formatCurrency(kpis.totalRevenue)}</p>
           </CardHeader>
         </Card>
         <Card className="rounded-2xl">
@@ -116,7 +116,7 @@ export default function AdminDashboard() {
               <p className="font-medium text-sm tracking-tight">Passengers Transported</p>
               <Users className="size-4 text-muted-foreground"/>
             </div>
-            <p className="text-2xl font-extrabold">{kpis.passengersTransported}</p>
+            <p className="text-2xl font-bold">{kpis.passengersTransported}</p>
           </CardHeader>
         </Card>
         <Card className="rounded-2xl">
@@ -125,7 +125,7 @@ export default function AdminDashboard() {
               <p className="font-medium text-sm tracking-tight">Sales</p>
               <CreditCard className="size-4 text-muted-foreground"/>
             </div>
-            <p className="text-2xl font-extrabold">{kpis.totalSales}</p>
+            <p className="text-2xl font-bold">{kpis.totalSales}</p>
           </CardHeader>
         </Card>
         <Card className="rounded-2xl">
@@ -134,7 +134,7 @@ export default function AdminDashboard() {
               <p className="font-medium text-sm tracking-tight">Average Spending</p>
               <Sigma className="size-4 text-muted-foreground"/>
             </div>
-            <p className="text-2xl font-extrabold">{formatCurrency(kpis.avgSpending)}</p>
+            <p className="text-2xl font-bold">{formatCurrency(kpis.avgSpending)}</p>
           </CardHeader>
         </Card>
       </div>

@@ -18,6 +18,7 @@ export async function getRoutes(zone: GeographicalZone) {
       },
     });
   } catch (error) {
+    console.error(error)
     throw new Error("Failed to fetch routes");
   }
 }
@@ -133,6 +134,7 @@ export async function searchCrossings(search: CrossingSearch) {
     revalidatePath("/bookings");
     return validatedCrossings;
   } catch (error) {
+    console.error(error)
     throw new Error("Failed to search crossings");
   }
 }

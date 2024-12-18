@@ -10,12 +10,13 @@ export const metadata: Metadata = {
 };
 
 type SummaryPageProps = {
-  searchParams: {
+  searchParams: Promise<{
     [key: string]: string | string[] | undefined;
-  };
+  }>;
 };
 
-const SummaryPage = async ({searchParams}: SummaryPageProps) => {
+const SummaryPage = async (props: SummaryPageProps) => {
+  const searchParams = await props.searchParams;
   const {id} = searchParams;
 
   const session = await auth();

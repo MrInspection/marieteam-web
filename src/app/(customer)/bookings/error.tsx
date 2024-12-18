@@ -2,7 +2,6 @@
 
 import {Badge} from "@/components/ui/badge";
 import Link from "next/link";
-import {cn} from "@/lib/utils";
 import {buttonVariants} from "@/components/ui/button";
 
 export default function InvalidRequest() {
@@ -19,10 +18,10 @@ export default function InvalidRequest() {
             the meantime, try refreshing the page or visiting us a bit later.
           </p>
           <div className="flex items-center justify-center gap-2">
-            <Link href="/" className={cn(buttonVariants())}>
+            <Link href="/" className={buttonVariants()}>
               Go back home
             </Link>
-            <Link href="/contact" className={cn(buttonVariants({variant: "outline"}))}>
+            <Link href="/contact" className={buttonVariants({variant: "outline"})}>
               Contact support
             </Link>
           </div>

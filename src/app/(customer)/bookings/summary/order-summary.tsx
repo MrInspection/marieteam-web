@@ -62,7 +62,6 @@ function OrderSummary({reservation}: SummaryProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
-
   const handleCheckout = async () => {
     try {
       setIsLoading(true);
@@ -77,12 +76,14 @@ function OrderSummary({reservation}: SummaryProps) {
   };
 
   return (
-    <>
-      <section className="container py-9">
-        <h1 className="text-3xl font-bold">Order Summary</h1>
-        <p className="text-sm text-muted-foreground">Reservation ID: {reservation.id}</p>
+    <main className="flex flex-col flex-grow bg-muted/50 dark:bg-black">
+      <section className="bg-background">
+        <div className="container py-9">
+          <h1 className="text-3xl font-bold tracking-tight">Order Summary</h1>
+          <p className="text-sm/7 text-muted-foreground">Reservation ID: {reservation.id}</p>
+        </div>
       </section>
-      <div className="bg-muted/50 dark:bg-black border-t-2">
+      <section className="border-t-2">
         <div className="container py-16">
           <div className="grid lg:grid-cols-3 max-lg:gap-6 gap-10">
             <div className="lg:col-span-2">
@@ -179,8 +180,8 @@ function OrderSummary({reservation}: SummaryProps) {
             </div>
           </div>
         </div>
-      </div>
-    </>
+      </section>
+    </main>
   );
 }
 
