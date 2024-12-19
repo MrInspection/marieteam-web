@@ -44,7 +44,12 @@ const SummaryPage = async (props: SummaryPageProps) => {
             include: {
               boat: true,
               route: true,
-              captainLogs: true,
+              captainLogs: {
+                orderBy: {
+                  createdAt: "desc",
+                },
+                take: 1,
+              },
             },
           },
         },

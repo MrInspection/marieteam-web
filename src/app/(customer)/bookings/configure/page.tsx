@@ -40,7 +40,12 @@ const ConfigurePage = async (props: ConfigurePageProps) => {
           categoryCapacities: true,
         },
       },
-      captainLogs: true,
+      captainLogs: {
+        orderBy: {
+          createdAt: "desc",
+        },
+        take: 1,
+      },
       route: true,
     },
   });

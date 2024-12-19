@@ -4,6 +4,7 @@ import {prisma} from "@/lib/db";
 import {revalidatePath} from "next/cache";
 import {CrossingSchema, CrossingSearch} from "./crossing.schema";
 import {GeographicalZone} from "@prisma/client";
+import {endOfDay, startOfDay} from "date-fns";
 
 export async function getRoutes(zone: GeographicalZone) {
   try {
@@ -34,8 +35,8 @@ export async function searchCrossings(search: CrossingSearch) {
           geographicalZone: zone,
         },
         departureTime: {
-          gte: new Date(date.setHours(0, 0, 0, 0)),
-          lt: new Date(date.setHours(23, 59, 59, 999)),
+          gte: startOfDay(date),
+          lt: endOfDay(date),
         },
       },
       include: {
