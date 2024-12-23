@@ -1,9 +1,19 @@
 import {z} from "zod";
 import {GeographicalZone, SeaCondition} from "@prisma/client";
+import {startOfDay} from "date-fns";
 
 export const CrossingSearchSchema = z.object({
   zone: z.nativeEnum(GeographicalZone),
-  date: z.date(),
+  date: z.date({coerce: true}).transform((date) => {
+    // Create a new date at midnight UTC for the selected date
+    const utcDate = new Date(Date.UTC(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      0, 0, 0, 0
+    ));
+    return startOfDay(utcDate);
+  }),
   routeId: z.string(),
 });
 
