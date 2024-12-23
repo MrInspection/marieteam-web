@@ -25,6 +25,7 @@ proceed to checkout. It uses a solid technical stack to achieve the intended fun
 - User Authentication with Auth.js
 - Booking System with Prisma
 - Administration dashboard with statistics data
+- Crossing API to create captain logs from the mobile app
 
 ## ☑️ How can it be improved ?
 
@@ -46,24 +47,7 @@ proceed to checkout. It uses a solid technical stack to achieve the intended fun
 To run this project on your local environment, follow the following steps :
 
 - Clone the repository to your local machine or download the source code.
-- Run the command `npm install` in the project directory to install the **required** dependencies
-- Create a new file named `.env` in the project directory and add the following environment variables:
-
-```dotenv
-AUTH_SECRET=
-
-AUTH_GITHUB_ID=
-AUTH_GITHUB_SECRET=
-
-AUTH_GOOGLE_ID=
-AUTH_GOOGLE_SECRET=
-
-DATABASE_URL=
-NEXT_PUBLIC_SERVER_URL=
-
-STRIPE_SECRET_KEY=
-STRIPE_WEBHOOK_SECRET=
-```
-
-- Run the command `npm run start` to start the `production build` of the project.
+- Run the command `pnpm install` in the project directory to install the **required** dependencies
+- Create a new file named `.env` in the project directory and add the variables as shown in the `.env.example` file.
+- Run the command `pnpm run start` to start the `production build` of the project.
 - Open your internet browser and go to the following address: [http://localhost:3000](http://localhost:3000)
