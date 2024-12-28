@@ -2,11 +2,11 @@ import type {Metadata} from "next";
 import "./globals.css";
 import {EB_Garamond, Inter} from "next/font/google";
 import React from "react";
-import {ThemeProvider} from "@/components/theme-provider";
 import {Toaster} from "@/components/ui/sonner";
 import {cn} from "@/lib/utils";
+import Providers from "@/utils/providers";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
+const inter = Inter({subsets: ["latin"], variable: "--font-sans"})
 const eb_garamond = EB_Garamond({
   subsets: ["latin"],
   variable: "--font-heading",
@@ -34,15 +34,10 @@ export default function RootLayout({children}: Readonly<{ children: React.ReactN
   return (
     <html lang="en" className={cn(inter.variable, eb_garamond.variable)}>
     <body className="font-sans" suppressHydrationWarning={true}>
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="light"
-      enableSystem
-      disableTransitionOnChange
-    >
+    <Providers>
       {children}
-      <Toaster/>
-    </ThemeProvider>
+    </Providers>
+    <Toaster/>
     </body>
     </html>
   );
