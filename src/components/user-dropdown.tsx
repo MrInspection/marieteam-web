@@ -15,10 +15,15 @@ import {SignInButton, SignOutButton} from "@/components/signin-button";
 import {ModeToggle} from "@/components/theme-toggle";
 import {buttonVariants} from "@/components/ui/button";
 import {cn} from "@/lib/utils";
+import {redirect} from "next/navigation";
 
 export default async function UserDropdown() {
   const session = await auth();
   const user = session?.user;
+
+  if (!user) {
+    return redirect("/sign-in")
+  }
 
   const isAdmin = await prisma.user.findUnique({
     where: {
@@ -35,12 +40,18 @@ export default async function UserDropdown() {
           <AvatarFallback>{user?.name?.[0]}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56 max-h-fit">
-        <DropdownMenuLabel>
-          {user?.name}
-          <p className="text-xs text-muted-foreground">
-            {user?.email}
-          </p>
+      <DropdownMenuContent className="min-w-56 rounded-lg">
+        <DropdownMenuLabel className="p-0 font-normal">
+          <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+            <Avatar className="h-8 w-8 rounded-lg">
+              <AvatarImage src={user.image!} alt={user.name!}/>
+              <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+            </Avatar>
+            <div className="grid flex-1 text-left text-sm leading-tight">
+              <span className="truncate font-semibold">{user?.name}</span>
+              <span className="truncate text-xs">{user?.email}</span>
+            </div>
+          </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator/>
         <Link href="/settings">

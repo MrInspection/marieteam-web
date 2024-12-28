@@ -5,8 +5,12 @@ import {prisma} from "@/lib/db";
 import {signIn} from "@/auth/auth";
 import bcrypt from "bcryptjs";
 
-export async function signUpAction({name, email, password}: SignUpProps, callbackUrl: string) {
+export async function SignUpAction({name, email, password}: SignUpProps, callbackUrl: string) {
   const hashedPassword = await bcrypt.hash(password, 10);
+
+  if(await prisma.user.findFirst({where: {email}})) {
+    throw new Error("The email is already linked to an account.")
+  }
 
   await prisma.user.create({
     data: {
@@ -24,7 +28,7 @@ export async function signUpAction({name, email, password}: SignUpProps, callbac
   })
 }
 
-export async function signInAction({email, password}: SignInProps, callbackUrl: string) {
+export async function SignInAction({email, password}: SignInProps, callbackUrl: string) {
   await signIn("credentials", {
     email,
     password,
@@ -32,13 +36,13 @@ export async function signInAction({email, password}: SignInProps, callbackUrl: 
   })
 }
 
-export async function signInWithGoogle(callbackUrl: string) {
+export async function SignInWithGoogle(callbackUrl: string) {
   await signIn("google", {
     redirectTo: callbackUrl,
   })
 }
 
-export async function signInWithGitHub(callbackUrl: string) {
+export async function SignInWithGitHub(callbackUrl: string) {
   await signIn("github", {
     redirectTo: callbackUrl,
   })
