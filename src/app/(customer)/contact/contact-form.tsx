@@ -2,7 +2,6 @@
 
 import {toast} from "sonner";
 import {Loader} from "lucide-react";
-import React, {useState} from 'react'
 import {useForm} from 'react-hook-form'
 import {Button} from "@/components/ui/button"
 import {Input} from "@/components/ui/input"
@@ -20,9 +19,9 @@ import {
 import {registerContact} from "@/app/(customer)/contact/contact.action";
 import {useRouter} from "next/navigation";
 import {ContactSchema, ContactSchemaType} from "@/app/(customer)/contact/contact.schema";
+import {useMutation} from "@tanstack/react-query";
 
 export default function ContactForm() {
-  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter()
 
   const form = useForm<ContactSchemaType>({
@@ -35,18 +34,20 @@ export default function ContactForm() {
     },
   })
 
-  function onSubmit(data: ContactSchemaType) {
-    try {
-      setIsLoading(true);
-      registerContact(data)
-      toast.success("You message has been submitted to MarieTeam")
-      form.reset()
+  const {mutate: SendMessage, isPending: isSendingMessage} = useMutation({
+    mutationFn: async (data: ContactSchemaType) => {
+      await registerContact(data)
+    },
+    onSuccess: () => {
+      toast.success("Your message has been submitted")
       router.push("/")
-    } catch (error) {
-      setIsLoading(false);
-      toast.error(`${error}`)
+    },
+    onError: (err) => {
+      toast.error(err.message)
     }
-  }
+  })
+
+  const onSubmit = (data: ContactSchemaType) => SendMessage(data)
 
   return (
     <Card>
@@ -108,9 +109,15 @@ export default function ContactForm() {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full mt-4" disabled={isLoading}>
-              {isLoading && <Loader className="size-4 animate-spin"/>}
-              Send Message
+            <Button type="submit" className="w-full mt-4" disabled={isSendingMessage}>
+              {isSendingMessage ?
+                <div className="inline-flex items-center">
+                  <Loader className="mr-2 size-4 animate-spin"/>
+                  Sending message...
+                </div>
+                :
+                <p>Send Message</p>
+              }
             </Button>
           </form>
         </Form>

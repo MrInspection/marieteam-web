@@ -13,8 +13,7 @@ export async function registerContact(contact: ContactSchemaType) {
         message: contact.content,
       },
     })
-  } catch (error) {
-    console.error(error)
+  } catch {
     throw new Error("Failed to register contact");
   }
 }
