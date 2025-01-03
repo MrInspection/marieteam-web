@@ -1,79 +1,54 @@
 "use client";
 
-import React, {useState} from "react";
 import {Button} from "@/components/ui/button";
 import {Anchor, ChevronRight, Loader} from "lucide-react";
 import {formatName} from "@/utils/text-formatter";
 import Image from "next/image";
 import {format} from "date-fns";
-import {createCheckoutSession} from "@/app/(customer)/bookings/summary/summary.action";
+import {createCheckoutSession, GetReservation} from "@/app/(customer)/bookings/summary/summary.action";
 import {toast} from "sonner";
 import {useRouter} from "next/navigation";
 import {ScrollArea, ScrollBar} from "@/components/ui/scroll-area";
 import {cn} from "@/lib/utils";
+import {useMutation, useQuery} from "@tanstack/react-query";
+import React from "react";
+import OrderSummarySkeleton from "@/app/(customer)/bookings/summary/order-summary-skeleton";
 
-type Seat = {
-  id: string;
-  seatType: {
-    name: string;
-    description: string;
-    Pricing: {
-      routeId: string;
-      amount: number;
-    }[];
-  };
-  bookedSeats: number;
-  crossing: {
-    boat: {
-      name: string;
-      imageUrl: string;
-    };
-    route: {
-      id: string;
-      departurePort: string;
-      arrivalPort: string;
-    };
-    departureTime: Date;
-    captainLogs?: {
-      delayMinutes: number;
-    }[];
-  };
-};
-
-type Reservation = {
-  id: string;
-  totalAmount: number;
-  seats: Seat[];
+type OrderSummaryProps = {
+  reservationId: string;
   userId: string;
 };
 
-type SummaryProps = {
-  reservation: Reservation;
-};
+export default function OrderSummary({reservationId, userId}: OrderSummaryProps) {
+  const router = useRouter();
 
-function OrderSummary({reservation}: SummaryProps) {
+  const {data: reservation, isFetching} = useQuery({
+    queryKey: ['reservation', reservationId, userId],
+    queryFn: () => GetReservation({reservationId, userId}),
+  });
+
+  const {mutate: CreateSession, isPending: isCreatingSession} = useMutation({
+    mutationFn: () => createCheckoutSession({reservationId, userId}),
+    onSuccess: ({url}) => {
+      if (typeof url === "string") {
+        router.push(url);
+      }
+    },
+    onError: (error) => {
+      toast.error(`${error}`);
+    },
+  });
+
+  if(!reservation || isFetching) {
+    return <OrderSummarySkeleton />
+  }
+
   const boat = reservation.seats[0].crossing.boat;
   const route = reservation.seats[0].crossing.route;
   const captainLogs = reservation.seats[0].crossing.captainLogs;
   const delayMinutes = captainLogs?.[0]?.delayMinutes ?? 0;
   const departureTime = reservation.seats[0].crossing.departureTime;
   const adjustedDepartureTime = new Date(departureTime.getTime() + delayMinutes * 60000);
-
-  const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handleCheckout = async () => {
-    try {
-      setIsLoading(true);
-      const {url} = await createCheckoutSession({reservationId: reservation.id, userId: reservation.userId});
-      if (typeof url === "string") {
-        router.push(url)
-      }
-    } catch (error) {
-      setIsLoading(false);
-      toast.error(`${error}`);
-    }
-  };
 
   return (
     <main className="flex flex-col flex-grow bg-muted/50 dark:bg-black">
@@ -172,8 +147,8 @@ function OrderSummary({reservation}: SummaryProps) {
                   <p className="text-muted-foreground text-lg">Total Amount</p>
                   <p className="font-bold text-lg">{reservation.totalAmount.toFixed(2)}€</p>
                 </div>
-                <Button className="mt-4 w-full" size="lg" onClick={handleCheckout} disabled={isLoading}>
-                  {isLoading && <Loader className="size-4 animate-spin"/>}
+                <Button className="mt-4 w-full" size="lg" onClick={() => CreateSession()} disabled={isCreatingSession}>
+                  {isCreatingSession && <Loader className="size-4 animate-spin"/>}
                   Proceed to checkout <ChevronRight className="w-4 h-4"/>
                 </Button>
               </section>
@@ -184,5 +159,3 @@ function OrderSummary({reservation}: SummaryProps) {
     </main>
   );
 }
-
-export default OrderSummary;

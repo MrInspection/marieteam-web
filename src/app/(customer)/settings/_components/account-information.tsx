@@ -59,14 +59,18 @@ export function AccountInformation({id, name, email, image}: AccountInformationP
               />
               <AvatarFallback>{name?.charAt(0)}</AvatarFallback>
             </Avatar>
-            <div className="inline-flex items-center justify-between w-full">
+            <div className="flex items-center justify-between w-full">
               <div>
                 <p className="font-medium text-base">{name}</p>
                 <p className="text-muted-foreground text-xs">
                   {id}
                 </p>
               </div>
-              <Button variant="outline" onClick={() => signOut()}>
+              <Button
+                variant="outline"
+                onClick={() => signOut()}
+                className="max-md:hidden"
+              >
                 Disconnect
               </Button>
             </div>

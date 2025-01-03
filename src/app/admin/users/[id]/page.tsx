@@ -2,10 +2,10 @@ import {prisma} from "@/lib/db";
 import Link from "next/link";
 import {buttonVariants} from "@/components/ui/button";
 import {cn} from "@/lib/utils";
-import {Orders} from "@/app/(customer)/orders/orders";
 import {ChevronLeft, Calendar, Mail, User} from "lucide-react";
 import {redirect} from "next/navigation";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import {Reservations} from "@/app/admin/users/[id]/reservations";
 
 export default async function UserPage(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
@@ -24,31 +24,6 @@ export default async function UserPage(props: { params: Promise<{ id: string }> 
   if (!user) {
     return redirect("/admin/users");
   }
-
-  const reservations = await prisma.reservation.findMany({
-    where: {
-      userId: user.id,
-    },
-    include: {
-      billingAddress: true,
-      seats: {
-        include: {
-          seatType: {
-            include: {
-              Pricing: true,
-            },
-          },
-          crossing: {
-            include: {
-              boat: true,
-              route: true,
-              captainLogs: true,
-            },
-          },
-        },
-      },
-    },
-  });
 
   return (
     <div className="space-y-6">
@@ -92,8 +67,7 @@ export default async function UserPage(props: { params: Promise<{ id: string }> 
         </div>
         <div className="xl:col-span-5">
         <h3 className="text-lg mb-2 font-semibold">Reservations</h3>
-          {/* @ts-expect-error Not taking into consideration some props elements */}
-          <Orders reservations={reservations}/>
+          <Reservations userId={id}/>
         </div>
       </div>
     </div>

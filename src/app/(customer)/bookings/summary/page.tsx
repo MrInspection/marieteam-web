@@ -1,9 +1,9 @@
 import {auth} from "@/auth/auth";
-import {prisma} from "@/lib/db";
 import OrderSummary from "@/app/(customer)/bookings/summary/order-summary";
 import React from "react";
 import InvalidRequest from "@/app/(customer)/bookings/error";
 import type {Metadata} from "next";
+import {prisma} from "@/lib/db";
 
 export const metadata: Metadata = {
   title: "Order Summary - MarieTeam",
@@ -26,43 +26,19 @@ const SummaryPage = async (props: SummaryPageProps) => {
     return <InvalidRequest/>;
   }
 
-  const reservation = await prisma.reservation.findUnique({
+  const isValidReservation = await prisma.reservation.findUnique({
     where: {
       id: id,
       userId: userId,
       status: "PENDING",
-    },
-    include: {
-      seats: {
-        include: {
-          seatType: {
-            include: {
-              Pricing: true,
-            },
-          },
-          crossing: {
-            include: {
-              boat: true,
-              route: true,
-              captainLogs: {
-                orderBy: {
-                  createdAt: "desc",
-                },
-                take: 1,
-              },
-            },
-          },
-        },
-      },
-    },
-  });
+    }
+  })
 
-  if (!reservation) {
-    return <InvalidRequest/>;
+  if(!isValidReservation) {
+    return <InvalidRequest/>
   }
 
-  // @ts-expect-error Not taking into consideration some props elements
-  return <OrderSummary reservation={reservation}/>;
+  return <OrderSummary reservationId={id} userId={userId} />
 };
 
 export default SummaryPage;

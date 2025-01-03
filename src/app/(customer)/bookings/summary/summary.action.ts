@@ -3,6 +3,55 @@
 import {prisma} from "@/lib/db";
 import {stripe} from "@/lib/stripe";
 import {formatName} from "@/utils/text-formatter";
+import {auth} from "@/auth/auth";
+
+type ReservationProps = {
+  reservationId: string;
+  userId: string;
+};
+
+export const GetReservation = async ({reservationId, userId}: ReservationProps) => {
+  const session = await auth()
+  if (!session || !(session.user?.id === userId)) {
+    throw new Error("Unauthorized action")
+  }
+
+  const reservation = await prisma.reservation.findUnique({
+    where: {
+      id: reservationId,
+      userId: userId,
+      status: "PENDING",
+    },
+    include: {
+      seats: {
+        include: {
+          seatType: {
+            include: {
+              Pricing: true,
+            },
+          },
+          crossing: {
+            include: {
+              boat: true,
+              route: true,
+              captainLogs: {
+                orderBy: {
+                  createdAt: "desc",
+                },
+                take: 1,
+              },
+            },
+          },
+        },
+      },
+    },
+  });
+
+  if (!reservation) {
+    throw new Error("Reservation not found.");
+  }
+  return reservation;
+}
 
 type CheckoutSessionsProps = {
   reservationId: string;
