@@ -1,14 +1,19 @@
 "use server";
 
-import { prisma } from "@/lib/db";
-import { redirect } from "next/navigation";
+import {prisma} from "@/lib/db";
+import {redirect} from "next/navigation";
 import {AccountSchemaType} from "@/app/(customer)/settings/account.schema";
-import {signOut} from "@/auth/auth";
-import {revalidatePath} from "next/cache";
+import {auth, signOut} from "@/auth/auth";
 import bcrypt from "bcryptjs";
 
-export async function UpdatePassword(userId: string, password: string) {
+export async function UpdateUserPassword(userId: string, password: string) {
+  const session = await auth()
+  if (!session || !(session.user?.id === userId)) {
+    throw new Error("Unauthorized, required a connected user")
+  }
+
   const hashedPassword = await bcrypt.hash(password, 10);
+
   try {
     await prisma.user.update({
       where: {
@@ -20,12 +25,15 @@ export async function UpdatePassword(userId: string, password: string) {
     })
   } catch (error) {
     throw new Error(`Error updating password: ${error}`);
-  } finally {
-    revalidatePath('/settings');
   }
 }
 
-export async function UpdateAccount(userId: string, data: AccountSchemaType) {
+export async function UpdateAccountInformation(userId: string, data: AccountSchemaType) {
+  const session = await auth()
+  if (!session || !(session.user?.id === userId)) {
+    throw new Error("Unauthorized action")
+  }
+
   try {
     await prisma.user.update({
       where: {
@@ -38,12 +46,15 @@ export async function UpdateAccount(userId: string, data: AccountSchemaType) {
     })
   } catch (error) {
     throw new Error(`Error updating account: ${error}`);
-  } finally {
-    revalidatePath('/settings');
   }
 }
 
-export async function DeleteAccount({ userId }: { userId: string }) {
+export async function DeleteAccount(userId: string) {
+  const session = await auth()
+  if (!session || !(session.user?.id === userId)) {
+    throw new Error("Unauthorized action")
+  }
+
   try {
     // Step 1: Delete all seats associated with the user's reservations
     await prisma.seat.deleteMany({
@@ -74,12 +85,12 @@ export async function DeleteAccount({ userId }: { userId: string }) {
 
     // Step 4: Delete accounts associated with the user
     await prisma.account.deleteMany({
-      where: { userId: userId },
+      where: {userId: userId},
     });
 
     // Step 4: Finally, delete the user
     await prisma.user.delete({
-      where: { id: userId },
+      where: {id: userId},
     });
   } catch (error) {
     throw new Error(`Error deleting user account: ${error}`);

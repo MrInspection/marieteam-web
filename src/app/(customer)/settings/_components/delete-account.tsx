@@ -9,30 +9,20 @@ import {
   AlertDialogTrigger
 } from "@/components/ui/alert-dialog";
 import {Button} from "@/components/ui/button";
-import {useState} from "react";
-import {toast} from "sonner";
 import {Loader2} from "lucide-react";
 import {DeleteAccount} from "@/app/(customer)/settings/account.action";
+import {useMutation} from "@tanstack/react-query";
+import {toast} from "sonner";
 
-type DeleteAccountDialogProps = {
-  userId: string | undefined;
-};
+export default function DeleteAccountZone({userId}: { userId: string }) {
 
-export default function DeleteAccountZone({userId}: DeleteAccountDialogProps) {
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  const handleDeleteAccount = async () => {
-    if (!userId) return;
-    setIsDeleting(true);
-    try {
-      await DeleteAccount({userId: userId});
-      toast.success("Your account has been deleted successfully");
-    } catch (error) {
-      console.error(error)
-      toast.error("Unable to delete your account.");
-      setIsDeleting(false);
-    }
-  };
+  const {mutate: onDeleteAccount, isPending: isDeleting} = useMutation({
+    mutationKey: ["delete-account"],
+    mutationFn: async (userId: string) => {
+      await DeleteAccount(userId);
+      toast.success("We have deleted your account");
+    },
+  })
 
   return (
     <Card className="border-destructive rounded-2xl">
@@ -64,7 +54,7 @@ export default function DeleteAccountZone({userId}: DeleteAccountDialogProps) {
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction disabled={isDeleting} onClick={handleDeleteAccount}>
+              <AlertDialogAction disabled={isDeleting} onClick={() => onDeleteAccount(userId)}>
                 {isDeleting && <Loader2 className="mr-2 size-4 animate-spin"/>}
                 Continue
               </AlertDialogAction>

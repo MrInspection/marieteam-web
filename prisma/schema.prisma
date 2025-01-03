@@ -46,12 +46,12 @@ model Account {
 model Reservation {
   id          String            @id @default(cuid())
   userId      String
-  user        User              @relation(fields: [userId], references: [id])
+  user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   totalAmount Float
   status      ReservationStatus @default(PENDING)
   seats       Seat[]
 
-  billingAddress   BillingAddress? @relation(fields: [billingAddressId], references: [id])
+  billingAddress   BillingAddress? @relation(fields: [billingAddressId], references: [id], onDelete: Cascade)
   billingAddressId String?
 
   createdAt DateTime @default(now())
@@ -78,12 +78,12 @@ model BillingAddress {
 model Seat {
   id            String       @id @default(cuid())
   crossingId    String
-  crossing      Crossing     @relation(fields: [crossingId], references: [id])
+  crossing      Crossing     @relation(fields: [crossingId], references: [id], onDelete: Cascade)
   seatTypeId    String
-  seatType      SeatType     @relation(fields: [seatTypeId], references: [id])
+  seatType      SeatType     @relation(fields: [seatTypeId], references: [id], onDelete: Cascade)
   bookedSeats   Int          @default(0)
   reservationId String?
-  reservation   Reservation? @relation(fields: [reservationId], references: [id])
+  reservation   Reservation? @relation(fields: [reservationId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -93,9 +93,9 @@ model Crossing {
   id               String       @id @default(cuid())
   departureTime    DateTime
   boatId           String
-  boat             Boat         @relation(fields: [boatId], references: [id])
+  boat             Boat         @relation(fields: [boatId], references: [id], onDelete: Cascade)
   routeId          String
-  route            Route        @relation(fields: [routeId], references: [id])
+  route            Route        @relation(fields: [routeId], references: [id], onDelete: Cascade)
   seatAvailability Seat[]
   captainLogs      CaptainLog[]
 
@@ -106,7 +106,7 @@ model Crossing {
 model CaptainLog {
   id           String       @id @default(cuid())
   crossingId   String
-  crossing     Crossing     @relation(fields: [crossingId], references: [id])
+  crossing     Crossing     @relation(fields: [crossingId], references: [id], onDelete: Cascade)
   seaCondition SeaCondition
   delayMinutes Int?
   delayReason  String?
@@ -120,7 +120,7 @@ model SeatType {
   name           String
   description    String?
   seatCategoryId String
-  seatCategory   SeatCategory @relation(fields: [seatCategoryId], references: [id])
+  seatCategory   SeatCategory @relation(fields: [seatCategoryId], references: [id], onDelete: Cascade)
   seats          Seat[]
 
   Pricing Pricing[]
@@ -157,9 +157,9 @@ model BoatCategoryCapacity {
 model Pricing {
   id      String        @id @default(cuid())
   routeId String
-  route   Route         @relation(fields: [routeId], references: [id])
+  route   Route         @relation(fields: [routeId], references: [id], onDelete: Cascade)
   typeId  String
-  type    SeatType      @relation(fields: [typeId], references: [id])
+  type    SeatType      @relation(fields: [typeId], references: [id], onDelete: Cascade)
   period  PricingPeriod
   amount  Float
 

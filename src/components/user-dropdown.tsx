@@ -40,7 +40,7 @@ export default async function UserDropdown() {
           <AvatarFallback>{user?.name?.[0]}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="min-w-56 rounded-lg">
+      <DropdownMenuContent className="rounded-lg w-52">
         <DropdownMenuLabel className="p-0 font-normal">
           <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
             <Avatar className="h-8 w-8 rounded-lg">
@@ -48,8 +48,8 @@ export default async function UserDropdown() {
               <AvatarFallback className="rounded-lg">CN</AvatarFallback>
             </Avatar>
             <div className="grid flex-1 text-left text-sm leading-tight">
-              <span className="truncate font-semibold">{user?.name}</span>
-              <span className="truncate text-xs">{user?.email}</span>
+              <span className="truncate font-semibold line-clamp-1">{user?.name}</span>
+              <span className="truncate text-xs line-clamp-1 text-muted-foreground">{user?.email}</span>
             </div>
           </div>
         </DropdownMenuLabel>

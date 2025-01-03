@@ -1,11 +1,7 @@
 import {auth} from "@/auth/auth";
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
-import {Card, CardFooter, CardHeader} from "@/components/ui/card";
-import EditAccountForm from "@/app/(customer)/settings/edit-account-form";
-import DeleteAccountZone from "@/app/(customer)/settings/delete-account";
 import {prisma} from "@/lib/db";
-import {EditPasswordForm} from "@/app/(customer)/settings/edit-password-form";
 import {redirect} from "next/navigation";
+import {AccountInformation} from "@/app/(customer)/settings/_components/account-information";
 
 export const metadata = {
   title: "Settings - MarieTeam",
@@ -23,8 +19,10 @@ export default async function SettingsPage() {
       id: user.id,
     },
     select: {
+      id: true,
       name: true,
       email: true,
+      image: true,
     },
   });
 
@@ -37,33 +35,7 @@ export default async function SettingsPage() {
       </section>
       <section className="border-t-2">
         <div className="container max-w-3xl py-16 space-y-8">
-          <Card className="rounded-2xl">
-            <CardHeader>
-              <div className="py-2 flex items-center gap-3">
-                <Avatar className="focus:ring-0 size-16">
-                  <AvatarImage
-                    src={user?.image?.toString()}
-                    className="shadow-md border-2 rounded-full"
-                  />
-                  <AvatarFallback>{userData.name?.[0]}</AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className="font-medium text-lg">{userData.name}</p>
-                  <p className="text-muted-foreground text-sm">
-                    User ID: {user.id}
-                  </p>
-                </div>
-              </div>
-            </CardHeader>
-            <CardFooter className="border-t px-6 py-4 bg-muted/40">
-              <p className="text-sm text-muted-foreground">
-                Click on the avatar to upload a custom one from your files. (Unavailable)
-              </p>
-            </CardFooter>
-          </Card>
-          <EditAccountForm email={userData.email!} name={userData.name!} userId={user.id}/>
-          <EditPasswordForm userId={user.id}/>
-          <DeleteAccountZone userId={user.id}/>
+          <AccountInformation {...userData} />
         </div>
       </section>
     </div>
