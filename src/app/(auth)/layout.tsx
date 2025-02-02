@@ -5,6 +5,7 @@ import {buttonVariants} from "@/components/ui/button";
 import {ChevronLeft} from "lucide-react";
 import { redirect } from "next/navigation";
 import {auth} from "@/auth/auth";
+import Image from "next/image";
 
 export default  async function AuthLayout({children}: Readonly<{ children: ReactNode }>) {
   const session = await auth()
@@ -19,10 +20,12 @@ export default  async function AuthLayout({children}: Readonly<{ children: React
         {children}
       </div>
       <section className="max-xl:hidden col-span-2 bg-blue-50/50 relative pt-10 pl-24 gap-3 overflow-hidden flex flex-col flex-1 w-full">
-        <img
+        <Image
           src="/images/marieteam.png"
           alt="Image"
           className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+          width={1000}
+          height={1000}
         />
       </section>
     </main>

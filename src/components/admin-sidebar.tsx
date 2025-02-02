@@ -15,6 +15,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import UserDropdown from "@/components/user-dropdown";
+import Link from "next/link";
 
 const navigation = [
   {
@@ -46,7 +47,7 @@ export function AdminSidebar() {
         <SidebarMenu>
           <SidebarMenuItem className="flex items-center justify-between">
             <SidebarMenuButton size="lg" asChild className="w-fit">
-              <a href="/">
+              <Link href="/">
                 <div
                   className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                   <Anchor className="size-4 rotate-45"/>
@@ -55,7 +56,7 @@ export function AdminSidebar() {
                   <span className="truncate font-semibold">MarieTeam</span>
                   <span className="truncate text-xs text-muted-foreground">Spectron Labs</span>
                 </div>
-              </a>
+              </Link>
             </SidebarMenuButton>
             <UserDropdown/>
           </SidebarMenuItem>
