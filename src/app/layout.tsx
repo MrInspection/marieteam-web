@@ -13,7 +13,7 @@ const eb_garamond = EB_Garamond({
 })
 
 export const metadata: Metadata = {
-  title: "MarieTeam Corp.",
+  title: "Moussax - MarieTeam",
   description: "Your marine transportation company. Book your dream vacation with ease.",
   openGraph: {
     url: "https://marieteam.vercel.app",

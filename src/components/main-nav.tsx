@@ -4,14 +4,14 @@ import * as React from "react"
 import Link from "next/link"
 import {usePathname} from "next/navigation"
 import {cn} from "@/lib/utils"
-import {Infinity} from "lucide-react";
+import {Anchor} from "lucide-react";
 
 export function MainNav() {
   const pathname = usePathname()
   return (
     <div className="mr-4 hidden md:flex items-center justify-between ">
       <Link href="/" className="mr-6 flex items-center space-x-2">
-        <Infinity className="size-5"/>
+        <Anchor className="size-5 rotate-45"/>
         <span className="hidden font-medium text-base/7 sm:inline-block">MarieTeam</span>
       </Link>
       <nav className="flex items-center gap-4 text-sm font-medium lg:gap-6 ">
