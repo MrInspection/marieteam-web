@@ -1,15 +1,22 @@
 "use server"
 
 import {prisma} from "@/lib/db";
-import {
-  BoatInput,
-  Crossing,
-  CrossingInput,
-  Route,
-  RouteInput
-} from "@/app/admin/booking-system/booking-system.schema";
+import {BoatInput, Crossing, CrossingInput, Route, RouteInput} from "@/app/admin/booking-system/booking-system.schema";
 
-export async function RegisterBoat(boat: BoatInput) {
+export async function getBoats() {
+  return await prisma.boat.findMany({
+    select: {
+      id: true,
+      name: true,
+      speed: true,
+      width: true,
+      length: true,
+      equipment: true,
+    }
+  })
+}
+
+export async function addBoat(boat: BoatInput) {
   try {
     await prisma.boat.create({
       data: {

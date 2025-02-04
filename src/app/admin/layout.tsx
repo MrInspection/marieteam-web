@@ -6,8 +6,7 @@ import NotFound from "@/app/not-found";
 import {prisma} from "@/lib/db";
 
 export const metadata: Metadata = {
-  title: "Administration • MarieTeam",
-  description: "Spectron Labs",
+  title: "MarieTeam Dashboard",
 };
 
 export default async function Layout({children}: { children: React.ReactNode }) {

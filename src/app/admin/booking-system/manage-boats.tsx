@@ -30,21 +30,17 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import {X, Plus} from 'lucide-react'
+import {X, Plus, Loader} from 'lucide-react'
 import {BoatInput, BoatInputSchema} from "@/app/admin/booking-system/booking-system.schema";
-import {RegisterBoat} from "@/app/admin/booking-system/booking-system.action";
+import {addBoat, getBoats} from "@/app/admin/booking-system/booking-system.action";
 import {toast} from "sonner";
 import {ExclamationTriangleIcon} from "@radix-ui/react-icons";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 
-type BoatFormsProps = {
-  boats: BoatInput[]
-}
-
-export function BoatsManagement({boats}: BoatFormsProps) {
-
-  const [dialogOpen, setDialogOpen] = useState(false)
+export function ManageBoats() {
+  const [openFormDialog, setOpenFormDialog] = useState(false)
   const [newEquipment, setNewEquipment] = useState('')
-  const [localBoats, setLocalBoats] = useState(boats)
+  const queryClient = useQueryClient()
 
   const form = useForm<BoatInput>({
     resolver: zodResolver(BoatInputSchema),
@@ -63,31 +59,35 @@ export function BoatsManagement({boats}: BoatFormsProps) {
       <ExclamationTriangleIcon className="size-10 text-muted-foreground"/>
       <h3 className="mt-4 text-lg font-semibold">No boats found</h3>
       <p className="text-muted-foreground text-sm mt-2 mb-4">There are no boats in the system yet.</p>
-      <Button onClick={() => setDialogOpen(true)}>
+      <Button onClick={() => setOpenFormDialog(true)}>
         <Plus className="size-4"/> Add Boat
       </Button>
     </div>
   )
 
-  async function onSubmit(values: BoatInput) {
-    try {
-      const newBoat = await RegisterBoat(values);
-      {/* @ts-expect-error not taking into consideration some props elements */}
-      setLocalBoats((prevBoats) => [...prevBoats, newBoat]); // Use functional state update
-      setDialogOpen(false);
+  const {data: boats} = useQuery({
+    queryKey: ["get-boats"],
+    queryFn: () => getBoats(),
+  })
+
+  const {mutate: registerBoat, isPending: isRegisteringBoat} = useMutation({
+    mutationFn: async (values: BoatInput) => await addBoat(values),
+    onSuccess: () => {
+      setOpenFormDialog(false)
       toast.success("Your boat has been registered.");
+      queryClient.invalidateQueries({queryKey: ["get-boats"]})
       form.reset();
-    } catch (error) {
-      console.error("Error registering boat:", error); // Log error for debugging
-      toast.error(`Error: ${error instanceof Error ? error.message : 'Unknown error occurred.'}`);
-    }
-  }
+    },
+    onError: (err) => toast.error("An error occurred while saving your boat: " + err.message),
+  })
+
+  const onSubmit = (values: BoatInput) => registerBoat(values)
 
   return (
     <>
       <div className="flex items-center gap-3 mb-4 justify-between">
-        <h2 className="text-2xl font-semibold">Fleet of boats</h2>
-        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <h2 className="text-xl font-semibold">Fleet of boats</h2>
+        <Dialog open={openFormDialog} onOpenChange={setOpenFormDialog}>
           <DialogTrigger asChild>
             <Button>
               <Plus className="size-4"/> New
@@ -229,14 +229,27 @@ export function BoatsManagement({boats}: BoatFormsProps) {
                     )}
                   />
                 </div>
-                <Button type="submit" className="w-full mt-2">Create Boat</Button>
+                <Button
+                  type="submit"
+                  className="w-full mt-2"
+                  disabled={isRegisteringBoat}
+                >
+                  {isRegisteringBoat ? (
+                    <div className="inline-flex items-center">
+                      <Loader className="mr-2 size-4 animate-spin"/>
+                      Creating boat...
+                    </div>
+                  ) : (
+                    <p>Create Boat</p>
+                  )}
+                </Button>
               </form>
             </Form>
           </DialogContent>
         </Dialog>
       </div>
       <section className="border rounded-2xl p-4">
-        {localBoats.length > 0 ? (
+        {!boats || boats.length === 0 ? renderEmptyState() : (
           <Table>
             <TableHeader>
               <TableRow>
@@ -248,19 +261,17 @@ export function BoatsManagement({boats}: BoatFormsProps) {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {localBoats.map((boat, index) => (
-                <TableRow key={boat?.name || index}> {/* Use index as fallback for key */}
-                  <TableCell>{boat?.name || 'N/A'}</TableCell>
-                  <TableCell>{boat?.length ? `${boat.length}m` : 'N/A'}</TableCell>
-                  <TableCell>{boat?.width ? `${boat.width}m` : 'N/A'}</TableCell>
-                  <TableCell>{boat?.speed ? `${boat.speed} knots` : 'N/A'}</TableCell>
-                  <TableCell className="max-lg:hidden">{boat?.equipment?.join(', ') || 'N/A'}</TableCell>
+              {boats.map((boat) => (
+                <TableRow key={boat.id}>
+                  <TableCell>{boat.name}</TableCell>
+                  <TableCell>{boat.length}m</TableCell>
+                  <TableCell>{boat.width}m</TableCell>
+                  <TableCell>{boat.speed}knots</TableCell>
+                  <TableCell className="max-lg:hidden">{boat.equipment?.join(', ') || 'No equipments'}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
-        ) : (
-          renderEmptyState()
         )}
       </section>
     </>
