@@ -10,14 +10,13 @@ proceed to checkout. It uses a solid technical stack to achieve the intended fun
 
 ## 🪛 Development Stack
 
-- `Next.js 14`
+- `Next.js 15`
 - `TailwindCSS`
 - `Shadcn UI`
 - `Prisma & Neon Database`
 - `Auth.js` : Credentials auth & 0auth providers
 - `Stripe`
 - `Zod`
-- `Jest` (Testing)
 
 ## ⚡Features
 
@@ -49,5 +48,6 @@ To run this project on your local environment, follow the following steps :
 - Clone the repository to your local machine or download the source code.
 - Run the command `pnpm install` in the project directory to install the **required** dependencies
 - Create a new file named `.env` in the project directory and add the variables as shown in the `.env.example` file.
+- Run the command `pnpx prisma db seed` to seed the database with startup data
 - Run the command `pnpm run start` to start the `production build` of the project.
 - Open your internet browser and go to the following address: [http://localhost:3000](http://localhost:3000)
