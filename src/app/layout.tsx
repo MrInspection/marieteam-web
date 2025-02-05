@@ -5,6 +5,7 @@ import React from "react";
 import {Toaster} from "@/components/ui/sonner";
 import {cn} from "@/lib/utils";
 import Providers from "@/utils/providers";
+import {CookieBanner} from "@/components/cookie-banner";
 
 const inter = Inter({subsets: ["latin"], variable: "--font-sans"})
 const eb_garamond = EB_Garamond({
@@ -38,6 +39,7 @@ export default function RootLayout({children}: Readonly<{ children: React.ReactN
       {children}
     </Providers>
     <Toaster/>
+    <CookieBanner />
     </body>
     </html>
   );
