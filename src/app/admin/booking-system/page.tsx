@@ -1,6 +1,6 @@
 import {ManageBoats} from "@/app/admin/booking-system/manage-boats"
 import {prisma} from "@/lib/db"
-import {RoutesManagement} from "@/app/admin/booking-system/bs-routes";
+import {ManageRoutes} from "@/app/admin/booking-system/manage-routes";
 import {CrossingManagement} from "@/app/admin/booking-system/bs.crossings";
 
 export default async function ShipsPage() {
@@ -22,7 +22,7 @@ export default async function ShipsPage() {
       <h1 className="text-3xl font-bold">Booking System</h1>
       <p className="max-md:text-sm mb-8 mt-1.5">Manage everything related to the booking system to make it work.</p>
       <ManageBoats/>
-      <RoutesManagement routes={routes}/>
+      <ManageRoutes/>
       <CrossingManagement crossings={crossings} boats={boats} routes={routes}/>
     </>
   )

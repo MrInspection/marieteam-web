@@ -34,7 +34,11 @@ export async function addBoat(boat: BoatInput) {
   }
 }
 
-export async function RegisterRoute(route: RouteInput) {
+export async function getRoutes() {
+  return await prisma.route.findMany()
+}
+
+export async function addRoute(route: RouteInput) {
   try {
     await prisma.route.create({
       data: {
@@ -50,7 +54,7 @@ export async function RegisterRoute(route: RouteInput) {
   }
 }
 
-export async function UpdateRoute(id: string, route: Route) {
+export async function updateRoute(id: string, route: Route) {
   try {
     const updatedRoute = await prisma.route.update({
       where: {

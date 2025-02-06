@@ -29,25 +29,22 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import {Plus, Pencil} from 'lucide-react'
+import {Plus, Pencil, Loader} from 'lucide-react'
 import {Route, RouteInputSchema, RouteInput} from "@/app/admin/booking-system/booking-system.schema"
-import {RegisterRoute, UpdateRoute} from "@/app/admin/booking-system/booking-system.action"
+import {addRoute, getRoutes, updateRoute} from "@/app/admin/booking-system/booking-system.action"
 import {toast} from "sonner"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
 import {GeographicalZone} from "@prisma/client"
 import {formatName} from "@/utils/text-formatter";
 import {ExclamationTriangleIcon} from "@radix-ui/react-icons";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 
-type RouteFormsProps = {
-  routes: Route[]
-}
-
-export function RoutesManagement({routes}: RouteFormsProps) {
-  const [dialogOpen, setDialogOpen] = useState(false)
+export function ManageRoutes() {
+  const queryClient = useQueryClient()
+  const [openDialog, setOpenDialog] = useState(false)
   const [editDialogOpen, setEditDialogOpen] = useState(false)
   const [selectedRoute, setSelectedRoute] = useState<Route | null>(null)
   const [zones] = useState<GeographicalZone[]>(Object.values(GeographicalZone))
-  const [localRoutes, setLocalRoutes] = useState<Route[]>(routes)
 
   const form = useForm<RouteInput>({
     resolver: zodResolver(RouteInputSchema),
@@ -74,47 +71,53 @@ export function RoutesManagement({routes}: RouteFormsProps) {
       <ExclamationTriangleIcon className="size-10 text-muted-foreground"/>
       <h3 className="text-lg mt-4 font-semibold mb-2">No routes found</h3>
       <p className="text-muted-foreground mb-4 text-sm">There are no routes in the system yet.</p>
-      <Button onClick={() => setDialogOpen(true)}>
+      <Button onClick={() => setOpenDialog(true)}>
         <Plus className="size-4 "/> Add Route
       </Button>
     </div>
   )
 
-  async function onSubmit(values: RouteInput) {
-    try {
-      const newRoute = await RegisterRoute(values);
-      {/* @ts-expect-error not taking into consideration some props elements */}
-      setLocalRoutes((prevRoutes) => [...prevRoutes, newRoute]);
-      setDialogOpen(false);
+  const {data: routes} = useQuery({
+    queryKey: ['get-routes'],
+    queryFn: async () => getRoutes(),
+  })
+
+  const {mutate: registerRoute, isPending: isRegisteringRoute} = useMutation({
+    mutationFn: async (values: RouteInput) => addRoute(values),
+    onSuccess: () => {
       toast.success("Your route has been registered.");
+      queryClient.invalidateQueries({queryKey: ['get-routes']})
+      setOpenDialog(false);
       form.reset();
-    } catch (error) {
-      toast.error(`Error: ${error instanceof Error ? error.message : 'Unknown error occurred.'}`);
-    }
-  }
+    },
+    onError: (err) => toast.error("An error occurred while saving your route: " + err.message),
+  })
 
-  async function onEditSubmit(values: RouteInput) {
-    if (!selectedRoute) return;
+  const onSubmit = async (values: RouteInput) => registerRoute(values)
 
-    try {
-      // @ts-expect-error Not taking into account some properties
-      const updatedRoute = await UpdateRoute(selectedRoute.id, values);
-      setLocalRoutes((prevRoutes) =>
-        prevRoutes.map((route) => (route.id === updatedRoute.id ? updatedRoute : route))
-      );
+  const {mutate: updateSelectedRoute, isPending: isUpdatingRoute} = useMutation({
+    mutationFn: async (values: RouteInput) => {
+      if (!selectedRoute) return
+      await updateRoute(selectedRoute.id, values as Route)
+    },
+    onSuccess: () => {
+      toast.success("Your route has been registered.");
       setEditDialogOpen(false);
-      toast.success("Route has been updated.");
-      editForm.reset();
-    } catch (error) {
-      toast.error(`Error: ${error instanceof Error ? error.message : 'Unknown error occurred.'}`);
-    }
+      queryClient.invalidateQueries({queryKey: ['get-routes']})
+      form.reset();
+    },
+    onError: (err) => toast.error("An error occurred while saving your route: " + err.message),
+  })
+
+  const onEditSubmit = async (values: RouteInput) => {
+    updateSelectedRoute(values)
   }
 
   return (
     <>
       <div className="flex items-center gap-3 mb-4 justify-between mt-16">
         <h2 className="text-2xl font-semibold">Manage Routes</h2>
-        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <Dialog open={openDialog} onOpenChange={setOpenDialog}>
           <DialogTrigger asChild>
             <Button>
               <Plus className="size-4"/> New
@@ -197,14 +200,23 @@ export function RoutesManagement({routes}: RouteFormsProps) {
                     )}
                   />
                 </div>
-                <Button type="submit" className="w-full">Create Route</Button>
+                <Button type="submit" className="w-full" disabled={isRegisteringRoute}>
+                  {isRegisteringRoute ? (
+                    <div className="inline-flex items-center">
+                      <Loader className="mr-2 size-4 animate-spin"/>
+                      Creating route...
+                    </div>
+                  ) : (
+                    <p>Create Route</p>
+                  )}
+                </Button>
               </form>
             </Form>
           </DialogContent>
         </Dialog>
       </div>
       <section className="border rounded-2xl p-4">
-        {localRoutes.length > 0 ? (
+        {!routes || routes.length === 0 ? renderEmptyState() : (
           <Table>
             <TableHeader>
               <TableRow>
@@ -217,13 +229,13 @@ export function RoutesManagement({routes}: RouteFormsProps) {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {localRoutes.map((route, index) => (
-                <TableRow key={route?.id ?? index}> {/* Use index as fallback for key */}
-                  <TableCell className="max-lg:hidden">{route?.id ?? 'N/A'}</TableCell>
-                  <TableCell>{route?.distance ? `${route.distance}` : 'N/A'}</TableCell>
-                  <TableCell>{route?.departurePort || 'N/A'}</TableCell>
-                  <TableCell>{route?.arrivalPort || 'N/A'}</TableCell>
-                  <TableCell className="max-md:hidden">{formatName(route?.geographicalZone ?? 'N/A')}</TableCell>
+              {routes.map((route) => (
+                <TableRow key={route.id}>
+                  <TableCell className="max-lg:hidden">{route.id}</TableCell>
+                  <TableCell>{route.distance}</TableCell>
+                  <TableCell>{route.departurePort}</TableCell>
+                  <TableCell>{route.arrivalPort}</TableCell>
+                  <TableCell className="max-md:hidden">{formatName(route.geographicalZone)}</TableCell>
                   <TableCell>
                     <Button variant="ghost" size="sm" onClick={() => {
                       setSelectedRoute(route)
@@ -237,9 +249,8 @@ export function RoutesManagement({routes}: RouteFormsProps) {
               ))}
             </TableBody>
           </Table>
-        ) : (
-          renderEmptyState()
         )}
+
       </section>
       <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
         <DialogContent>
@@ -319,7 +330,16 @@ export function RoutesManagement({routes}: RouteFormsProps) {
                     )}
                   />
                 </div>
-                <Button type="submit" className="w-full">Update Route</Button>
+                <Button type="submit" className="w-full" disabled={isUpdatingRoute}>
+                  {isUpdatingRoute ? (
+                    <div className="inline-flex items-center">
+                      <Loader className="mr-2 size-4 animate-spin"/>
+                      Updating route...
+                    </div>
+                  ) : (
+                    <p>Update Route</p>
+                  )}
+                </Button>
               </form>
             </Form>
           )}
