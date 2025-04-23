@@ -18,17 +18,26 @@ export const metadata: Metadata = {
   description: "Your marine transportation company. Book your dream vacation with ease.",
   openGraph: {
     url: "https://marieteam.vercel.app",
+    type: "website",
     title: "MarieTeam",
     description: "Your marine transportation company. Book your dream vacation with ease.",
+    siteName: "MarieTeam",
     images: [
       {
-        url: "https://marieteam.vercel.app/og.png",
+        url: "https://marieteam.vercel.app/opengraph-image.png",
         width: 1200,
         height: 630,
         alt: "MarieTeam",
       },
     ],
-  }
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "MarieTeam",
+    description: "Your marine transportation company. Book your dream vacation with ease.",
+    images: ["https://marieteam.vercel.app/opengraph-image.png"],
+    creator: "@MrInspection",
+  },
 };
 
 export default function RootLayout({children}: Readonly<{ children: React.ReactNode; }>) {
