@@ -1,19 +1,13 @@
 import type {Metadata} from "next";
 import {OrdersTable} from "@/app/(customer)/orders/orders-table";
-import {redirect} from "next/navigation";
-import {auth} from "@/auth/auth";
+import {getRequiredUser} from "@/lib/auth-session";
 
 export const metadata: Metadata = {
   title: "My Orders - MarieTeam",
 };
 
 export default async function OrdersPage() {
-  const session = await auth();
-  const user = session?.user;
-
-  if (!user || !user.id) {
-    return redirect("/sign-in");
-  }
+  const user = await getRequiredUser()
 
   return (
     <>
@@ -26,7 +20,7 @@ export default async function OrdersPage() {
           </div>
         </section>
         <section className="container max-w-7xl py-10">
-          <OrdersTable userId={user.id}/>
+          <OrdersTable userId={user.id as string}/>
         </section>
       </main>
     </>

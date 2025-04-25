@@ -7,10 +7,10 @@ import {cn} from "@/lib/utils";
 import {buttonVariants} from "@/components/ui/button";
 import {ShareTripButton} from "@/app/(customer)/bookings/_components/share-crossing";
 import TripInformation from "@/app/(customer)/bookings/_components/trip-information";
-import {auth} from "@/auth/auth";
 import BroadcastBanner from "@/components/broadcast-banner";
 import React from "react";
 import type {Metadata} from "next";
+import {getUser} from "@/lib/auth-session";
 
 export const metadata: Metadata = {
   title: "Configurator - MarieTeam",
@@ -54,8 +54,8 @@ const ConfigurePage = async (props: ConfigurePageProps) => {
     return InvalidRequest();
   }
 
-  const session = await auth()
-  const userId = session?.user?.id
+  const user = await getUser()
+  const userId = user?.id
 
   const seatCategories = await prisma.seatCategory.findMany({
     include: {

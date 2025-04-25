@@ -1,11 +1,10 @@
-import {auth} from "@/auth/auth";
 import NotFound from "@/app/not-found";
 import AdminDashboard from "@/app/admin/dashboard";
 import {prisma} from "@/lib/db";
+import {getUser} from "@/lib/auth-session";
 
 export default async function AdminPage() {
-  const session = await auth();
-  const user = session?.user;
+  const user = await getUser()
 
   if (!user) {
     return NotFound();

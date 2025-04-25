@@ -1,7 +1,7 @@
-import {auth} from "@/auth/auth";
 import {prisma} from "@/lib/db";
 import {redirect} from "next/navigation";
 import {AccountInformation} from "@/app/(customer)/settings/_components/account-information";
+import {getRequiredUser} from "@/lib/auth-session";
 
 export const metadata = {
   title: "Settings - MarieTeam",
@@ -9,10 +9,7 @@ export const metadata = {
 };
 
 export default async function SettingsPage() {
-  const session = await auth();
-  const user = session?.user;
-
-  if (!user || !user.id) return redirect("/sign-in");
+  const user = await getRequiredUser()
 
   const userData = await prisma.user.findUnique({
     where: {
