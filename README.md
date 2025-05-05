@@ -14,7 +14,7 @@ proceed to checkout. It uses a solid technical stack to achieve the intended fun
 - `TailwindCSS`
 - `Shadcn UI`
 - `Prisma & Neon Database`
-- `Auth.js` : Credentials auth & 0auth providers
+- `Auth.js` : Credentials auth & Oauth providers
 - `Stripe`
 - `Zod`
 
@@ -26,7 +26,7 @@ proceed to checkout. It uses a solid technical stack to achieve the intended fun
 - Administration dashboard with statistics data
 - Crossing API to create captain logs from the mobile app
 
-## ☑️ How can it be improved ?
+## ☑️ How can it be improved?
 
 - **ADMIN!** Transform the admin dashboard into a CRUD dashboard to fully manage everything
     - Manage `seatCategory`, `seatType` (create, edit, delete and read)
@@ -41,13 +41,14 @@ proceed to checkout. It uses a solid technical stack to achieve the intended fun
 - **CUSTOMER!** Have a map to view the route of the crossing
 - **CUSTOMER!** An illustration of the boat to be able to select the seat
 
-## 📗 How to run this project ?
+## 📗 How to run this project?
 
 To run this project on your local environment, follow the following steps :
 
 - Clone the repository to your local machine or download the source code.
 - Run the command `pnpm install` in the project directory to install the **required** dependencies
+- Run the [docker-compose.yml](docker-compose.yaml) file to start the PostgreSQL database.
 - Create a new file named `.env` in the project directory and add the variables as shown in the `.env.example` file.
-- Run the command `pnpx prisma db seed` to seed the database with startup data
+- Run the command `prisma db seed` to seed the database with startup data
 - Run the command `pnpm run start` to start the `production build` of the project.
 - Open your internet browser and go to the following address: [http://localhost:3000](http://localhost:3000)
