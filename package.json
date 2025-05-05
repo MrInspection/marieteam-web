@@ -8,11 +8,12 @@
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
+    "seed": "ts-node prisma/seed.ts",
     "test": "jest",
     "test:watch": "jest --watch"
   },
   "prisma": {
-    "seed": "ts-node prisma/seed.js"
+    "seed": "ts-node --project prisma/tsconfig.json prisma/seed.ts"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.9.0",
